@@ -1,0 +1,92 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  tagline: string;
+  domain?: string;
+  problem: string;
+  approach: string;
+  result: string;
+  stack: string[];
+  repoUrl?: string;
+  demoUrl?: string;
+  period?: string;
+}
+
+const { title, tagline, domain, problem, approach, result, stack, repoUrl, demoUrl, period } =
+  Astro.props;
+
+const blocks = [
+  { label: 'Problem', value: problem, emphasis: false },
+  { label: 'Approach', value: approach, emphasis: false },
+  { label: 'Result', value: result, emphasis: true },
+];
+---
+
+<article
+  class="flex h-full flex-col rounded-xl border border-border bg-surface p-6 transition-colors hover:border-accent/40"
+>
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      {domain && <p class="font-mono text-xs uppercase tracking-wide text-accent">{domain}</p>}
+      <h3 class="mt-1 text-lg font-semibold text-ink">{title}</h3>
+      {period && <p class="mt-0.5 font-mono text-xs text-muted">{period}</p>}
+    </div>
+    <div class="flex shrink-0 items-center gap-1">
+      {
+        repoUrl && (
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title} source on GitHub`}
+            class="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent"
+          >
+            <Icon name="github" size={18} />
+          </a>
+        )
+      }
+      {
+        demoUrl && (
+          <a
+            href={demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title} live demo`}
+            class="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent"
+          >
+            <Icon name="external" size={18} />
+          </a>
+        )
+      }
+    </div>
+  </div>
+
+  <p class="mt-2 text-sm text-muted">{tagline}</p>
+
+  <dl class="mt-5 space-y-3 text-sm">
+    {
+      blocks.map((block) => (
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">
+            {block.label}
+          </dt>
+          <dd class={`mt-1 leading-relaxed ${block.emphasis ? 'font-medium text-ink' : 'text-muted'}`}>
+            {block.value}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <ul class="mt-auto flex flex-wrap gap-1.5 pt-6">
+    {
+      stack.map((tech) => (
+        <li class="rounded-md bg-surface-2 px-2.5 py-1 font-mono text-xs text-muted">
+          {tech}
+        </li>
+      ))
+    }
+  </ul>
+</article>

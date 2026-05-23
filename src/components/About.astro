@@ -1,0 +1,60 @@
+---
+import { site } from '../data/site.ts';
+
+// TODO: rewrite this narrative in your own voice (2-3 short paragraphs).
+const paragraphs = [
+  "I'm an AI Engineer building applied ML systems for agribusiness — the most data-rich vertical that applied AI has yet to serve at scale. My work spans RAG orchestration with uncertainty quantification, on-device computer vision for low-connectivity field environments, and end-to-end forecasting pipelines validated on large, real-world datasets.",
+  "My soil texture classification research (VisioSoil) was accepted at ConBAP/ICPA 2026 and ranked in the top 250 at FETEPS 2025. On the forecasting side, I built a full pipeline over 133K+ observations across 211 countries, achieving 0.19°C RMSE with a LightGBM/SARIMA weighted ensemble — a 75% improvement over the Prophet baseline. My RAG agent (SmartB100) introduces semantic entropy scoring to flag potentially hallucinated responses before they reach the user.",
+  "I hold consistent engineering standards across every project: Conventional Commits, CI pipelines, structured PR reviews, and ADR documentation. Currently completing a B.Tech in Big Data for Agribusiness and open to remote roles internationally.",
+];
+
+const facts = [
+  { label: 'Focus', value: 'Applied AI for Agribusiness' },
+  { label: 'Domains', value: 'CV · NLP · LLM Agents · Time-Series' },
+  { label: 'Open to', value: 'Full-time · Internship · Remote' },
+  { label: 'Email', value: site.email },
+];
+---
+
+<section id="about" class="border-t border-border/60">
+  <div class="mx-auto max-w-5xl px-6 py-24">
+    <div class="mb-12">
+      <span class="font-mono text-sm text-accent">01 / About</span>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+        About me
+      </h2>
+    </div>
+
+    <div class="grid gap-12 md:grid-cols-[1.5fr_1fr]">
+      <div class="space-y-5 text-base leading-relaxed text-muted md:text-lg">
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+
+      <div class="space-y-6">
+        <!-- Replace with a real photo: put it at public/images/profile.jpg
+             and swap this block for <img src="/images/profile.jpg" ... />. -->
+        <div
+          class="grid aspect-square w-full place-items-center rounded-2xl border border-border bg-surface text-5xl font-bold text-muted"
+          aria-hidden="true"
+        >
+          {site.initials}
+        </div>
+
+        <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">
+          {
+            facts.map((fact) => (
+              <div class="bg-surface p-4">
+                <dt class="font-mono text-xs uppercase tracking-wide text-muted">
+                  {fact.label}
+                </dt>
+                <dd class="mt-1 break-words text-sm font-medium text-ink">
+                  {fact.value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+import { site } from '../data/site.ts';
+
+const entries = await getCollection('projects');
+const projects = entries.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return a.data.order - b.data.order;
+});
+---
+
+<section id="projects" class="border-t border-border/60">
+  <div class="mx-auto max-w-5xl px-6 py-24">
+    <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <span class="font-mono text-sm text-accent">03 / Projects</span>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+          Selected work
+        </h2>
+      </div>
+      <a
+        href={site.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sm text-muted transition-colors hover:text-accent"
+      >
+        All repositories on GitHub &rarr;
+      </a>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      {projects.map((project) => <ProjectCard {...project.data} />)}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site.ts';
+
+interface Props {
+  class?: string;
+}
+const className = Astro.props.class ?? '';
+
+const links = [
+  { href: site.github, label: 'GitHub', icon: 'github' as const },
+  { href: site.linkedin, label: 'LinkedIn', icon: 'linkedin' as const },
+  { href: `mailto:${site.email}`, label: 'Email', icon: 'mail' as const },
+];
+---
+
+<div class={`flex items-center gap-2 ${className}`}>
+  {
+    links.map((link) => (
+      <a
+        href={link.href}
+        target={link.icon === 'mail' ? undefined : '_blank'}
+        rel={link.icon === 'mail' ? undefined : 'noopener noreferrer'}
+        aria-label={link.label}
+        class="grid h-10 w-10 place-items-center rounded-lg border border-border bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
+      >
+        <Icon name={link.icon} size={20} />
+      </a>
+    ))
+  }
+</div>

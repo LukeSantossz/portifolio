@@ -1,0 +1,64 @@
+---
+import { site } from '../data/site.ts';
+import SocialLinks from './SocialLinks.astro';
+import Icon from './Icon.astro';
+---
+
+<section id="top" class="relative overflow-hidden">
+  <!-- Background grid -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background-image: linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 30%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 30%, transparent 100%);"
+  >
+  </div>
+  <!-- Accent glow -->
+  <div
+    class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[420px] w-[680px] -translate-x-1/2 rounded-full opacity-20 blur-[120px]"
+    style="background: radial-gradient(circle, var(--color-accent), transparent 70%);"
+  >
+  </div>
+
+  <div class="mx-auto max-w-5xl px-6 pb-24 pt-36 md:pb-32 md:pt-44">
+    <p class="reveal font-mono text-sm tracking-wide text-accent">
+      Computer Vision · NLP · LLM Agents
+    </p>
+
+    <h1 class="reveal mt-6 text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+      <span class="text-muted">Hi, I'm</span> {site.name}.
+    </h1>
+
+    <p class="reveal mt-5 max-w-2xl bg-gradient-to-r from-accent to-accent-2 bg-clip-text text-xl font-semibold text-transparent md:text-2xl">
+      {site.headline}
+    </p>
+
+    <p class="reveal mt-5 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
+      {site.subheadline}
+    </p>
+
+    <div class="reveal mt-9 flex flex-wrap items-center gap-3">
+      <a
+        href="#projects"
+        class="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-base transition-transform hover:-translate-y-0.5"
+      >
+        View projects
+        <Icon name="arrow-right" size={18} />
+      </a>
+      <a
+        href={site.cvPath}
+        download
+        class="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-accent/50"
+      >
+        <Icon name="download" size={18} />
+        Download CV
+      </a>
+    </div>
+
+    <div class="reveal mt-9 flex flex-wrap items-center gap-5">
+      <SocialLinks />
+      <span class="inline-flex items-center gap-1.5 text-sm text-muted">
+        <Icon name="location" size={16} />
+        {site.location}
+      </span>
+    </div>
+  </div>
+</section>
