@@ -6,6 +6,6 @@ import sitemap from '@astrojs/sitemap';
 // @tailwindcss/vite plugin, for compatibility with Astro 6's Rolldown-based Vite.
 // TODO: replace with your production URL once deployed on Vercel.
 export default defineConfig({
-  site: 'https://your-domain.vercel.app',
+  site: 'https://lukesz-portifolio.vercel.app/',
   integrations: [sitemap()],
 });

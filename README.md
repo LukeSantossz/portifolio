@@ -4,7 +4,7 @@
 
 Welcome to the source code repository of my personal portfolio landing page. This is a single-page, high-performance, dark-tech themed website showcasing my academic research, technical projects, and professional experience at the intersection of AI and Agribusiness.
 
-🌐 **Live Demo:** [lucas-goncalves.vercel.app](https://your-domain.vercel.app) *(Replace with actual deployed URL once active)*  
+🌐 **Live Demo:** [lukesz-portifolio.vercel.app](https://lukesz-portifolio.vercel.app/)  
 ✉️ **Contact:** [lucassg2015@gmail.com](mailto:lucassg2015@gmail.com)
 
 ---
