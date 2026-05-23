@@ -1,60 +1,89 @@
-# Portfolio — Data & AI
+# 🌾 Lucas Gonçalves — Portfolio
 
-Personal portfolio landing page. Built with [Astro](https://astro.build) and
-[Tailwind CSS v4](https://tailwindcss.com), deployed on [Vercel](https://vercel.com).
+> **AI Engineer** specialized in building production-ready NLP pipelines, computer vision systems, and LLM agents for agribusiness.
 
-Positioning: **Data / Automation / AI**. Single page, dark-tech design, English.
+Welcome to the source code repository of my personal portfolio landing page. This is a single-page, high-performance, dark-tech themed website showcasing my academic research, technical projects, and professional experience at the intersection of AI and Agribusiness.
 
-## Tech stack
+🌐 **Live Demo:** [lucas-goncalves.vercel.app](https://your-domain.vercel.app) *(Replace with actual deployed URL once active)*  
+✉️ **Contact:** [lucassg2015@gmail.com](mailto:lucassg2015@gmail.com)
 
-- **Astro 6** — static output, fast and SEO-friendly.
-- **Tailwind CSS v4** — design tokens live in `src/styles/global.css` (`@theme`).
-- **Content Collections** — each project is a Markdown file in `src/content/projects/`.
-- **Web3Forms** — contact form that works without a backend.
-- **@astrojs/sitemap** — sitemap generated at build time.
+---
 
-## Local development
+## 🚀 Featured Case Studies & Projects
 
-```bash
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # static output in dist/
-npm run preview  # preview the production build
-```
+My work focuses on applied AI that solves real-world challenges, particularly in low-connectivity agricultural settings:
 
-## Make it yours (editing checklist)
+### 🌡️ [Global Temperature Forecasting Pipeline](https://github.com/LukeSantossz/weather-forecast)
+*   **Tagline:** 0.19°C RMSE across 211 countries — statistical and ML ensemble for agricultural climate planning.
+*   **Problem:** Single-model pipelines lack the robustness needed for frost/heat alerts and irrigation planning.
+*   **Approach:** Analyzed 133K+ daily observations across 211 countries. Compared 5 approaches (Prophet, ARIMA, SARIMA, LightGBM, GradientBoosting) and combined the best performers in a weighted ensemble. Added dual anomaly detection via Z-score and Isolation Forest.
+*   **Result:** 0.19°C RMSE (LightGBM), representing a 75% improvement over the Prophet baseline.
+*   **Stack:** Python, LightGBM, ARIMA/SARIMA, Prophet, scikit-learn, PyArrow/Parquet, pandas.
 
-All content is centralized — you rarely need to touch the components.
+### 🤖 [SmartB100: RAG Agent with Hallucination Scoring](https://github.com/LukeSantossz/sb100_agents)
+*   **Tagline:** RAG-powered Q&A for agronomy with semantic entropy to flag unreliable answers in real-time.
+*   **Problem:** Generic LLMs hallucinate with no confidence signaling, making them unsafe for field decision-making.
+*   **Approach:** Integrated Ollama (llama3.2:3b + nomic-embed-text) with FastAPI and Qdrant vector search. Implemented semantic entropy (Farquhar et al., Nature 2024) to score response confidence (0.0-1.0) and integrated multi-provider verification dispatch (Groq/OpenRouter).
+*   **Result:** Production-ready MVP spanning 12 specialized modules with fully containerized docker-compose setup.
+*   **Stack:** Python, FastAPI, Qdrant, Ollama, LangGraph, HuggingFace, Gradio, Docker.
 
-1. **`src/data/site.ts`** — name, role, headline, email, GitHub/LinkedIn, SEO. Start here.
-2. **`src/content/projects/*.md`** — one file per project. Duplicate an example and
-   edit the frontmatter (`title`, `tagline`, `problem`, `approach`, `result`,
-   `stack`, `repoUrl`, `demoUrl`, `featured`, `order`).
-3. **`src/data/skills.ts`** — skill groups and items.
-4. **`src/data/experience.ts`** — work + education timeline.
-5. **`src/components/About.astro`** — rewrite the `paragraphs` in your own voice.
+### 📱 [VisioSoil: On-Device Soil Classifier](https://github.com/LukeSantossz/visiosoil-app)
+*   **Tagline:** Cross-platform mobile app for geolocated soil classification with on-device TFLite inference — no connectivity required.
+*   **Problem:** Lab analysis is slow and specialists are scarce in remote rural properties.
+*   **Approach:** Cross-platform Flutter app with local TensorFlow Lite inference (12 USDA soil classes). Runs classification in a background isolate, geo-tags records, and stores records locally in Drift/SQLite.
+*   **Achievements:** Accepted at **ConBAP/ICPA 2026** (abstract #14064) and Top 250 at **FETEPS 2025**.
+*   **Stack:** Flutter, Dart, TensorFlow Lite, Riverpod, GoRouter, Drift/SQLite.
 
-### Assets to add (in `public/`)
+---
 
-- `cv.pdf` — your résumé (the Download CV / Resume buttons link to it).
-- `og-image.png` — social share image, ideally 1200×630.
-- `images/profile.jpg` — your photo. Then swap the placeholder block in
-  `About.astro` for an `<img>`.
+## 🛠️ Tech Stack & Architecture
 
-### Design tokens
+This portfolio landing page is engineered for speed, responsiveness, and premium aesthetics:
 
-Colors and fonts are in `src/styles/global.css` under `@theme`. Change
-`--color-accent` to recolor the whole site.
+*   **Astro 6:** Static Site Generation (SSG) for ultra-fast loading, optimal performance, and best-in-class SEO.
+*   **Tailwind CSS v4:** Modern styling with styling tokens loaded dynamically from `@theme` in `global.css`.
+*   **TypeScript:** Strict type-safety across components and data configurations.
+*   **Content Collections:** Projects are managed as structured Markdown schemas in `src/content/projects/`.
+*   **Web3Forms:** Seamless contact form integration that functions without requiring a backend server.
 
-## Contact form (Web3Forms)
+---
 
-1. Get a free access key at <https://web3forms.com> (enter the email that should
-   receive messages).
-2. Paste it into `web3formsKey` in `src/data/site.ts`.
+## 💻 Local Development
 
-## Deploy (Vercel)
+To run this project locally, make sure you have [Node.js](https://nodejs.org) installed, then execute:
 
-1. Push this repo to GitHub.
-2. Import it in Vercel — the Astro preset is detected automatically.
-3. After deploy, set the real URL in `astro.config.mjs` (`site`) and
-   `public/robots.txt`, then redeploy so the sitemap and Open Graph links are correct.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/LukeSantossz/portifolio.git
+    cd portifolio
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Configure environment variables:**
+    Copy the example environment file and add your Web3Forms access key:
+    ```bash
+    cp .env.example .env
+    ```
+    Edit the `.env` file to replace `your_web3forms_key_here` with your actual access key from [Web3Forms](https://web3forms.com).
+4.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:4321](http://localhost:4321) in your browser.
+5.  **Build for production:**
+    ```bash
+    npm run build
+    ```
+    The static files will be generated in the `dist/` directory, ready to be deployed.
+
+---
+
+## ⚖️ License & Contact
+
+Developed with care by **Lucas Gonçalves** (LG). Feel free to reach out for collaboration or professional opportunities!
+
+*   **Email:** [lucassg2015@gmail.com](mailto:lucassg2015@gmail.com)
+*   **LinkedIn:** [linkedin.com/in/lucas-gonçalvessz/](https://www.linkedin.com/in/lucas-gon%C3%A7alvessz/)
+*   **GitHub:** [github.com/LukeSantossz](https://github.com/LukeSantossz)
