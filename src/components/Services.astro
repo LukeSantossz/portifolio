@@ -1,0 +1,52 @@
+---
+/**
+ * Self-marketing: the kinds of systems Lucas builds.
+ * Each one maps to a real shipped project, so it's positioning, not fluff.
+ */
+const services = [
+  {
+    title: 'On-device computer vision',
+    body: "Vision models that run on-device, in the field, with no signal and no cloud round-trip. Built with TensorFlow Lite for places where connectivity fails and a wrong call is expensive.",
+  },
+  {
+    title: 'Forecasting & time-series',
+    body: "Time-series forecasting that doesn't bet on a single model: weighted ensembles, anomaly detection, and honest error bars, benchmarked on large real-world data.",
+  },
+  {
+    title: 'LLM agents you can trust',
+    body: 'RAG and agent systems that flag their own uncertainty. Hallucination scoring and multi-provider verification are built in, so outputs are safe enough to act on.',
+  },
+  {
+    title: 'End-to-end MLOps',
+    body: 'From notebook to running service: Docker, CI, tests, and the unglamorous infrastructure that keeps a model alive long after the demo.',
+  },
+];
+---
+
+<section id="services" class="border-t border-border/60">
+  <div class="mx-auto max-w-5xl px-6 py-24">
+    <div class="mb-12">
+      <span class="font-mono text-sm text-accent">02 / What I do</span>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+        What I build
+      </h2>
+      <p class="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+        Four things I do well. Each one shipped in a real project, not just on a slide.
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        services.map((service, i) => (
+          <div class="rounded-xl border border-border bg-surface p-6 transition-colors hover:border-accent/40">
+            <span class="font-mono text-sm text-accent/80">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-3 text-lg font-semibold text-ink">{service.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{service.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

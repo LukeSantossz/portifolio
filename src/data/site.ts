@@ -8,11 +8,19 @@ export const site = {
   initials: 'LG',
   role: 'AI Engineer',
 
-  // Positioning headline.
+  // Positioning headline (role + 3 specialties — recruiter keywords, mirrored from CV).
   headline:
-    'AI Engineer building production-ready NLP pipelines, computer vision systems, and LLM agents for agribusiness.',
-  subheadline:
-    'From peer-reviewed soil classification research (ConBAP/ICPA 2026) to RAG agents with hallucination scoring and ensemble forecasting at 0.19°C RMSE across 211 countries — focused on applied AI that ships.',
+    'AI Engineer building NLP systems, LLM agents, and production-grade ML pipelines.',
+
+  // Availability line above the name (timezone + remote = the recruiter "smell test").
+  availability: 'Marília, Brazil (GMT-3) · Remote-ready · Open to international roles',
+
+  // Hero proof strip — the 3 strongest measurable achievements, mirrored from the CV.
+  heroStats: [
+    { value: '~50% faster', label: 'Enterprise process automation at Jacto (Salesforce + SAP)' },
+    { value: '3rd of 1,300+', label: 'Soil classifier at FETEPS 2025, accepted at ICPA 2026' },
+    { value: 'FAPESP-funded', label: 'Sole designer of a production RAG agent' },
+  ],
 
   // --- Contact & social -----------------------------------------------------
   email: 'lucassg2015@gmail.com',
@@ -21,7 +29,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/lucas-gonçalvessz/',
 
   // --- Assets ---------------------------------------------------------------
-  cvPath: '/cv.pdf', // place your résumé at public/cv.pdf
+  cvPath: '/my_resume.pdf', // résumé served from public/my_resume.pdf
   ogImage: '/og-image.png', // social share image at public/og-image.png
 
   // --- Integrations ---------------------------------------------------------
@@ -31,5 +39,5 @@ export const site = {
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Lucas Gonçalves — AI Engineer',
   seoDescription:
-    'AI Engineer building computer vision, NLP pipelines, and LLM agents for agribusiness — from research to production.',
+    'AI Engineer building machine learning for agriculture: offline soil classification, temperature forecasting, and RAG agents with hallucination scoring.',
 } as const;

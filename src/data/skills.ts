@@ -9,41 +9,39 @@ export interface SkillGroup {
 export const skillGroups: SkillGroup[] = [
   {
     category: 'Languages',
-    items: ['Python', 'SQL', 'Dart'],
+    items: ['Python', 'Rust', 'SQL', 'Dart', 'JavaScript'],
   },
   {
-    category: 'Data & ML',
+    category: 'ML & Data Science',
     items: [
       'pandas',
-      'NumPy',
       'scikit-learn',
+      'TensorFlow',
+      'Keras',
       'PyTorch',
+      'OpenCV',
       'TensorFlow Lite',
       'LightGBM',
-      'ARIMA/SARIMA',
-      'Prophet',
     ],
   },
   {
     category: 'AI / LLM',
     items: [
       'RAG',
+      'LangChain',
       'LangGraph',
       'Qdrant',
-      'Ollama',
       'HuggingFace Transformers',
       'RoBERTa',
-      'Semantic Entropy',
-      'Gradio',
       'FastAPI',
     ],
   },
   {
-    category: 'Automation & Data Eng',
-    items: ['ETL pipelines', 'Google Earth Engine', 'REST APIs', 'Parquet/PyArrow', 'SQLite/Drift'],
+    category: 'Databases & Data Eng',
+    items: ['PostgreSQL', 'MongoDB', 'Firestore', 'SQLite/Drift', 'ETL pipelines', 'Google Earth Engine'],
   },
   {
-    category: 'Tools & Cloud',
-    items: ['Docker', 'GitHub Actions (CI)', 'Git', 'Flutter', 'Riverpod', 'Google Cloud Platform'],
+    category: 'Cloud & DevOps',
+    items: ['GCP', 'Vertex AI', 'AWS', 'Docker', 'GitHub Actions (CI)', 'Git'],
   },
 ];
