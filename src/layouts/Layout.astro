@@ -43,6 +43,14 @@ const ogImageUrl = new URL(site.ogImage, Astro.site);
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body class="min-h-screen">
+    <!-- Accent glow that trails the cursor across the whole page -->
+    <div
+      id="cursor-glow"
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 -z-10"
+      style="background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--color-accent) 13%, transparent), transparent 65%);"
+    >
+    </div>
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-base focus:font-medium"
@@ -50,5 +58,42 @@ const ogImageUrl = new URL(site.ogImage, Astro.site);
       Skip to content
     </a>
     <slot />
+
+    <script>
+      // Background accent glow follows the cursor with a soft trailing lerp.
+      const glow = document.getElementById('cursor-glow');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (glow && !reduce.matches) {
+        let targetX = window.innerWidth / 2;
+        let targetY = window.innerHeight / 2;
+        let currentX = targetX;
+        let currentY = targetY;
+        let frame = 0;
+
+        const render = () => {
+          currentX += (targetX - currentX) * 0.12;
+          currentY += (targetY - currentY) * 0.12;
+          glow.style.setProperty('--mx', `${currentX}px`);
+          glow.style.setProperty('--my', `${currentY}px`);
+
+          if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
+            frame = requestAnimationFrame(render);
+          } else {
+            frame = 0;
+          }
+        };
+
+        window.addEventListener(
+          'pointermove',
+          (event) => {
+            targetX = event.clientX;
+            targetY = event.clientY;
+            if (!frame) frame = requestAnimationFrame(render);
+          },
+          { passive: true },
+        );
+      }
+    </script>
   </body>
 </html>
