@@ -22,3 +22,8 @@ pnpm-debug.log*
 # local AI agents / environments
 .claude/
 .gemini/
+
+# local working docs (personal notes / third-party material — not for publishing)
+my_info.md
+PROJECTS.md
+metodologia camaleão.md
