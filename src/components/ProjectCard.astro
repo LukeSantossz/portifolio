@@ -53,9 +53,7 @@ const bannerBg = banners[index % banners.length];
 ---
 
 <article
-  data-reveal="card"
-  style={`--reveal-delay:${(index % 2) * 90}ms`}
-  class="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_18px_50px_-20px_rgba(70,192,106,0.45)]"
+  class="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-[0_18px_50px_-20px_rgba(70,192,106,0.45)]"
 >
   <!-- Banner: real image if provided, otherwise a generated gradient placeholder. -->
   <div class="relative aspect-[16/7] w-full overflow-hidden border-b border-border bg-surface-2">

@@ -105,7 +105,9 @@ details.reveal-details[open] > dl {
 }
 
 .marquee-row {
-  overflow: hidden;
+  overflow-x: clip;
+  /* Vertical breathing room so an active chip's lift + glow isn't clipped. */
+  padding-block: 0.625rem;
 }
 
 .marquee-track {
@@ -164,6 +166,76 @@ details.reveal-details[open] > dl {
 
 .skill-legend.is-active {
   color: var(--color-ink);
+}
+
+/* ----------------------------------------------------------------------------
+   Projects deck — a 3D stack you flip through. The active card sits flat in
+   front with its full content; the rest fan back, dimmed and clickable.
+   Heights are driven by JS (the active card defines the stage height).
+---------------------------------------------------------------------------- */
+.project-deck {
+  position: relative;
+  perspective: 1600px;
+  min-height: 34rem;
+  transition: height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deck-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  --depth: 0;
+  transform-origin: top center;
+  transform:
+    translateY(calc(var(--depth) * -14px))
+    translateZ(calc(var(--depth) * -70px))
+    scale(calc(1 - var(--depth) * 0.045))
+    rotateX(calc(var(--depth) * 1.5deg));
+  filter: brightness(calc(1 - var(--depth) * 0.14));
+  transition:
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.55s ease;
+}
+
+.deck-card.is-active {
+  filter: none;
+}
+
+.deck-card:not(.is-active) {
+  cursor: pointer;
+}
+
+/* Behind cards swallow inner pointer events, so a click just brings them up. */
+.deck-card:not(.is-active) > * {
+  pointer-events: none;
+}
+
+.deck-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.deck-tab:hover {
+  color: var(--color-ink);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+.deck-tab[aria-selected='true'] {
+  color: var(--color-ink);
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
 }
 
 /* Slow, wave-like drift for the hero background grid.

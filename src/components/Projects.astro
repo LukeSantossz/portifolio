@@ -8,11 +8,12 @@ const projects = entries.sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
   return a.data.order - b.data.order;
 });
+const total = projects.length;
 ---
 
 <section id="projects" class="border-t border-border/60">
   <div class="mx-auto max-w-5xl px-6 py-24">
-    <div data-reveal class="mb-12 flex flex-wrap items-end justify-between gap-4">
+    <div data-reveal class="mb-10 flex flex-wrap items-end justify-between gap-4">
       <div>
         <span class="font-mono text-sm text-accent">04 / Projects</span>
         <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
@@ -30,8 +31,107 @@ const projects = entries.sort((a, b) => {
       </a>
     </div>
 
-    <div class="grid gap-6 md:grid-cols-2">
-      {projects.map((project, i) => <ProjectCard {...project.data} index={i} />)}
+    <!-- Selector: pick which of the stacked cards to bring to the front. -->
+    <div
+      data-reveal
+      class="mb-6 flex flex-wrap gap-2"
+      role="tablist"
+      aria-label="Select a project"
+    >
+      {
+        projects.map((project, i) => (
+          <button
+            type="button"
+            class="deck-tab"
+            role="tab"
+            id={`deck-tab-${i}`}
+            aria-controls={`deck-card-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-index={i}
+          >
+            <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
+            {project.data.domain ?? project.data.title}
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="mb-6 font-mono text-xs text-muted">
+      Tap a tab or a card behind to flip the deck.
+    </p>
+
+    <div data-reveal>
+      <div class="project-deck" data-active="0">
+        {
+          projects.map((project, i) => (
+            <div
+              class:list={['deck-card', i === 0 && 'is-active']}
+              id={`deck-card-${i}`}
+              role="tabpanel"
+              aria-labelledby={`deck-tab-${i}`}
+              data-index={i}
+              style={`--depth:${i}; z-index:${total - i};`}
+            >
+              <ProjectCard {...project.data} index={i} />
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  // 3D deck: the active card sits flat in front; the rest fan back and are
+  // clickable. Tabs and behind-cards both call activate(). The active card's
+  // measured height drives the absolutely-positioned stage's height.
+  const deck = document.querySelector<HTMLElement>('.project-deck');
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.deck-tab'));
+
+  if (deck) {
+    const cards = Array.from(deck.querySelectorAll<HTMLElement>('.deck-card'));
+    const count = cards.length;
+    let active = 0;
+
+    const setHeight = () => {
+      const card = cards[active];
+      if (card) deck.style.height = `${card.offsetHeight}px`;
+    };
+
+    const render = () => {
+      cards.forEach((card, i) => {
+        const depth = (i - active + count) % count;
+        card.style.setProperty('--depth', String(depth));
+        card.style.zIndex = String(count - depth);
+        const isActive = depth === 0;
+        card.classList.toggle('is-active', isActive);
+        card.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        (card as HTMLElement & { inert: boolean }).inert = !isActive;
+      });
+      tabs.forEach((tab, i) =>
+        tab.setAttribute('aria-selected', i === active ? 'true' : 'false'),
+      );
+      deck.dataset.active = String(active);
+      setHeight();
+    };
+
+    const activate = (i: number) => {
+      active = ((i % count) + count) % count;
+      render();
+    };
+
+    tabs.forEach((tab, i) => tab.addEventListener('click', () => activate(i)));
+    cards.forEach((card, i) =>
+      card.addEventListener('click', () => {
+        if (i !== active) activate(i);
+      }),
+    );
+
+    // The active card grows/shrinks when its "case study" disclosure toggles.
+    deck.addEventListener('toggle', () => setHeight(), true);
+    window.addEventListener('resize', setHeight);
+    window.addEventListener('load', setHeight);
+
+    render();
+  }
+</script>
