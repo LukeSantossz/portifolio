@@ -251,3 +251,32 @@ details.reveal-details[open] > dl {
 .hero-grid {
   animation: grid-wave 22s ease-in-out infinite;
 }
+
+/* ----------------------------------------------------------------------------
+   Reduced motion — honor the OS/browser "reduce motion" setting.
+   All motion here is decorative (cursor glow, hero grid drift, skills marquee,
+   projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
+   to their final state and looping/animated effects stop. WCAG 2.3.3 / 2.2.2.
+---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Don't leave scroll-reveal content stuck hidden when its transition is cut. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Stop continuously looping effects outright. */
+  .marquee-track,
+  .hero-grid {
+    animation: none !important;
+  }
+}
