@@ -17,11 +17,12 @@ export const timeline: TimelineItem[] = [
     org: 'Jacto',
     period: 'Nov 2024 — Present',
     description:
-      'Global agricultural machinery manufacturer operating across 100+ countries with 3,000+ employees.',
+      'Global agricultural machinery manufacturer operating across 100+ countries with 3,000+ employees and industrial-scale after-sales operations.',
     highlights: [
-      'Redesigned a mission-critical after-sales workflow with a Python automation layer over the Salesforce and SAP APIs, eliminating manual cross-system data entry and reducing process resolution time by ~50%.',
-      'Identified 10+ usability improvements across QA cycles and shipped logic changes that streamlined 3 manual workflow stages, cutting cross-system data-entry errors and improving execution speed by ~30%.',
-      'Engineered a scheduled Python data-collection pipeline (Requests + BeautifulSoup) that replaced a recurring manual process and eliminated ~5 hours/week of error-prone database updates.',
+      'Automated the migration of Russian KLADR-classified fiscal address records into Salesforce during a dealership onboarding — extraction, Cyrillic-to-Latin transliteration, and geographic normalization across regions — eliminating manual data entry from the process.',
+      'Designed a computer-vision discard-auditing architecture (under internal review) combining photo-standardization checks, OCR cross-referencing of the captured slip against the system record, and part recognition, paired with an in-app camera module enforcing filename locks with automatic timestamping and geotagging for evidence integrity.',
+      'Partnered with engineering as the business-to-development bridge on an internal parts-return system, surfacing 10+ usability defects and validating business-rule changes across QA cycles that shifted the workflow from manual entry to majority-review operation.',
+      'Audited and reconciled the field-parts return flow across 150+ master dealerships operating nationally and internationally, tracking millions of BRL in parts movement and processing write-offs through on-site and remote audits.',
     ],
   },
   {

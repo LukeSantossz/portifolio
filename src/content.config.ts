@@ -17,6 +17,12 @@ const projects = defineCollection({
     problem: z.string(),
     approach: z.string(),
     result: z.string(),
+    // Forward-looking "what's next" line, mirrored from each repo's roadmap.
+    roadmap: z.string().optional(),
+    // Banner image/logo for the card. Drop a file in public/images/projects/
+    // and reference it as "/images/projects/<file>". When empty, the card
+    // renders a generated gradient placeholder with the project monogram.
+    image: z.string().optional(),
     stack: z.array(z.string()),
     // Accept a valid URL or an empty string (so unused links can stay in place).
     repoUrl: z.union([z.string().url(), z.literal('')]).optional(),
