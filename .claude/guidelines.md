@@ -116,5 +116,4 @@ Tracked so they aren't mistaken for finished work:
 - `og-image.png` is referenced in `src/data/site.ts` but not present in
   `public/` — social-share preview is currently broken.
 - `public/robots.txt` still has a placeholder `Sitemap:` domain.
-- No `LICENSE` file, though the README advertises MIT.
 - No CI (lint + build on push) and no linter/formatter config yet.
