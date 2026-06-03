@@ -95,13 +95,17 @@ npm run preview  # serve the production build locally
 ```
 portifolio/
 ├── src/
-│   ├── components/        # Astro UI sections (Hero, About, Projects, Contact, …)
+│   ├── components/
+│   │   ├── sections/      # page sections (Hero, About, Services, Skills, …)
+│   │   ├── ui/            # reusable widgets (Icon, SocialLinks, ProjectCard)
+│   │   └── layout/        # site chrome (Nav, Footer)
 │   ├── content/projects/  # one Markdown file per project (case-study schema)
 │   ├── data/              # typed site config, skills, experience
 │   ├── layouts/           # base Layout.astro
 │   ├── pages/             # index.astro (single entry point)
 │   └── styles/            # global.css (Tailwind v4 @theme)
 ├── public/                # static assets (résumé PDF, favicon, robots.txt)
+├── CLAUDE.md              # project memory → .claude/guidelines.md
 ├── astro.config.mjs       # Astro + sitemap config
 └── postcss.config.mjs     # Tailwind v4 via PostCSS
 ```

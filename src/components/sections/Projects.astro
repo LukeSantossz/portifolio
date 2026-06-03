@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import ProjectCard from './ProjectCard.astro';
-import { site } from '../data/site.ts';
+import ProjectCard from '../ui/ProjectCard.astro';
+import { site } from '../../data/site.ts';
 
 const entries = await getCollection('projects');
 const projects = entries.sort((a, b) => {
