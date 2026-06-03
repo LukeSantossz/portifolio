@@ -1,101 +1,142 @@
-# 🌾 Personal Portfolio — Data, AI & Agribusiness
+![Astro](https://img.shields.io/badge/Astro-6.3-BC52EE?logo=astro&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-> **AI Engineer** specialized in building production-ready NLP pipelines, computer vision systems, and LLM agents for agribusiness.
+# Personal Portfolio — AI Engineering for Data, AI & Agribusiness
 
-🌐 **Live Demo:** [lukesz-portifolio.vercel.app](https://lukesz-portifolio.vercel.app/)  
-✉️ **Contact:** [lucassg2015@gmail.com](mailto:lucassg2015@gmail.com)
+> A static, offline-first portfolio that frames every project as a business case study — problem → approach → measured result — so a technical recruiter gets the proof in the first scroll (e.g. "3rd of 1,300+ at FETEPS 2025", "~50% faster enterprise automation").
 
----
-
-## 💼 1. Business Context
-
-Agribusiness is the most data-rich vertical that applied AI has yet to serve at scale. This project exists to bridge the gap between complex machine learning pipelines and real-world industrial opportunities. 
-
-Instead of acting as a simple catalog of repositories, this portfolio functions as a high-impact developer vitrine. Every project is intentionally framed as a **business case study** (*problem → approach → result with measurable metrics*) designed to immediately prove capability to technical recruiters, academic peers, and industry stakeholders. It showcases production-ready, low-latency, and offline-first solutions specifically targeted at solving agricultural and environmental challenges.
+🌐 **Live demo:** [lukesz-portifolio.vercel.app](https://lukesz-portifolio.vercel.app/)
 
 ---
 
-## 🏗️ 2. Architecture Diagram
+## What It Does
 
-The application is built on top of **Astro 6** as a static site, fully decoupling visual components from individual dataset items to achieve rapid load times and optimal SEO score.
+A single-page developer vitrine that turns a résumé into an evidence-driven landing page.
+
+- **Case-study project cards** — each project is rendered from a Markdown file as *problem → approach → result*, with the headline metric highlighted.
+- **Recruiter "smell test" hero** — role, availability, timezone and the three strongest measurable achievements above the fold.
+- **Serverless contact form** — visitors send a message straight from the page, no backend to maintain.
+- **Downloadable CV** — résumé served directly for one-click download.
+
+## What It Is
+
+This is a **static web app** that compiles to a fully pre-rendered landing page deployed on Vercel's CDN. It solves a concrete problem for one user — the author — by replacing a flat "list of repos" with a high-signal portfolio that proves capability to technical recruiters, academic peers, and industry stakeholders.
+
+## Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| Language | TypeScript 5, JavaScript |
+| Framework / Runtime | Astro 6 (`output: 'static'`) |
+| Styling | Tailwind CSS v4 (via PostCSS) |
+| Content layer | Astro Content Collections + typed `src/data/*.ts` |
+| Contact integration | Web3Forms (serverless form submission) |
+| Hosting / CI | Vercel |
+
+## Architecture
 
 ```mermaid
-graph TD
-    subgraph Client ["Client Browser"]
-        UI["Interactive Landing Page"]
+flowchart LR
+    subgraph Data ["Decoupled content"]
+        MD["src/content/projects/*.md"]
+        TS["src/data/*.ts (site, skills, experience)"]
     end
-
-    subgraph Astro ["Astro 6 SSG Engine"]
-        Pages["src/pages/index.astro"]
-        Components["src/components/*.astro (Hero, About, Projects, etc.)"]
-        Layout["src/layouts/Layout.astro"]
-        Styles["src/styles/global.css (Tailwind v4 @theme)"]
+    subgraph Build ["Astro 6 SSG"]
+        Pages["index.astro + components"]
+        Layout["Layout.astro"]
     end
-
-    subgraph DataStore ["Decoupled Content & Configuration"]
-        SiteData["src/data/site.ts (Metadata & SEO)"]
-        SkillsData["src/data/skills.ts (Skill Groups)"]
-        ExpData["src/data/experience.ts (Timeline Items)"]
-        ProjectsCollection["src/content/projects/*.md (Markdown Schema)"]
-    end
-
-    subgraph External ["External Services"]
-        W3F["Web3Forms API (Serverless Form Submission)"]
-        Env["Vercel Environment Variables (.env)"]
-    end
-
-    %% Flows
-    ProjectsCollection -->|Content Collection Loader| Pages
-    SiteData & SkillsData & ExpData --> Pages
+    MD --> Pages
+    TS --> Pages
     Pages --> Layout
-    Components --> Pages
-    Styles --> Layout
-    Layout -->|Builds| UI
-    UI -->|POST /submit (with PUBLIC_WEB3FORMS_KEY)| W3F
-    Env -->|Astro Meta Env| SiteData
+    Layout -->|static build| UI["Pre-rendered page (Vercel CDN)"]
+    UI -->|POST submission| W3F["Web3Forms API"]
 ```
 
----
+Content (projects, skills, experience, identity) is fully decoupled from rendering: components never hold copy. Astro builds everything to static HTML at compile time, and the only runtime call is the client-side `fetch` to Web3Forms when a visitor submits the contact form.
 
-## 🛠️ 3. Engineering Decisions
+## Engineering Decisions
 
-*   **Tailwind CSS v4 Integration via PostCSS:** 
-    *   *Decision:* We configured Tailwind v4 using PostCSS (`postcss.config.mjs`) instead of the default `@tailwindcss/vite` plugin.
-    *   *Rationale:* Astro 6 utilizes a Vite setup that leverages the Rolldown compiler under the hood. The default Vite-specific Tailwind v4 plugin throws errors during compilation due to typescript path resolution issues (`Missing field tsconfigPaths`). Bypassing this through PostCSS and importing Tailwind in `global.css` preserves build integrity with zero performance compromises.
-*   **Decoupled Content Architecture:**
-    *   *Decision:* Centralized all profile details in `src/data/*.ts` and projects inside Astro's Content Collections (`src/content/projects/`).
-    *   *Rationale:* Decoupling content from rendering code keeps Astro components modular and reusable. Lucas (or any developer) can update project descriptions, skills, or career highlights without modifying any HTML, CSS, or TS logic, simplifying long-term maintenance.
-*   **Serverless Contact Form (Web3Forms):**
-    *   *Decision:* Used Web3Forms API combined with a client-side fetch handler in `Contact.astro`.
-    *   *Rationale:* This approach keeps the application 100% static (`output: 'static'`) for optimal SEO and rapid delivery on Vercel's global CDN while supporting user outreach without maintaining a dedicated backend, database, or API server.
-*   **Environment Variable for Access Keys:**
-    *   *Decision:* Moved the Web3Forms access key from code to `import.meta.env.PUBLIC_WEB3FORMS_KEY` with a safe local fallback.
-    *   *Rationale:* Prevents exposing active API integration keys in the public Git history, complying with security best practices.
+| Decision | Alternative considered | Why this approach |
+| --- | --- | --- |
+| Tailwind v4 wired through PostCSS (`postcss.config.mjs`) | Default `@tailwindcss/vite` plugin | Astro 6's Rolldown-based Vite throws `Missing field tsconfigPaths` with the Vite plugin; PostCSS sidesteps the path-resolution bug with no performance cost. |
+| Content in Markdown collections + `src/data/*.ts` | Hard-coding copy inside `.astro` components | Updating a project, skill, or metric is a content edit — no HTML/CSS/TS changes — keeping components reusable and maintenance cheap. |
+| Serverless contact form (Web3Forms) | A dedicated backend + database for submissions | Keeps the app 100% static for SEO and CDN delivery while still supporting outreach, with zero server to run. |
+| Access key via `import.meta.env.PUBLIC_WEB3FORMS_KEY` with a safe fallback | Committing the key inline | Keeps active integration keys out of public Git history. |
 
----
+## Getting Started
 
-## 🚀 4. How to Run
+### Prerequisites
 
-Follow these simple commands to install, configure environment variables, and boot up the development server:
+- Node.js 18+
+- A free [Web3Forms](https://web3forms.com) access key (only for the contact form)
+
+### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/LukeSantossz/portifolio.git
 cd portifolio
 
-# Install dependencies, setup environment variables, and run locally in one command:
-npm install && cp .env.example .env && npm run dev
+npm install
+cp .env.example .env   # then set PUBLIC_WEB3FORMS_KEY
 ```
 
-*   **Local Server:** Open [http://localhost:4321](http://localhost:4321) in your browser.
-*   **Production Build:** To build the optimized static bundle in `/dist`, run `npm run build`.
+### Running
 
----
+```bash
+npm run dev      # dev server at http://localhost:4321
+npm run build    # optimized static bundle in /dist
+npm run preview  # serve the production build locally
+```
 
-## ⚖️ License & Contact
+## Project Structure
 
-Developed with care by **Lucas Gonçalves** (LG). Feel free to reach out for collaboration or professional opportunities!
+```
+portifolio/
+├── src/
+│   ├── components/        # Astro UI sections (Hero, About, Projects, Contact, …)
+│   ├── content/projects/  # one Markdown file per project (case-study schema)
+│   ├── data/              # typed site config, skills, experience
+│   ├── layouts/           # base Layout.astro
+│   ├── pages/             # index.astro (single entry point)
+│   └── styles/            # global.css (Tailwind v4 @theme)
+├── public/                # static assets (résumé PDF, favicon, robots.txt)
+├── astro.config.mjs       # Astro + sitemap config
+└── postcss.config.mjs     # Tailwind v4 via PostCSS
+```
 
-*   **Email:** [lucassg2015@gmail.com](mailto:lucassg2015@gmail.com)
-*   **LinkedIn:** [linkedin.com/in/lucas-gonçalvessz/](https://www.linkedin.com/in/lucas-gon%C3%A7alvessz/)
-*   **GitHub:** [github.com/LukeSantossz](https://github.com/LukeSantossz)
+## Project Status
+
+**Status: complete — live in production**
+
+### Done
+
+- [x] Static landing page with hero, about, services, experience, skills, projects and contact sections
+- [x] Decoupled content architecture (Markdown collections + typed data)
+- [x] Serverless contact form via Web3Forms
+- [x] Downloadable CV and SEO metadata (sitemap, OG image, robots.txt)
+- [x] Deployed to Vercel
+
+### Pending
+
+- [ ] Continuous integration workflow (lint + build check on push)
+- [ ] Automated Lighthouse / accessibility budget
+
+## Known Issues & Limitations
+
+- **Single static page** — there is no router or multi-page navigation; everything lives on `index.astro`. Acceptable because the goal is a focused, single-scroll vitrine.
+- **Contact key is public by design** — Web3Forms uses a public access key (`PUBLIC_*`), so it ships to the client. This is expected for the service; abuse is mitigated on Web3Forms' side, not in this repo.
+- **No automated tests** — a presentational static site has little logic to unit-test; correctness is verified through the build and manual review.
+
+## License
+
+[MIT License](LICENSE)
+
+## Contact
+
+Developed by **Lucas Gonçalves**.
+
+- **Email:** [lucassg2015@gmail.com](mailto:lucassg2015@gmail.com)
+- **LinkedIn:** [linkedin.com/in/lucas-gonçalvessz](https://www.linkedin.com/in/lucas-gon%C3%A7alvessz/)
+- **GitHub:** [github.com/LukeSantossz](https://github.com/LukeSantossz)
