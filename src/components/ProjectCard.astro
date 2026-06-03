@@ -8,85 +8,179 @@ interface Props {
   problem: string;
   approach: string;
   result: string;
+  roadmap?: string;
+  image?: string;
   stack: string[];
   repoUrl?: string;
   demoUrl?: string;
   period?: string;
+  index?: number;
 }
 
-const { title, tagline, domain, problem, approach, result, stack, repoUrl, demoUrl, period } =
-  Astro.props;
+const {
+  title,
+  tagline,
+  domain,
+  problem,
+  approach,
+  result,
+  roadmap,
+  image,
+  stack,
+  repoUrl,
+  demoUrl,
+  period,
+  index = 0,
+} = Astro.props;
 
 const blocks = [
   { label: 'Problem', value: problem, emphasis: false },
   { label: 'Approach', value: approach, emphasis: false },
   { label: 'Result', value: result, emphasis: true },
 ];
+
+// 2-letter monogram from the uppercase letters in the title (falls back to the
+// first two characters), used when no banner image is supplied.
+const caps = title.replace(/[^A-Za-z]/g, ' ').match(/[A-Z]/g) ?? [];
+const monogram = (caps.length >= 2 ? caps.slice(0, 2).join('') : title.slice(0, 2)).toUpperCase();
+
+// Alternate the placeholder gradient so the cards don't read as identical.
+const banners = [
+  'radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--color-accent) 35%, transparent), transparent 60%), radial-gradient(120% 120% at 100% 100%, color-mix(in srgb, var(--color-accent-2) 28%, transparent), transparent 60%)',
+  'radial-gradient(120% 120% at 100% 0%, color-mix(in srgb, var(--color-accent-2) 32%, transparent), transparent 60%), radial-gradient(120% 120% at 0% 100%, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 60%)',
+];
+const bannerBg = banners[index % banners.length];
 ---
 
 <article
-  class="flex h-full flex-col rounded-xl border border-border bg-surface p-6 transition-colors hover:border-accent/40"
+  data-reveal="card"
+  style={`--reveal-delay:${(index % 2) * 90}ms`}
+  class="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_18px_50px_-20px_rgba(70,192,106,0.45)]"
 >
-  <div class="flex items-start justify-between gap-4">
-    <div>
-      {domain && <p class="font-mono text-xs uppercase tracking-wide text-accent">{domain}</p>}
-      <h3 class="mt-1 text-lg font-semibold text-ink">{title}</h3>
-      {period && <p class="mt-0.5 font-mono text-xs text-muted">{period}</p>}
-    </div>
-    <div class="flex shrink-0 items-center gap-1">
-      {
-        repoUrl && (
-          <a
-            href={repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${title} source on GitHub`}
-            class="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent"
+  <!-- Banner: real image if provided, otherwise a generated gradient placeholder. -->
+  <div class="relative aspect-[16/7] w-full overflow-hidden border-b border-border bg-surface-2">
+    {
+      image ? (
+        <img
+          src={image}
+          alt={`${title} preview`}
+          loading="lazy"
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      ) : (
+        <div class="relative h-full w-full" style={`background-image:${bannerBg};`}>
+          <div
+            class="absolute inset-0 opacity-[0.4]"
+            style="background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 22px 22px;"
+          />
+          <span
+            class="absolute right-4 bottom-2 font-mono text-[5.5rem] font-bold leading-none text-ink/10 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:text-ink/[0.16]"
           >
-            <Icon name="github" size={18} />
-          </a>
-        )
-      }
-      {
-        demoUrl && (
-          <a
-            href={demoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${title} live demo`}
-            class="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent"
-          >
-            <Icon name="external" size={18} />
-          </a>
-        )
-      }
-    </div>
+            {monogram}
+          </span>
+        </div>
+      )
+    }
+    {
+      domain && (
+        <span class="absolute left-4 top-4 rounded-md border border-border/70 bg-base/70 px-2.5 py-1 font-mono text-xs uppercase tracking-wide text-accent backdrop-blur">
+          {domain}
+        </span>
+      )
+    }
   </div>
 
-  <p class="mt-2 text-sm text-muted">{tagline}</p>
+  <div class="flex flex-1 flex-col p-6">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h3 class="text-lg font-semibold text-ink">{title}</h3>
+        {period && <p class="mt-0.5 font-mono text-xs text-muted">{period}</p>}
+      </div>
+      <div class="flex shrink-0 items-center gap-1">
+        {
+          repoUrl && (
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${title} source on GitHub`}
+              class="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent"
+            >
+              <Icon name="github" size={18} />
+            </a>
+          )
+        }
+        {
+          demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${title} live demo`}
+              class="grid h-9 w-9 place-items-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent"
+            >
+              <Icon name="external" size={18} />
+            </a>
+          )
+        }
+      </div>
+    </div>
 
-  <dl class="mt-5 space-y-3 text-sm">
-    {
-      blocks.map((block) => (
-        <div class={block.emphasis ? 'rounded-md border-l-2 border-accent bg-accent/5 py-2 pl-3' : ''}>
-          <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">
-            {block.label}
-          </dt>
-          <dd class={`mt-1 leading-relaxed ${block.emphasis ? 'font-medium text-ink' : 'text-muted'}`}>
-            {block.value}
-          </dd>
+    <p class="mt-2 text-sm leading-relaxed text-muted">{tagline}</p>
+
+    <!-- The punchline, always visible: the measurable outcome a recruiter scans for. -->
+    <div class="mt-4 rounded-md border-l-2 border-accent bg-accent/5 py-2 pl-3">
+      <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">Result</dt>
+      <dd class="mt-1 text-sm font-medium leading-relaxed text-ink">{result}</dd>
+    </div>
+
+    <!-- Narrative tucked behind a native disclosure so the card stays skimmable. -->
+    <details class="reveal-details group/d mt-3">
+      <summary
+        class="flex cursor-pointer list-none items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-muted transition-colors hover:text-accent [&::-webkit-details-marker]:hidden"
+      >
+        <span class="group-open/d:hidden">Read the case study</span>
+        <span class="hidden group-open/d:inline">Hide case study</span>
+        <svg
+          class="h-3.5 w-3.5 transition-transform duration-300 group-open/d:rotate-180"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </summary>
+
+      <dl class="mt-3 space-y-3 text-sm">
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">Problem</dt>
+          <dd class="mt-1 leading-relaxed text-muted">{problem}</dd>
         </div>
-      ))
-    }
-  </dl>
+        <div>
+          <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">Approach</dt>
+          <dd class="mt-1 leading-relaxed text-muted">{approach}</dd>
+        </div>
+        {
+          roadmap && (
+            <div>
+              <dt class="font-mono text-xs uppercase tracking-wide text-accent-2">Next</dt>
+              <dd class="mt-1 leading-relaxed text-muted">{roadmap}</dd>
+            </div>
+          )
+        }
+      </dl>
+    </details>
 
-  <ul class="mt-auto flex flex-wrap gap-1.5 pt-6">
-    {
-      stack.map((tech) => (
-        <li class="rounded-md bg-surface-2 px-2.5 py-1 font-mono text-xs text-muted">
-          {tech}
-        </li>
-      ))
-    }
-  </ul>
+    <ul class="mt-auto flex flex-wrap gap-1.5 pt-6">
+      {
+        stack.map((tech) => (
+          <li class="rounded-md bg-surface-2 px-2.5 py-1 font-mono text-xs text-muted">
+            {tech}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </article>

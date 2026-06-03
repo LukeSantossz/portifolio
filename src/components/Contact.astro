@@ -9,15 +9,16 @@ const inputClass =
 
 <section id="contact" class="border-t border-border/60">
   <div class="mx-auto max-w-5xl px-6 py-24">
-    <div class="mb-12">
+    <div data-reveal class="mb-12">
       <span class="font-mono text-sm text-accent">06 / Contact</span>
       <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
         Let&apos;s talk
       </h2>
+      <div class="accent-rule mt-4"></div>
     </div>
 
     <div class="grid gap-12 md:grid-cols-2">
-      <div>
+      <div data-reveal="left">
         <p class="max-w-md text-base leading-relaxed text-muted">
           I&apos;m looking for a full-time AI/ML Engineer role on a distributed,
           remote team building production systems at scale. If that&apos;s what
@@ -34,7 +35,7 @@ const inputClass =
         <SocialLinks class="mt-6" />
       </div>
 
-      <form id="contact-form" class="space-y-4">
+      <form id="contact-form" data-reveal="right" style="--reveal-delay:120ms" class="space-y-4">
         <input type="hidden" name="access_key" value={site.web3formsKey} />
         <input
           type="hidden"

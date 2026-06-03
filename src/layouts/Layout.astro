@@ -62,9 +62,8 @@ const ogImageUrl = new URL(site.ogImage, Astro.site);
     <script>
       // Background accent glow follows the cursor with a soft trailing lerp.
       const glow = document.getElementById('cursor-glow');
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-      if (glow && !reduce.matches) {
+      if (glow) {
         let targetX = window.innerWidth / 2;
         let targetY = window.innerHeight / 2;
         let currentX = targetX;
@@ -93,6 +92,29 @@ const ogImageUrl = new URL(site.ogImage, Astro.site);
           },
           { passive: true },
         );
+      }
+    </script>
+
+    <script>
+      // Scroll-driven reveal: fade + lift each [data-reveal] element in as it
+      // enters the viewport.
+      const revealEls = document.querySelectorAll('[data-reveal]');
+
+      if (!('IntersectionObserver' in window)) {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries, obs) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+        );
+        revealEls.forEach((el) => observer.observe(el));
       }
     </script>
   </body>

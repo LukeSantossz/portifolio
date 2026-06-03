@@ -12,12 +12,13 @@ const projects = entries.sort((a, b) => {
 
 <section id="projects" class="border-t border-border/60">
   <div class="mx-auto max-w-5xl px-6 py-24">
-    <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+    <div data-reveal class="mb-12 flex flex-wrap items-end justify-between gap-4">
       <div>
         <span class="font-mono text-sm text-accent">04 / Projects</span>
         <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
           Selected work
         </h2>
+        <div class="accent-rule mt-4"></div>
       </div>
       <a
         href={site.github}
@@ -30,7 +31,7 @@ const projects = entries.sort((a, b) => {
     </div>
 
     <div class="grid gap-6 md:grid-cols-2">
-      {projects.map((project) => <ProjectCard {...project.data} />)}
+      {projects.map((project, i) => <ProjectCard {...project.data} index={i} />)}
     </div>
   </div>
 </section>

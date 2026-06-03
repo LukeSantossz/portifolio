@@ -4,17 +4,18 @@ import { timeline } from '../data/experience.ts';
 
 <section id="experience" class="border-t border-border/60">
   <div class="mx-auto max-w-5xl px-6 py-24">
-    <div class="mb-12">
+    <div data-reveal class="mb-12">
       <span class="font-mono text-sm text-accent">05 / Experience</span>
       <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
         Experience &amp; education
       </h2>
+      <div class="accent-rule mt-4"></div>
     </div>
 
     <ol class="relative border-l border-border pl-8">
       {
-        timeline.map((item) => (
-          <li class="relative pb-12 last:pb-0">
+        timeline.map((item, i) => (
+          <li data-reveal="left" style={`--reveal-delay:${i * 110}ms`} class="relative pb-12 last:pb-0">
             <span
               class={`absolute -left-[37px] top-1 grid h-4 w-4 place-items-center rounded-full border-2 ${
                 item.kind === 'work'

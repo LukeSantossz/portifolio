@@ -2,14 +2,14 @@
 import { site } from '../data/site.ts';
 
 const paragraphs = [
-  "I'm an AI Engineer with 2+ years building NLP systems, LLM agents, and production ML pipelines, much of it in and around agriculture, where I study and work in the interior of São Paulo. I like the messy problems: data shot in bad light, manuals nobody has time to read, and critical processes still held together by manual steps.",
-  "At Jacto, a global agritech manufacturer, I automated a mission-critical after-sales workflow with a Python layer over the Salesforce and SAP APIs, cutting process resolution time by ~50%. As sole designer of a FAPESP-funded research agent (SB100), I architected a ReAct agent over LangGraph with hybrid retrieval across 500+ documents and built-in hallucination detection. My soil-texture app, VisioSoil, took 3rd of 1,300+ at FETEPS 2025 and was accepted at ICPA 2026 / 17th ConBAP.",
-  "I also built an NLP pipeline over 1.6M tweets (0.71 macro F1) with a Rust CLI for preprocessing. I care about work that holds up in production: tests, CI, and commits I won't be embarrassed by later. Seeking a full-time AI/ML Engineer role on a distributed remote team, building production-grade systems at scale.",
+  "I'm an AI/ML Engineer with 2+ years building LLM agents, RAG systems, and production ML pipelines, much of it in and around agriculture, where I study and work in the interior of São Paulo. I like the messy problems: data shot in bad light, manuals nobody has time to read, and critical processes still held together by manual steps.",
+  "As sole developer of a FAPESP-funded research agent (SmartB100), I built a production RAG system with semantic-entropy hallucination scoring that emits a continuous 0–1 confidence score — hardened to 205 tests at ~83% coverage and strict-typed CI. My soil-texture app, VisioSoil, took 3rd of 1,300+ at FETEPS 2025 and was accepted at ICPA 2026 / 17th ConBAP. At Jacto, a global agritech manufacturer, I work the seam between business and engineering — automating data migrations into Salesforce and designing a computer-vision discard-auditing architecture.",
+  "On the data side, I drove a LightGBM forecasting ensemble to 0.19°C RMSE (~75% over the Prophet baseline) and engineered a Rust preprocessing CLI measured at ~42x Python throughput. I care about work that holds up in production: tests, CI, and commits I won't be embarrassed by later. Seeking a full-time AI/ML Engineer role on a distributed remote team, building production-grade systems at scale.",
 ];
 
 const facts = [
   { label: 'Experience', value: '2+ years in applied AI / ML' },
-  { label: 'Domains', value: 'NLP · LLM Agents · CV · MLOps' },
+  { label: 'Domains', value: 'LLM Agents · RAG · CV · NLP · MLOps' },
   { label: 'Open to', value: 'Full-time · Remote · International' },
   { label: 'Email', value: site.email },
 ];
@@ -17,26 +17,33 @@ const facts = [
 
 <section id="about" class="border-t border-border/60">
   <div class="mx-auto max-w-5xl px-6 py-24">
-    <div class="mb-12">
+    <div data-reveal class="mb-12">
       <span class="font-mono text-sm text-accent">01 / About</span>
       <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
         About me
       </h2>
+      <div class="accent-rule mt-4"></div>
     </div>
 
     <div class="grid gap-12 md:grid-cols-[1.5fr_1fr]">
-      <div class="space-y-5 text-base leading-relaxed text-muted md:text-lg">
+      <div data-reveal="left" class="space-y-5 text-base leading-relaxed text-muted md:text-lg">
         {paragraphs.map((p) => <p>{p}</p>)}
       </div>
 
-      <div class="space-y-6">
+      <div data-reveal="right" style="--reveal-delay:120ms" class="space-y-6">
         <!-- Replace with a real photo: put it at public/images/profile.jpg
              and swap this block for <img src="/images/profile.jpg" ... />. -->
         <div
-          class="grid aspect-square w-full place-items-center rounded-2xl border border-border bg-surface text-5xl font-bold text-muted"
+          class="relative grid aspect-square w-full place-items-center overflow-hidden rounded-2xl border border-border text-6xl font-bold text-ink/15"
+          style="background-image: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 60%), radial-gradient(120% 120% at 100% 100%, color-mix(in srgb, var(--color-accent-2) 24%, transparent), transparent 60%);"
           aria-hidden="true"
         >
-          {site.initials}
+          <div
+            class="absolute inset-0 opacity-40"
+            style="background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 26px 26px;"
+          >
+          </div>
+          <span class="relative font-mono">{site.initials}</span>
         </div>
 
         <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">

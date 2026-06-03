@@ -1,33 +1,145 @@
 ---
 import { skillGroups } from '../data/skills.ts';
+
+// Each category is a cluster with its own hue. Hovering any chip (or legend
+// entry) lights up its cluster and fades the rest — the grouping is revealed
+// indirectly rather than spelled out.
+const clusterColor: Record<string, string> = {
+  Languages: '#5ea9ff',
+  'ML & Data': '#46c06a',
+  'LLM & RAG': '#d6a84e',
+  'Mobile & Backend': '#b07bff',
+  'Cloud & Tooling': '#3fc9c0',
+};
+const fallback = '#46c06a';
+
+interface Chip {
+  name: string;
+  cluster: string;
+  color: string;
+}
+
+// Flatten by zipping across categories so the colors are scattered through the
+// carousel (a chip and its cluster-mates are far apart until you hover).
+const flat: Chip[] = [];
+const maxLen = Math.max(...skillGroups.map((g) => g.items.length));
+for (let i = 0; i < maxLen; i++) {
+  for (const group of skillGroups) {
+    const item = group.items[i];
+    if (item) {
+      flat.push({ name: item, cluster: group.category, color: clusterColor[group.category] ?? fallback });
+    }
+  }
+}
+
+// Spread the flat list across rows that scroll in alternating directions.
+const ROWS = 3;
+const rows: Chip[][] = Array.from({ length: ROWS }, () => []);
+flat.forEach((chip, i) => rows[i % ROWS].push(chip));
+
+// Repeat each row enough times that a single "set" is wider than any screen,
+// then render the set twice so the -50% loop is seamless on every resolution.
+const REPEAT = 3;
+const buildSet = (row: Chip[]) => Array.from({ length: REPEAT }, () => row).flat();
+
+// One full-loop duration per row, slightly different so they don't sync up.
+const durations = ['52s', '66s', '59s'];
 ---
 
-<section id="skills" class="border-t border-border/60">
-  <div class="mx-auto max-w-5xl px-6 py-24">
-    <div class="mb-12">
+<section id="skills" class="overflow-hidden border-t border-border/60 py-24">
+  <div class="mx-auto mb-12 max-w-5xl px-6">
+    <div data-reveal>
       <span class="font-mono text-sm text-accent">03 / Skills</span>
       <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
         Skills &amp; stack
       </h2>
-    </div>
-
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        skillGroups.map((group) => (
-          <div class="rounded-xl border border-border bg-surface p-6">
-            <h3 class="font-mono text-sm uppercase tracking-wide text-accent">
-              {group.category}
-            </h3>
-            <ul class="mt-4 flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <li class="rounded-md border border-border bg-surface-2 px-3 py-1.5 text-sm text-ink">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
+      <div class="accent-rule mt-4"></div>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+        Hover any tag to surface its cluster — related tools light up, the rest fade back.
+      </p>
     </div>
   </div>
+
+  <!-- Full-bleed: the carousel spans the whole viewport, not the centered column. -->
+  <div data-reveal class="skills-marquee space-y-3">
+    {
+      rows.map((row, r) => {
+        const set = buildSet(row);
+        return (
+          <div class="marquee-row">
+            <div
+              class:list={['marquee-track', r % 2 === 1 && 'reverse']}
+              style={`--dur:${durations[r % durations.length]}`}
+            >
+              {[...set, ...set].map((chip, idx) => (
+                <span
+                  class="skill-chip"
+                  data-cluster={chip.cluster}
+                  style={`--c:${chip.color}`}
+                  aria-hidden={idx >= row.length ? 'true' : undefined}
+                >
+                  {chip.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <div class="mx-auto mt-8 max-w-5xl px-6">
+    <ul data-reveal class="flex flex-wrap gap-x-5 gap-y-2" style="--reveal-delay:120ms">
+      {
+        skillGroups.map((group) => (
+          <li
+            class="skill-legend flex items-center gap-2 text-xs text-muted hover:text-ink"
+            data-cluster={group.category}
+          >
+            <span
+              class="h-2.5 w-2.5 rounded-full"
+              style={`background:${clusterColor[group.category] ?? fallback}`}
+            />
+            {group.category}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </section>
+
+<script>
+  // Hover a chip or legend entry → highlight its cluster across all rows.
+  const marquee = document.querySelector<HTMLElement>('.skills-marquee');
+  const legend = Array.from(document.querySelectorAll<HTMLElement>('.skill-legend'));
+
+  if (marquee) {
+    const chips = Array.from(marquee.querySelectorAll<HTMLElement>('.skill-chip'));
+
+    const focus = (cluster: string | undefined) => {
+      if (!cluster) return;
+      for (const chip of chips) {
+        const match = chip.dataset.cluster === cluster;
+        chip.classList.toggle('is-active', match);
+        chip.classList.toggle('is-dim', !match);
+      }
+      for (const item of legend) {
+        item.classList.toggle('is-active', item.dataset.cluster === cluster);
+      }
+    };
+
+    const clear = () => {
+      for (const chip of chips) chip.classList.remove('is-active', 'is-dim');
+      for (const item of legend) item.classList.remove('is-active');
+    };
+
+    for (const chip of chips) {
+      chip.addEventListener('pointerenter', () => focus(chip.dataset.cluster));
+    }
+    for (const item of legend) {
+      item.addEventListener('pointerenter', () => focus(item.dataset.cluster));
+      item.addEventListener('pointerleave', clear);
+    }
+    marquee.addEventListener('pointerleave', clear);
+  }
+</script>
