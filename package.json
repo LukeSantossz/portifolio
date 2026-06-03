@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run og",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
