@@ -5,8 +5,11 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run og",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "og": "node scripts/generate-og.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -17,6 +20,9 @@
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.0"
+    "@astrojs/check": "^0.9.9",
+    "@tailwindcss/postcss": "^4.3.0",
+    "sharp": "^0.34.5",
+    "typescript": "^6.0.3"
   }
 }
