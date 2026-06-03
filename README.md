@@ -1,7 +1,6 @@
 ![Astro](https://img.shields.io/badge/Astro-6.3-BC52EE?logo=astro&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 # Personal Portfolio — AI Engineering for Data, AI & Agribusiness
 
@@ -95,13 +94,17 @@ npm run preview  # serve the production build locally
 ```
 portifolio/
 ├── src/
-│   ├── components/        # Astro UI sections (Hero, About, Projects, Contact, …)
+│   ├── components/
+│   │   ├── sections/      # page sections (Hero, About, Services, Skills, …)
+│   │   ├── ui/            # reusable widgets (Icon, SocialLinks, ProjectCard)
+│   │   └── layout/        # site chrome (Nav, Footer)
 │   ├── content/projects/  # one Markdown file per project (case-study schema)
 │   ├── data/              # typed site config, skills, experience
 │   ├── layouts/           # base Layout.astro
 │   ├── pages/             # index.astro (single entry point)
 │   └── styles/            # global.css (Tailwind v4 @theme)
 ├── public/                # static assets (résumé PDF, favicon, robots.txt)
+├── CLAUDE.md              # project memory → .claude/guidelines.md
 ├── astro.config.mjs       # Astro + sitemap config
 └── postcss.config.mjs     # Tailwind v4 via PostCSS
 ```
@@ -128,10 +131,6 @@ portifolio/
 - **Single static page** — there is no router or multi-page navigation; everything lives on `index.astro`. Acceptable because the goal is a focused, single-scroll vitrine.
 - **Contact key is public by design** — Web3Forms uses a public access key (`PUBLIC_*`), so it ships to the client. This is expected for the service; abuse is mitigated on Web3Forms' side, not in this repo.
 - **No automated tests** — a presentational static site has little logic to unit-test; correctness is verified through the build and manual review.
-
-## License
-
-[MIT License](LICENSE)
 
 ## Contact
 

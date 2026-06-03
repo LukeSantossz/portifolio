@@ -20,7 +20,9 @@ pnpm-debug.log*
 .vercel
 
 # local AI agents / environments
-.claude/
+# Project-level Claude guidance (.claude/guidelines.md, settings.json) is
+# versioned on purpose; only personal/local overrides are ignored.
+.claude/settings.local.json
 .gemini/
 
 # local working docs (personal notes / third-party material — not for publishing)
