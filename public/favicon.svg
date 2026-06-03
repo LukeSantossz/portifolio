@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#0b0a0d" />
+  <rect width="64" height="64" rx="14" fill="#0d100e" />
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#46c06a" stroke-opacity="0.35" stroke-width="1.5" />
   <text
     x="50%"
     y="56%"
     dominant-baseline="middle"
     text-anchor="middle"
-    font-family="ui-monospace, monospace"
+    font-family="ui-monospace, 'SFMono-Regular', monospace"
     font-size="30"
     font-weight="700"
-    fill="#d24a3f"
-  >&gt;_</text>
+  ><tspan fill="#46c06a">&gt;</tspan><tspan fill="#d6a84e">_</tspan></text>
 </svg>

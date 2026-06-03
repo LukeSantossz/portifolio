@@ -6,8 +6,11 @@ interface Props {
   tagline: string;
   domain?: string;
   problem: string;
+  constraints?: string;
   approach: string;
+  alternatives?: string;
   result: string;
+  retrospective?: string;
   roadmap?: string;
   image?: string;
   stack: string[];
@@ -22,8 +25,11 @@ const {
   tagline,
   domain,
   problem,
+  constraints,
   approach,
+  alternatives,
   result,
+  retrospective,
   roadmap,
   image,
   stack,
@@ -33,11 +39,18 @@ const {
   index = 0,
 } = Astro.props;
 
-const blocks = [
-  { label: 'Problem', value: problem, emphasis: false },
-  { label: 'Approach', value: approach, emphasis: false },
-  { label: 'Result', value: result, emphasis: true },
-];
+// The narrated case study, in the order the depth-portfolio framework reads:
+// context, constraints, decision, rejected alternatives, then retrospective.
+// "Result" is pulled out above as the always-visible punchline, so it is not
+// repeated here. Optional moves only render when the project supplies them.
+const caseMoves = [
+  { label: 'Context', value: problem, accent: false },
+  { label: 'Constraints', value: constraints, accent: false },
+  { label: 'Decision', value: approach, accent: false },
+  { label: 'Alternatives considered', value: alternatives, accent: false },
+  { label: 'Retrospective', value: retrospective, accent: false },
+  { label: 'What is next', value: roadmap, accent: true },
+].filter((move) => move.value);
 
 // 2-letter monogram from the uppercase letters in the title (falls back to the
 // first two characters), used when no banner image is supplied.
@@ -152,21 +165,20 @@ const bannerBg = banners[index % banners.length];
       </summary>
 
       <dl class="mt-3 space-y-3 text-sm">
-        <div>
-          <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">Problem</dt>
-          <dd class="mt-1 leading-relaxed text-muted">{problem}</dd>
-        </div>
-        <div>
-          <dt class="font-mono text-xs uppercase tracking-wide text-accent/80">Approach</dt>
-          <dd class="mt-1 leading-relaxed text-muted">{approach}</dd>
-        </div>
         {
-          roadmap && (
+          caseMoves.map((move) => (
             <div>
-              <dt class="font-mono text-xs uppercase tracking-wide text-accent-2">Next</dt>
-              <dd class="mt-1 leading-relaxed text-muted">{roadmap}</dd>
+              <dt
+                class:list={[
+                  'font-mono text-xs uppercase tracking-wide',
+                  move.accent ? 'text-accent-2' : 'text-accent/80',
+                ]}
+              >
+                {move.label}
+              </dt>
+              <dd class="mt-1 leading-relaxed text-muted">{move.value}</dd>
             </div>
-          )
+          ))
         }
       </dl>
     </details>

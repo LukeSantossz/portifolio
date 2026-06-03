@@ -2,14 +2,14 @@
 import { site } from '../../data/site.ts';
 
 const paragraphs = [
-  "I'm an AI/ML Engineer with 2+ years building LLM agents, RAG systems, and production ML pipelines, much of it in and around agriculture, where I study and work in the interior of São Paulo. I like the messy problems: data shot in bad light, manuals nobody has time to read, and critical processes still held together by manual steps.",
-  "As sole developer of a FAPESP-funded research agent (SmartB100), I built a production RAG system with semantic-entropy hallucination scoring that emits a continuous 0–1 confidence score — hardened to 205 tests at ~83% coverage and strict-typed CI. My soil-texture app, VisioSoil, took 3rd of 1,300+ at FETEPS 2025 and was accepted at ICPA 2026 / 17th ConBAP. At Jacto, a global agritech manufacturer, I work the seam between business and engineering — automating data migrations into Salesforce and designing a computer-vision discard-auditing architecture.",
-  "On the data side, I drove a LightGBM forecasting ensemble to 0.19°C RMSE (~75% over the Prophet baseline) and engineered a Rust preprocessing CLI measured at ~42x Python throughput. I care about work that holds up in production: tests, CI, and commits I won't be embarrassed by later. Seeking a full-time AI/ML Engineer role on a distributed remote team, building production-grade systems at scale.",
+  "I build machine learning for places where being wrong is expensive and a connection is not guaranteed. My bias is toward systems that ship and keep running: ones that measure their own uncertainty, work offline, and are backed by tests and a build pipeline rather than a good demo. If you are reading the case studies below, that is the lens to read them through.",
+  "Most of my work has been in and around agriculture, in the interior of São Paulo State in Brazil. As the sole developer on SmartB100, a project funded by FAPESP (the São Paulo state research foundation, one of the main public funders of science in Brazil), I built a question-answering agent that reads technical manuals and reports how confident it is in each answer. My soil-reading app, VisioSoil, placed 3rd out of more than 1,300 entries at FETEPS 2025, a large state science and technology fair, and its research paper was accepted at ICPA 2026, an international precision-agriculture conference.",
+  "At Jacto, a Brazilian maker of farm machinery that sells in more than 100 countries, I work where the business meets engineering: automating data migrations and designing a computer-vision system to audit discarded parts. On the data side, I pushed a temperature-forecasting pipeline to about 0.19 degrees Celsius of average error and rebuilt a slow text-cleaning step in Rust to run roughly 42 times faster. I am looking for a full-time, remote AI/ML Engineer role on a distributed team.",
 ];
 
 const facts = [
   { label: 'Experience', value: '2+ years in applied AI / ML' },
-  { label: 'Domains', value: 'LLM Agents · RAG · CV · NLP · MLOps' },
+  { label: 'Focus', value: 'LLM agents · RAG · computer vision · NLP · MLOps' },
   { label: 'Open to', value: 'Full-time · Remote · International' },
   { label: 'Email', value: site.email },
 ];
@@ -38,7 +38,7 @@ const facts = [
             <source srcset="/images/profile.webp" type="image/webp" />
             <img
               src="/images/profile.jpg"
-              alt={`${site.name} — ${site.role}`}
+              alt={`${site.name}, ${site.role}`}
               width="800"
               height="800"
               loading="lazy"

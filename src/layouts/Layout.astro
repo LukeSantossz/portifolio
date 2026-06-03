@@ -41,7 +41,8 @@ const personSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <!-- Branded tab label; og:title below keeps the descriptive sharing title. -->
+    <title>{site.tabTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -57,7 +58,7 @@ const personSchema = {
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${site.name} — ${site.role}`} />
+    <meta property="og:image:alt" content={`${site.name}, ${site.role}`} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />

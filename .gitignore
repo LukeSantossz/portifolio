@@ -25,7 +25,9 @@ pnpm-debug.log*
 .claude/settings.local.json
 .gemini/
 
-# local working docs (personal notes / third-party material — not for publishing)
+# local working docs and raw source assets (personal notes, third-party
+# material, and the editable sources behind served files) — not for publishing.
+# The optimized/served outputs live in public/; these are the originals.
+_local/
 my_info.md
 PROJECTS.md
-metodologia camaleão.md

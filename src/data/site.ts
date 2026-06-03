@@ -8,18 +8,20 @@ export const site = {
   initials: 'LG',
   role: 'AI/ML Engineer',
 
-  // Positioning headline (role + 3 specialties — recruiter keywords, mirrored from CV).
+  // Positioning thesis (the hero sub-headline): the kind of problem solved and
+  // the approach, specific enough to act as a lens for the case studies below.
   headline:
-    'AI/ML Engineer building LLM agents & RAG, computer vision, and NLP — to a production bar.',
+    'I build machine learning that ships and stays shipped, from LLM agents that flag their own uncertainty to vision models that run offline in the field.',
 
   // Availability line above the name (timezone + remote = the recruiter "smell test").
   availability: 'Marília, SP, Brazil (GMT-3) · Remote-ready · Open to international roles',
 
-  // Hero proof strip — the 3 strongest measurable achievements, mirrored from the CV.
+  // Hero proof strip: three measurable, self-explanatory anchors, each one
+  // traceable to a case study below.
   heroStats: [
-    { value: 'FAPESP-funded', label: 'Sole dev of a production RAG with semantic-entropy hallucination scoring (205 tests, ~83% coverage)' },
-    { value: '3rd of 1,300+', label: 'Soil classifier at FETEPS 2025, paper accepted at ICPA 2026' },
-    { value: '0.19°C RMSE', label: 'Temperature forecasting ensemble, ~75% better than the Prophet baseline' },
+    { value: '3rd of 1,300+', label: 'A soil-reading app I built placed 3rd at FETEPS 2025, a state science fair; its paper was accepted at the ICPA 2026 precision-agriculture conference.' },
+    { value: '0.19°C', label: 'Average error of a temperature-forecasting pipeline across 211 countries, about 75% lower than the standard Prophet baseline.' },
+    { value: '205 tests', label: 'Coverage around 83% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
   ],
 
   // --- Contact & social -----------------------------------------------------
@@ -32,12 +34,16 @@ export const site = {
   cvPath: '/my_resume.pdf', // résumé served from public/my_resume.pdf
   ogImage: '/og-image.png', // social share image at public/og-image.png
 
+  // Browser tab label (the <title>). Kept short and branded; the descriptive,
+  // specialty-bearing title still goes to og:title / twitter:title for sharing.
+  tabTitle: 'LukeSz Portifolio',
+
   // --- Integrations ---------------------------------------------------------
   // Free access key from https://web3forms.com (used by the contact form).
   web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY || 'YOUR_WEB3FORMS_ACCESS_KEY',
 
   // --- SEO ------------------------------------------------------------------
-  seoTitle: 'Lucas Gonçalves — AI/ML Engineer',
+  seoTitle: 'Lucas Gonçalves · AI/ML Engineer',
   seoDescription:
     'AI/ML Engineer building LLM agents, RAG systems, and applied machine learning: offline soil classification, temperature forecasting, and a production RAG with semantic-entropy hallucination scoring.',
 } as const;

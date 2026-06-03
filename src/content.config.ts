@@ -13,10 +13,14 @@ const projects = defineCollection({
     title: z.string(),
     tagline: z.string(),
     domain: z.string().optional(),
-    // Case-study narrative (problem -> approach -> result).
-    problem: z.string(),
-    approach: z.string(),
-    result: z.string(),
+    // Depth case-study framework (six moves). problem (context), decision and
+    // result are the spine; constraints + alternatives are what prove judgement.
+    problem: z.string(), // 1. Context
+    constraints: z.string().optional(), // 2. Constraints
+    approach: z.string(), // 3. Central decision
+    alternatives: z.string().optional(), // 4. Alternatives considered and rejected
+    result: z.string(), // 5. Result (the always-visible punchline)
+    retrospective: z.string().optional(), // 6. Retrospective: known limits / trade-offs
     // Forward-looking "what's next" line, mirrored from each repo's roadmap.
     roadmap: z.string().optional(),
     // Banner image/logo for the card. Drop a file in public/images/projects/
