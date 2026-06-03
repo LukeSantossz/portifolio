@@ -31,20 +31,22 @@ const facts = [
       </div>
 
       <div data-reveal="right" style="--reveal-delay:120ms" class="space-y-6">
-        <!-- Replace with a real photo: put it at public/images/profile.jpg
-             and swap this block for <img src="/images/profile.jpg" ... />. -->
-        <div
-          class="relative grid aspect-square w-full place-items-center overflow-hidden rounded-2xl border border-border text-6xl font-bold text-ink/15"
-          style="background-image: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 60%), radial-gradient(120% 120% at 100% 100%, color-mix(in srgb, var(--color-accent-2) 24%, transparent), transparent 60%);"
-          aria-hidden="true"
+        <figure
+          class="card-lit group relative aspect-square w-full overflow-hidden rounded-2xl border border-border transition-colors duration-300 hover:border-accent/40"
         >
-          <div
-            class="absolute inset-0 opacity-40"
-            style="background-image: linear-gradient(to right, color-mix(in srgb, var(--color-paper) 6%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--color-paper) 6%, transparent) 1px, transparent 1px); background-size: 26px 26px;"
-          >
-          </div>
-          <span class="relative font-mono">{site.initials}</span>
-        </div>
+          <picture>
+            <source srcset="/images/profile.webp" type="image/webp" />
+            <img
+              src="/images/profile.jpg"
+              alt={`${site.name} — ${site.role}`}
+              width="800"
+              height="800"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </picture>
+        </figure>
 
         <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">
           {
