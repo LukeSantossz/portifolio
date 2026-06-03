@@ -42,7 +42,7 @@ const services = [
           <div
             data-reveal={i % 2 === 0 ? 'left' : 'right'}
             style={`--reveal-delay:${(i % 2) * 90}ms`}
-            class="group rounded-xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_50px_-24px_rgba(70,192,106,0.4)]"
+            class="card-lit group relative rounded-xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_50px_-24px_rgba(70,192,106,0.4)]"
           >
             <span class="font-mono text-sm text-accent-2">
               {String(i + 1).padStart(2, '0')}

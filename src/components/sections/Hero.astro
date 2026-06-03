@@ -8,7 +8,7 @@ import Icon from '../ui/Icon.astro';
   <!-- Background grid -->
   <div
     class="hero-grid pointer-events-none absolute inset-0 -z-10"
-    style="background-image: linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 30%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 30%, transparent 100%);"
+    style="background-image: linear-gradient(to right, color-mix(in srgb, var(--color-paper) 5%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--color-paper) 5%, transparent) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 30%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 30%, transparent 100%);"
   >
   </div>
   <!-- Accent glow -->
@@ -23,7 +23,7 @@ import Icon from '../ui/Icon.astro';
       {site.availability}
     </p>
 
-    <h1 class="reveal mt-4 bg-gradient-to-br from-ink via-ink to-accent bg-clip-text text-5xl font-bold leading-none tracking-tight text-transparent sm:text-6xl md:text-7xl">
+    <h1 class="headline-gradient reveal mt-4 text-5xl font-bold leading-none tracking-tight sm:text-6xl md:text-7xl">
       {site.name}
     </h1>
 
@@ -35,7 +35,9 @@ import Icon from '../ui/Icon.astro';
       {
         site.heroStats.map((stat) => (
           <div class="bg-surface p-4">
-            <dt class="font-mono text-lg font-bold text-accent">{stat.value}</dt>
+            <dt class="font-mono text-lg font-bold text-accent" data-countup>
+              {stat.value}
+            </dt>
             <dd class="mt-1 text-xs leading-snug text-muted">{stat.label}</dd>
           </div>
         ))

@@ -53,7 +53,7 @@ const bannerBg = banners[index % banners.length];
 ---
 
 <article
-  class="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-[0_18px_50px_-20px_rgba(70,192,106,0.45)]"
+  class="card-lit group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-[0_18px_50px_-20px_rgba(70,192,106,0.45)]"
 >
   <!-- Banner: real image if provided, otherwise a generated gradient placeholder. -->
   <div class="relative aspect-[16/7] w-full overflow-hidden border-b border-border bg-surface-2">
@@ -69,7 +69,7 @@ const bannerBg = banners[index % banners.length];
         <div class="relative h-full w-full" style={`background-image:${bannerBg};`}>
           <div
             class="absolute inset-0 opacity-[0.4]"
-            style="background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 22px 22px;"
+            style="background-image: linear-gradient(to right, color-mix(in srgb, var(--color-paper) 7%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--color-paper) 7%, transparent) 1px, transparent 1px); background-size: 22px 22px;"
           />
           <span
             class="absolute right-4 bottom-2 font-mono text-[5.5rem] font-bold leading-none text-ink/10 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:text-ink/[0.16]"

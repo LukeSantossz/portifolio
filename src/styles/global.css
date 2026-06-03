@@ -6,14 +6,16 @@
    Tailwind v4 turns each token into utilities, e.g. --color-accent -> bg-accent.
 ---------------------------------------------------------------------------- */
 @theme {
-  --color-base: #0a0c0a;
-  --color-surface: #111510;
-  --color-surface-2: #18201a;
-  --color-border: #242c24;
+  --color-base: #0d100e; /* softened from #0a0c0a — less pure black */
+  --color-surface: #151a16;
+  --color-surface-2: #1d241e;
+  --color-border: #2b332b;
   --color-ink: #e9ece3;
   --color-muted: #8b938a;
   --color-accent: #46c06a; /* grass green */
   --color-accent-2: #d6a84e; /* wheat / harvest gold */
+  --color-paper: #f4f6f1; /* light "paper" — glass highlights, grids, badges */
+  --color-paper-soft: #e3e8df; /* slightly greyed light, for soft light borders */
 
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
@@ -48,6 +50,32 @@ body {
   animation: reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Hero headline — a slow gradient that drifts ink -> accent -> gold and back.
+   Clipped to the text, so the glyphs themselves shimmer. The static fallback
+   (reduced motion) keeps the readable ink-leading gradient. */
+@keyframes headline-flow {
+  0%,
+  100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.headline-gradient {
+  background-image: linear-gradient(
+    110deg,
+    var(--color-ink),
+    var(--color-ink),
+    var(--color-accent),
+    var(--color-accent-2),
+    var(--color-ink)
+  );
+  background-size: 250% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: headline-flow 9s ease-in-out infinite;
+}
+
 /* Scroll-driven reveal: elements start hidden and animate in when they enter
    the viewport (the IntersectionObserver in Layout.astro adds .is-visible).
    Stagger children by setting --reveal-delay inline. */
@@ -78,6 +106,22 @@ body {
 
 [data-reveal='right'] {
   transform: translateX(40px);
+}
+
+/* Thin "lit edge" along the top of a card — a sliver of light (paper token) that
+   gives surfaces a glassy highlight without lightening the whole panel. */
+.card-lit::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-paper) 22%, transparent),
+    transparent
+  );
+  pointer-events: none;
 }
 
 /* Animated accent rule used under section headings — adds life to the layout. */
@@ -253,6 +297,44 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
+   Navbar — scroll progress bar + active-section ("scroll-spy") link state.
+   The bar fills left-to-right as the page scrolls; the nav link of the section
+   currently in view lights up. Both are driven from the script in Nav.astro.
+---------------------------------------------------------------------------- */
+#scroll-progress {
+  transform: scaleX(var(--p, 0));
+  transform-origin: left center;
+  transition: transform 0.1s linear;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+}
+
+.nav-link {
+  position: relative;
+}
+
+/* Animated underline that grows from the link's left as it becomes current. */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--color-accent);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link.is-current {
+  color: var(--color-ink);
+}
+
+.nav-link.is-current::after {
+  transform: scaleX(1);
+}
+
+/* ----------------------------------------------------------------------------
    Reduced motion — honor the OS/browser "reduce motion" setting.
    All motion here is decorative (cursor glow, hero grid drift, skills marquee,
    projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
@@ -276,7 +358,13 @@ details.reveal-details[open] > dl {
 
   /* Stop continuously looping effects outright. */
   .marquee-track,
-  .hero-grid {
+  .hero-grid,
+  .headline-gradient {
     animation: none !important;
+  }
+
+  /* Keep the headline a readable, static ink->accent gradient. */
+  .headline-gradient {
+    background-position: 0% 50% !important;
   }
 }
