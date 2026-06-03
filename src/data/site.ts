@@ -10,7 +10,7 @@ export const site = {
 
   // Positioning headline (role + 3 specialties — recruiter keywords, mirrored from CV).
   headline:
-    'AI/ML Engineer building LLM agents & RAG, computer vision, and production-grade ML pipelines.',
+    'AI/ML Engineer building LLM agents & RAG, computer vision, and NLP — to a production bar.',
 
   // Availability line above the name (timezone + remote = the recruiter "smell test").
   availability: 'Marília, SP, Brazil (GMT-3) · Remote-ready · Open to international roles',

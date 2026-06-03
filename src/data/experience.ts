@@ -31,10 +31,11 @@ export const timeline: TimelineItem[] = [
     org: 'Fatec Shunji Nishimura — Pompeia, SP',
     period: '2024 — Dec 2026',
     description:
-      'Applied technology program covering machine learning, statistical modeling, and data engineering for agricultural contexts.',
+      'Applied technology program. Relevant coursework: machine learning, artificial intelligence, data structures, databases (SQL & NoSQL), APIs & microservices, cloud architecture, and statistics.',
     highlights: [
       'Co-authored paper accepted at ICPA 2026 / 17th ConBAP (abstract #14064)',
       '3rd place among 1,300+ submissions at FETEPS 2025',
+      'Languages: Portuguese (native) · English (B2, upper-intermediate)',
     ],
   },
 ];
