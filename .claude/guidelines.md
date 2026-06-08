@@ -113,7 +113,16 @@ npm run preview  # serve the production build locally
 
 Tracked so they aren't mistaken for finished work:
 
-- `og-image.png` is referenced in `src/data/site.ts` but not present in
-  `public/` — social-share preview is currently broken.
-- `public/robots.txt` still has a placeholder `Sitemap:` domain.
-- No CI (lint + build on push) and no linter/formatter config yet.
+- No formatter config yet (no Prettier/ESLint). CI runs `astro check` + build
+  (`.github/workflows/ci.yml`) and a Lighthouse budget, but there is no
+  autoformatter.
+- Project cards have no real imagery: none of the case studies in
+  `src/content/projects/` set `image:`, so every card renders the gradient
+  monogram. `public/images/projects/` does not exist yet.
+- The production domain and GitHub repo still carry the `portifolio` typo
+  (`lukesz-portifolio.vercel.app`, `LukeSantossz/portifolio`). Renaming both is
+  an external step; the visible browser-tab title is already `Portfolio`.
+
+Done (kept here briefly so they aren't re-flagged): `og-image.png` is generated
+by `scripts/generate-og.mjs` via the `prebuild` step; `robots.txt` points at the
+real sitemap; CI exists.
