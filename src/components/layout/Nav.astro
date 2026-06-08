@@ -153,15 +153,15 @@ const links = [
   ).filter((el) => el.getAttribute('href')?.startsWith('#'));
 
   const linkFor = new Map(
-    navLinks.map((el) => [el.getAttribute('href').slice(1), el]),
+    navLinks.map((el) => [(el.getAttribute('href') ?? '').slice(1), el]),
   );
   const sections = [...linkFor.keys()]
     .map((id) => document.getElementById(id))
-    .filter(Boolean);
+    .filter((section): section is HTMLElement => section !== null);
 
   if (sections.length && 'IntersectionObserver' in window) {
-    let current = null;
-    const setCurrent = (id) => {
+    let current: string | null = null;
+    const setCurrent = (id: string) => {
       if (id === current) return;
       current = id;
       navLinks.forEach((el) =>

@@ -3,6 +3,7 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import { site } from '../data/site.ts';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -87,6 +88,9 @@ const personSchema = {
     </a>
     <slot />
 
+    <!-- Vercel Web Analytics — privacy-friendly traffic monitoring on Vercel. -->
+    <Analytics />
+
     <script>
       // Background accent glow follows the cursor with a soft trailing lerp.
       const glow = document.getElementById('cursor-glow');
@@ -156,7 +160,7 @@ const personSchema = {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (countEls.length && !reduceMotion && 'IntersectionObserver' in window) {
-        const animateCount = (el) => {
+        const animateCount = (el: Element) => {
           const full = (el.textContent ?? '').trim();
           const match = full.match(/\d[\d.,]*\d|\d/);
           if (!match) return;
@@ -168,10 +172,11 @@ const personSchema = {
 
           const dot = raw.indexOf('.');
           const decimals = dot === -1 ? 0 : raw.length - dot - 1;
-          const before = full.slice(0, match.index);
-          const after = full.slice(match.index + raw.length);
+          const index = match.index ?? 0;
+          const before = full.slice(0, index);
+          const after = full.slice(index + raw.length);
 
-          const format = (value) => {
+          const format = (value: number) => {
             const fixed = value.toFixed(decimals);
             if (!hasComma) return fixed;
             const [int, frac] = fixed.split('.');
@@ -181,7 +186,7 @@ const personSchema = {
 
           const duration = 1200;
           let startTs = 0;
-          const step = (ts) => {
+          const step = (ts: number) => {
             if (!startTs) startTs = ts;
             const p = Math.min(1, (ts - startTs) / duration);
             const eased = 1 - Math.pow(1 - p, 3);
