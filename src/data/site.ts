@@ -36,11 +36,17 @@ export const site = {
 
   // Browser tab label (the <title>). Kept short and branded; the descriptive,
   // specialty-bearing title still goes to og:title / twitter:title for sharing.
-  tabTitle: 'LukeSz Portifolio',
+  tabTitle: 'LukeSz Portfolio',
 
   // --- Integrations ---------------------------------------------------------
-  // Free access key from https://web3forms.com (used by the contact form).
-  web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY || 'YOUR_WEB3FORMS_ACCESS_KEY',
+  // Free access key from https://web3forms.com (used by the contact form). This
+  // key is public by design — it ships in the form HTML and is submitted from
+  // the browser — so it is safe to commit. Override it per environment by
+  // setting PUBLIC_WEB3FORMS_KEY; if that is ever set to an empty string the
+  // form degrades to an email-only CTA instead of posting an invalid key
+  // (see Contact.astro).
+  web3formsKey:
+    import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'efb07a21-8678-4d14-aa17-27262fd76ad3',
 
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Lucas Gonçalves · AI/ML Engineer',

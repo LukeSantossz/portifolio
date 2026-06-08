@@ -5,6 +5,17 @@ import Icon from '../ui/Icon.astro';
 
 const inputClass =
   'w-full rounded-lg border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent';
+
+// The form posts to Web3Forms with site.web3formsKey. When PUBLIC_WEB3FORMS_KEY
+// is unset that key is empty, so rather than render a form that would fail on
+// submit, fall back to an email-only CTA. Warn at build time so an unconfigured
+// deploy is noticed.
+const formEnabled = site.web3formsKey.trim().length > 0;
+if (!formEnabled) {
+  console.warn(
+    '[contact] PUBLIC_WEB3FORMS_KEY is not set — rendering the email-only fallback instead of the contact form.',
+  );
+}
 ---
 
 <section id="contact" class="border-t border-border/60">
@@ -35,6 +46,7 @@ const inputClass =
         <SocialLinks class="mt-6" />
       </div>
 
+      {formEnabled ? (
       <form id="contact-form" data-reveal="right" style="--reveal-delay:120ms" class="space-y-4">
         <input type="hidden" name="access_key" value={site.web3formsKey} />
         <input
@@ -95,6 +107,21 @@ const inputClass =
 
         <p id="form-status" class="text-sm" role="status" aria-live="polite"></p>
       </form>
+      ) : (
+      <div data-reveal="right" style="--reveal-delay:120ms" class="rounded-lg border border-border bg-surface p-6">
+        <p class="text-base leading-relaxed text-muted">
+          The contact form is being set up. In the meantime the quickest way to
+          reach me is by email — I usually reply within a day.
+        </p>
+        <a
+          href={`mailto:${site.email}`}
+          class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-base transition-transform hover:-translate-y-0.5"
+        >
+          <Icon name="mail" size={18} />
+          Email me
+        </a>
+      </div>
+      )}
     </div>
   </div>
 </section>
