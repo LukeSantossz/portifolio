@@ -6,12 +6,10 @@ export const site = {
   // --- Identity -------------------------------------------------------------
   name: 'Lucas Gonçalves',
   initials: 'LG',
-  role: 'AI/ML Engineer',
+  role: 'AI / ML Engineer',
 
-  // Positioning thesis (the hero sub-headline): the kind of problem solved and
-  // the approach, specific enough to act as a lens for the case studies below.
-  headline:
-    'I build machine learning that ships and stays shipped, from LLM agents that flag their own uncertainty to vision models that run offline in the field.',
+  // Hero sub-headline: a short positioning line shown under the role.
+  headline: 'Applied machine learning, anchored in real-world agriculture.',
 
   // Canonical availability line — the recruiter "smell test" (timezone + remote).
   // Single source of truth; rendered as a chip at the top of the hero.
@@ -59,5 +57,5 @@ export const site = {
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Lucas Gonçalves · AI/ML Engineer',
   seoDescription:
-    'AI/ML Engineer building LLM agents, RAG systems, and applied machine learning: offline soil classification, temperature forecasting, and a production RAG with semantic-entropy hallucination scoring.',
+    'AI/ML Engineer focused on applied intelligence for agriculture and production-grade AI systems: RAG, computer vision, and open source. Big Data student at Fatec, building toward remote/international ML roles.',
 } as const;
