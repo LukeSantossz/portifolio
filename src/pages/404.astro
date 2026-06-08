@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/ui/Icon.astro';
+---
+
+<Layout title="Page not found · 404" description="That page doesn't exist.">
+  <main
+    id="main"
+    class="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+  >
+    <span class="font-mono text-sm text-accent">404</span>
+    <h1 class="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
+      Page not found
+    </h1>
+    <p class="mt-4 max-w-md text-base leading-relaxed text-muted">
+      The page you're looking for doesn't exist or has moved. Let's get you back
+      on track.
+    </p>
+    <a
+      href="/"
+      class="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-base transition-transform hover:-translate-y-0.5"
+    >
+      <Icon name="arrow-right" size={18} />
+      Back to home
+    </a>
+  </main>
+</Layout>
