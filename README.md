@@ -120,11 +120,14 @@ portifolio/
 - [x] Serverless contact form via Web3Forms
 - [x] Downloadable CV and SEO metadata (sitemap, OG image, robots.txt)
 - [x] Deployed to Vercel
+- [x] Continuous integration workflow (type-check + build on push/PR)
+- [x] Automated Lighthouse / accessibility budget
+- [x] Post-deploy smoke test against the live Vercel URL
 
 ### Pending
 
-- [ ] Continuous integration workflow (lint + build check on push)
-- [ ] Automated Lighthouse / accessibility budget
+- [ ] Real banner images for the project case studies (currently gradient monograms)
+- [ ] Linter / formatter config (Prettier)
 
 ## Known Issues & Limitations
 

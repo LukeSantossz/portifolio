@@ -1,0 +1,59 @@
+name: Verify deploy
+
+# Vercel posts a GitHub deployment status when each deploy finishes (both PR
+# previews and production). We hook that event and smoke-test the live URL, so a
+# broken, empty, or mis-built deploy fails loudly instead of shipping silently.
+# No Vercel token/secret required — the deployment URL comes from the event.
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+# One check per deployment URL; supersede older runs for the same target.
+concurrency:
+  group: verify-deploy-${{ github.event.deployment_status.target_url }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Smoke-test the deployed URL
+    # Vercel also posts "pending"/"failure"/"error" — only test successful deploys.
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe the deployment
+        env:
+          URL: ${{ github.event.deployment_status.target_url }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${URL:-}" ]; then
+            echo "::error::deployment_status carried no target_url — nothing to verify."
+            exit 1
+          fi
+          echo "Verifying deploy at: $URL"
+
+          # The URL can need a moment to become reachable — retry with backoff.
+          status=000
+          for attempt in 1 2 3 4 5 6; do
+            status=$(curl -sS -L -o page.html -w '%{http_code}' "$URL" || echo 000)
+            if [ "$status" = "200" ]; then break; fi
+            echo "Attempt $attempt: HTTP $status — retrying in 5s..."
+            sleep 5
+          done
+
+          if [ "$status" != "200" ]; then
+            echo "::error::Deploy did not return HTTP 200 (last status: $status)."
+            exit 1
+          fi
+
+          # Confirm the response is the portfolio, not an error page or empty shell.
+          for needle in "AI/ML Engineer" "Case studies"; do
+            if ! grep -qF "$needle" page.html; then
+              echo "::error::Expected content not found on the deploy: '$needle'."
+              exit 1
+            fi
+          done
+
+          echo "Deploy verified: HTTP 200 and key content present at $URL"
