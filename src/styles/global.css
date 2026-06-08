@@ -335,6 +335,54 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
+   Hero — code-style intro cursor, floating tech badges around the portrait,
+   the portrait's accent glow, and the scroll cue. All looping + decorative;
+   neutralized by the prefers-reduced-motion block below.
+---------------------------------------------------------------------------- */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  color: var(--color-accent);
+  animation: cursor-blink 1.1s step-end infinite;
+}
+
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+.hero-badge {
+  animation: badge-float 4.5s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.profile-glow {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes scroll-wheel {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
+}
+
+.scroll-wheel {
+  animation: scroll-wheel 1.8s ease-in-out infinite;
+}
+
+/* ----------------------------------------------------------------------------
    Reduced motion — honor the OS/browser "reduce motion" setting.
    All motion here is decorative (cursor glow, hero grid drift, skills marquee,
    projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
@@ -359,7 +407,11 @@ details.reveal-details[open] > dl {
   /* Stop continuously looping effects outright. */
   .marquee-track,
   .hero-grid,
-  .headline-gradient {
+  .headline-gradient,
+  .cursor-blink,
+  .hero-badge,
+  .profile-glow,
+  .scroll-wheel {
     animation: none !important;
   }
 

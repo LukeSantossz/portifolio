@@ -24,6 +24,14 @@ export const site = {
     { value: '205 tests', label: 'Coverage around 83% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
   ],
 
+  // Floating tech badges around the hero photo — the headline of the stack,
+  // drawn from skills.ts. Kept short: a title + a few supporting tools.
+  heroBadges: [
+    { title: 'RAG · LLM', sub: 'Qdrant · Ollama · FastAPI' },
+    { title: 'PyTorch', sub: 'TensorFlow · scikit-learn' },
+    { title: 'Python · Rust', sub: 'Polars · Docker · pytest' },
+  ],
+
   // --- Contact & social -----------------------------------------------------
   email: 'lucassg2015@gmail.com',
   location: 'Brazil / Remote',
