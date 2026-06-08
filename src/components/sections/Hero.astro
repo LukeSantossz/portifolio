@@ -23,7 +23,7 @@ import Icon from '../ui/Icon.astro';
 
   <div class="mx-auto w-full max-w-5xl px-6 pb-12 pt-32 md:pt-36">
     <div class="max-w-2xl">
-      <!-- Availability chip — recruiter smell test -->
+      <!-- Availability chip: recruiter smell test -->
       <p
         class="reveal inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs text-muted"
       >
@@ -37,16 +37,13 @@ import Icon from '../ui/Icon.astro';
       </p>
 
       <h1
-        class="reveal mt-4 font-mono text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl"
+        class="headline-gradient reveal mt-3 text-5xl font-bold leading-none tracking-tight sm:text-6xl md:text-7xl"
       >
-        <span class="text-accent-2">const</span>
-        <span class="text-ink"> me </span>
-        <span class="text-muted">=</span>
-        <span class="headline-gradient"> "{site.name}"</span><span class="text-muted">;</span>
+        {site.name}
       </h1>
 
       <p class="reveal mt-4 font-mono text-lg text-accent md:text-xl">
-        <span class="text-muted">// </span>{site.role}
+        {site.role}
       </p>
 
       <p class="reveal mt-6 text-base leading-relaxed text-muted md:text-lg">
@@ -74,22 +71,6 @@ import Icon from '../ui/Icon.astro';
       <div class="reveal mt-8 flex flex-wrap items-center gap-5">
         <SocialLinks />
       </div>
-
-      <!-- Core-stack strip -->
-      <ul
-        class="reveal mt-8 flex flex-wrap gap-2"
-        style="--reveal-delay:80ms"
-        aria-label="Core stack"
-      >
-        {
-          site.heroBadges.map((badge) => (
-            <li class="rounded-lg border border-border bg-surface px-3 py-2">
-              <p class="font-mono text-sm font-bold text-ink">{badge.title}</p>
-              <p class="mt-0.5 font-mono text-[11px] text-muted">{badge.sub}</p>
-            </li>
-          ))
-        }
-      </ul>
     </div>
 
     <!-- Proof strip: three measurable anchors -->

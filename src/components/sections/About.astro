@@ -2,17 +2,21 @@
 import { site } from '../../data/site.ts';
 
 const paragraphs = [
-  "I'm an AI/ML engineer in the interior of São Paulo, Brazil — farm country — finishing a public degree in Big Data for Agribusiness. Most of what I build targets messy, real-world problems, not clean benchmarks.",
+  "I'm an AI/ML engineer in the interior of São Paulo, Brazil, deep in farm country, finishing a public degree in Big Data for Agribusiness. Most of what I build targets messy, real-world problems, not clean benchmarks.",
   "I build for places where being wrong is expensive and a connection isn't guaranteed. I care less about the demo than the system still running six months later: one that measures its own uncertainty, works offline when it has to, and is backed by tests and a build pipeline.",
   "I work close to the people who use what I build, turning a vague need into something measurable and then into something in production. I'm comfortable owning a project end to end, and I'm looking for a full-time, remote AI/ML role on a distributed team.",
 ];
 
 const facts = [
   { label: 'Based in', value: 'Marília, São Paulo, Brazil' },
-  { label: 'Education', value: 'B.Tech, Big Data for Agribusiness — Fatec (2026)' },
+  { label: 'Education', value: 'B.Tech in Big Data for Agribusiness, Fatec (2026)' },
   { label: 'Focus', value: 'LLM agents · RAG · computer vision · NLP · MLOps' },
   { label: 'Email', value: site.email },
 ];
+
+// Where each floating stack badge sits around the photo (md+ only). They hang
+// slightly off the sides and overlap the image, staying within the column.
+const badgePositions = ['-right-6 top-8', '-right-6 bottom-10', '-left-6 top-1/2'];
 ---
 
 <section id="about" class="border-t border-border/60">
@@ -31,22 +35,39 @@ const facts = [
       </div>
 
       <div data-reveal="right" style="--reveal-delay:120ms" class="space-y-6">
-        <figure
-          class="card-lit group relative aspect-square w-full overflow-hidden rounded-2xl border border-border transition-colors duration-300 hover:border-accent/40"
-        >
-          <picture>
-            <source srcset="/images/profile.webp" type="image/webp" />
-            <img
-              src="/images/profile.jpg"
-              alt={`${site.name}, ${site.role}`}
-              width="800"
-              height="800"
-              loading="lazy"
-              decoding="async"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </picture>
-        </figure>
+        <div class="relative">
+          <figure
+            class="card-lit group relative aspect-square w-full overflow-hidden rounded-2xl border border-border transition-colors duration-300 hover:border-accent/40"
+          >
+            <picture>
+              <source srcset="/images/profile.webp" type="image/webp" />
+              <img
+                src="/images/profile.jpg"
+                alt={`${site.name}, ${site.role}`}
+                width="800"
+                height="800"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </picture>
+          </figure>
+
+          {
+            site.heroBadges.map((badge, i) => (
+              <div
+                class:list={[
+                  'float-badge absolute z-10 hidden rounded-xl border border-border bg-surface/90 px-3 py-2 shadow-lg backdrop-blur md:block',
+                  badgePositions[i],
+                ]}
+                style={`animation-delay:${i * 1.3}s`}
+              >
+                <p class="font-mono text-sm font-bold text-ink">{badge.title}</p>
+                <p class="mt-0.5 font-mono text-[11px] text-muted">{badge.sub}</p>
+              </div>
+            ))
+          }
+        </div>
 
         <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">
           {
