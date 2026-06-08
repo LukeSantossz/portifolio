@@ -13,8 +13,9 @@ export const site = {
   headline:
     'I build machine learning that ships and stays shipped, from LLM agents that flag their own uncertainty to vision models that run offline in the field.',
 
-  // Availability line above the name (timezone + remote = the recruiter "smell test").
-  availability: 'Marília, SP, Brazil (GMT-3) · Remote-ready · Open to international roles',
+  // Canonical availability line — the recruiter "smell test" (timezone + remote).
+  // Single source of truth; rendered as a chip at the top of the hero.
+  availability: 'Marília, Brazil (GMT-3) · Remote · Open to international',
 
   // Hero proof strip: three measurable, self-explanatory anchors, each one
   // traceable to a case study below.
@@ -24,8 +25,8 @@ export const site = {
     { value: '205 tests', label: 'Coverage around 83% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
   ],
 
-  // Floating tech badges around the hero photo — the headline of the stack,
-  // drawn from skills.ts. Kept short: a title + a few supporting tools.
+  // Core-stack chips shown as a static inline strip in the hero — the headline
+  // of the stack, drawn from skills.ts. Kept short: a title + a few tools.
   heroBadges: [
     { title: 'RAG · LLM', sub: 'Qdrant · Ollama · FastAPI' },
     { title: 'PyTorch', sub: 'TensorFlow · scikit-learn' },
@@ -34,7 +35,6 @@ export const site = {
 
   // --- Contact & social -----------------------------------------------------
   email: 'lucassg2015@gmail.com',
-  location: 'Brazil / Remote',
   github: 'https://github.com/LukeSantossz',
   linkedin: 'https://www.linkedin.com/in/lucas-gonçalvessz/',
 

@@ -335,8 +335,7 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
-   Hero — code-style intro cursor, floating tech badges around the portrait,
-   the portrait's accent glow, and the scroll cue. All looping + decorative;
+   Hero — code-style intro cursor and the scroll cue. Both looping + decorative;
    neutralized by the prefers-reduced-motion block below.
 ---------------------------------------------------------------------------- */
 @keyframes cursor-blink {
@@ -347,30 +346,6 @@ details.reveal-details[open] > dl {
 .cursor-blink {
   color: var(--color-accent);
   animation: cursor-blink 1.1s step-end infinite;
-}
-
-@keyframes badge-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
-}
-
-.hero-badge {
-  animation: badge-float 4.5s ease-in-out infinite;
-}
-
-@keyframes glow-pulse {
-  0%, 100% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-}
-
-.profile-glow {
-  animation: glow-pulse 4s ease-in-out infinite;
 }
 
 @keyframes scroll-wheel {
@@ -409,8 +384,6 @@ details.reveal-details[open] > dl {
   .hero-grid,
   .headline-gradient,
   .cursor-blink,
-  .hero-badge,
-  .profile-glow,
   .scroll-wheel {
     animation: none !important;
   }
