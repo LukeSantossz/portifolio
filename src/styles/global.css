@@ -363,7 +363,9 @@ details.reveal-details[open] > dl {
 
 /* High-contrast focus ring for Hero interactive elements. */
 #top a:focus-visible,
-#top button:focus-visible {
+#top button:focus-visible,
+#about a:focus-visible,
+#about button:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
 }
