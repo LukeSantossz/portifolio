@@ -325,3 +325,38 @@ html.hero-intro [data-hero-anim] {
     animation: none !important;
   }
 }
+
+/* ----------------------------------------------------------------------------
+   Projects pinned showcase. JS adds .projects-pinned ONLY on desktop with motion
+   allowed; the default (no class) is the accessible vertical stack. Hidden under
+   no-JS / reduced-motion / < 1024px, so the base layout is the universal fallback.
+---------------------------------------------------------------------------- */
+.projects-pinned {
+  overflow: hidden;
+}
+
+.projects-pinned [data-projects-track] {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: none;
+  gap: 0;
+  padding: 0;
+}
+
+.projects-pinned [data-project-panel] {
+  flex: 0 0 100vw;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem clamp(1.5rem, 6vw, 6rem);
+}
+
+/* In the pinned panel the full-case disclosure would overflow the viewport, so
+   it is hidden; the complete narrative is read in the static base (and the repo). */
+.projects-pinned [data-full-case] {
+  display: none;
+}

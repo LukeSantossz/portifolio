@@ -58,3 +58,63 @@ const projects = entries.sort((a, b) => {
     </div>
   </div>
 </section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const mm = gsap.matchMedia();
+
+  // Heading entrance (any width, motion allowed) — opacity-only, fail-safe.
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const heading = document.querySelector('#projects [data-projects-anim]');
+    if (!heading) return;
+    const tween = gsap.from(heading, {
+      opacity: 0,
+      y: 24,
+      duration: 0.6,
+      ease: 'power3.out',
+      immediateRender: false,
+      scrollTrigger: { trigger: heading, start: 'top 85%', once: true },
+    });
+    return () => {
+      if (tween.scrollTrigger) tween.scrollTrigger.kill();
+      tween.kill();
+      gsap.set(heading, { clearProps: 'all' });
+    };
+  });
+
+  // Pinned horizontal showcase — desktop + motion only. The static stack is the
+  // fallback everywhere else; if this never runs, content is fully visible.
+  mm.add('(prefers-reduced-motion: no-preference) and (min-width: 1024px)', () => {
+    const viewport = document.querySelector<HTMLElement>('#projects [data-projects-viewport]');
+    const track = document.querySelector<HTMLElement>('#projects [data-projects-track]');
+    const panels = gsap.utils.toArray<HTMLElement>('#projects [data-project-panel]');
+    if (!viewport || !track || panels.length < 2) return;
+
+    viewport.classList.add('projects-pinned');
+
+    const tween = gsap.to(track, {
+      x: () => -(track.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: viewport,
+        start: 'top top',
+        end: () => '+=' + (track.scrollWidth - window.innerWidth),
+        pin: true,
+        scrub: 1,
+        snap: 1 / (panels.length - 1),
+        invalidateOnRefresh: true,
+      },
+    });
+
+    return () => {
+      if (tween.scrollTrigger) tween.scrollTrigger.kill();
+      tween.kill();
+      viewport.classList.remove('projects-pinned');
+      gsap.set(track, { clearProps: 'all' });
+    };
+  });
+</script>
