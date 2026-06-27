@@ -1,68 +1,70 @@
-# SPEC: feat(ui): redesign Services section in Concrete Terminal language (Capability Ledger)
+# SPEC: feat(ui): redesign Skills section in Concrete Terminal language (mono marquee)
 
 ## Problem
 
-The Services section still reads in the old soft "agribusiness-green minimal" style — a
-2×2 grid of rounded cards with a gold accent rule, gold card numbers, `card-lit` edges
-and a green hover glow — which clashes with the Concrete Terminal Hero and About on the
-third scroll. Its service copy is also hardcoded inside `Services.astro`, breaking the
-project's content-decoupling pattern.
+The Skills section still reads in the old soft style — a gold accent rule and a
+full-bleed marquee whose chips are colored by a five-hue rainbow (one hue per cluster),
+which clashes hard with the Concrete Terminal Hero/About/Services and breaks the
+monochrome-plus-single-green-signal language on the fourth scroll.
 
 ## Design Decision
 
-Redesign `#services` to the Concrete Terminal language as a "Capability Ledger": a
-hard-bordered list of four full-width rows, each `[ NN | title + body ]` with a large mono
-number column on the left, hard dividers between rows, reading like a declassified spec
-sheet. It consumes only the `--color-concrete-*` ramp + green as the single signal (no
-harvest gold); hard borders, no rounded corners, mono-forward type, a decorative static
-grain overlay. Scroll-driven entrances use GSAP ScrollTrigger (per ADR-0004), gated by
-`gsap.matchMedia()` and revealing via `opacity` (not `autoAlpha`, to keep content in the
-accessibility tree). The service copy is decoupled into a new `src/data/services.ts`. The
-project stays static Astro (no React); the copy is moved verbatim, not rewritten.
+Redesign `#skills` to the Concrete Terminal language while **keeping its signature
+full-bleed looping marquee** (three rows scrolling in alternating directions). Drop the
+per-cluster rainbow: every chip becomes a hard-bordered, no-radius, mono, off-white tag on
+concrete. The existing "indirect cluster reveal" interaction is preserved but
+recolored — hovering a chip (or a legend item) lights its whole cluster in green (the
+single signal) and dims the rest. The section heading drops the gold `accent-rule`; the
+section gains a decorative grain overlay and a green `"04 / SKILLS"` mono label. Section
+entrance uses GSAP ScrollTrigger (per ADR-0004), gated by `gsap.matchMedia()` and revealing
+via `opacity` (fail-safe: hidden state applied only when the trigger fires). The marquee's
+own infinite loop is unchanged (it already stops under `prefers-reduced-motion`). The
+project stays static Astro (no React); the skills content in `src/data/skills.ts` is
+already decoupled and is not touched.
 
 ## Alternatives Considered
 
-- **Hard card grid (2×2), or bold green-signal cards** — rejected for the Capability
-  Ledger, which gives the strongest declassified-spec-sheet identity, the best scanning
-  for four capabilities, and a clear visual contrast with the About "Dossier".
-- **Make each capability link to the case studies (`#projects`)** — rejected this phase:
-  adds interactivity and scope beyond the presentation redesign; can be revisited later.
-- **Keep the CSS `[data-reveal]` reveals** — rejected for GSAP ScrollTrigger, consistent
-  with the About phase and ADR-0004.
-- **Presentation-only (no decoupling)** — rejected for the full redesign (re-skin +
-  decoupling + ledger rework), consistent with the About phase, for a coherent result.
+- **Static cluster grid ("tech sheet")** and **static ledger rows by cluster** — rejected
+  in favor of keeping the marquee, which is the section's signature lively element and whose
+  hover-reveal interaction reinterprets cleanly in monochrome + green.
+- **Keep the per-cluster rainbow** — rejected: it directly violates the monochrome + single
+  green-signal language.
+- **Convey clusters with color** — rejected (no rainbow); clusters are revealed by the
+  green-highlight-on-hover interaction and the legend instead.
 
 ## Scope
 
 - Includes:
-  - New `src/data/services.ts` exporting `services = { intro: string; items: { title:
-    string; body: string }[] }`, with the current Services intro paragraph and the four
-    capability items moved verbatim from `Services.astro`.
-  - Rewrite `src/components/sections/Services.astro` to the Capability Ledger, consuming
-    only `--color-concrete-*` + `--color-accent` (green) and the `services` data: the
-    `"03 / WHAT I DO"` mono label (green), a display heading, the intro, then a
-    hard-bordered `<ul>`/`<li>` ledger — each row a large mono number (decorative,
-    `aria-hidden`), an `<h3>` title (uppercase mono), and a body `<p>`; hard 2px dividers
-    between rows; a row hover accent in green (left edge + title). A decorative `.bt-grain`
-    overlay marked `aria-hidden`.
-  - GSAP ScrollTrigger entrances: register the plugin (from the existing `gsap` package);
-    a Services motion module (component `<script>`) that, behind `gsap.matchMedia()`
-    `(prefers-reduced-motion: no-preference)`, sets the entrance targets hidden via
-    `opacity` and reveals them staggered on scroll; reduced-motion leaves content visible.
-    Remove the section's `[data-reveal]` attributes. Hooks: `data-services-anim`.
-  - Drop all harvest gold from the section: the card numbers (currently `text-accent-2`)
-    become `--color-concrete-*`, and the gold `accent-rule` is removed.
+  - Rewrite `src/components/sections/Skills.astro` to the Concrete Terminal language: a
+    green `"04 / SKILLS"` mono label, a display heading, the intro, the kept three-row
+    full-bleed marquee, and the legend — consuming only `--color-concrete-*` +
+    `--color-accent` (green). Remove the hardcoded `clusterColor` map and every per-chip
+    `--c` color and the gold `accent-rule`. Keep the cluster grouping data
+    (`data-cluster`) and the existing hover-to-highlight `<script>` (it toggles
+    `is-active` / `is-dim` by cluster — behavior unchanged, only the CSS it drives is
+    restyled). Add a decorative `.bt-grain` overlay (`aria-hidden`). Add `data-skills-anim`
+    hooks for the entrance.
+  - Restyle in `src/styles/global.css` the chip/legend rules to monochrome + green,
+    independent of `--c`: `.skill-chip` (hard border, no radius, mono, off-white on
+    concrete), `.skill-chip.is-active` (green border + green text), `.skill-chip.is-dim`
+    (dimmed), and `.skill-legend` / `.skill-legend.is-active` (neutral marker that turns
+    green when its cluster is active). The `.marquee-row` / `.marquee-track` loop structure
+    is unchanged.
+  - GSAP ScrollTrigger entrance: a Skills motion module (`<script>`) that, behind
+    `gsap.matchMedia()` `(prefers-reduced-motion: no-preference)`, reveals the
+    `data-skills-anim` targets staggered on scroll via `gsap.from(..., { opacity: 0, y, immediateRender: false })`;
+    reduced-motion / no-JS leave content visible. Remove the section's `[data-reveal]`.
 - Does NOT include:
-  - Redesign of any other section (Skills, Projects, Experience, Contact, Nav, Footer) —
-    each is a later SPEC.
-  - Changing section-index labels (Services is already `03`).
-  - Making the capabilities link to `#projects` or any other section.
-  - Editing the Services copy (intro + items are relocated to `src/data/services.ts`
-    verbatim).
-  - Any change under `src/content/projects/*`.
+  - Redesign of any other section (Projects, Experience, Contact, Nav, Footer) — later
+    SPECs.
+  - Changing the section-index label (Skills is already `04`).
+  - Changing `src/data/skills.ts` (content unchanged).
+  - Removing the marquee or its infinite-loop mechanism (kept, only restyled).
   - Removing the harvest-gold token `--color-accent-2` globally (still used by
     `Experience.astro`, `ProjectCard`, `.accent-rule`).
-  - Migrating other sections' `[data-reveal]` reveals.
+  - The deferred site-wide secondary-text visibility decision (`concrete-300` brightness);
+    Skills uses `concrete-300` for its muted intro, consistent with the other redesigned
+    sections, and is covered by that separate decision.
 
 ## Acceptance Criteria
 
@@ -71,24 +73,24 @@ harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 
 - `build_succeeds`: `npm run build` exits 0.
 - `typecheck_clean`: `npm run check` reports 0 errors.
-- `services_no_gold_no_legacy`: the rendered `#services` references no `--color-accent-2`
-  (`d6a84e`) and none of the old-palette utilities (`bg-surface`, `border-border`,
-  `text-ink`, `text-muted`, `card-lit`, `accent-rule`, `rounded-*`); green is the only
-  chromatic signal in the section.
-- `services_content_decoupled`: `Services.astro` holds no hardcoded `services` array or
-  intro copy and imports them from `src/data/services.ts`; the rendered text (intro + four
-  items) is identical to the previous copy.
-- `services_scrolltrigger_reduced_motion`: under emulated `prefers-reduced-motion:
-  reduce`, the Services entrances do not animate and all content is shown; with JS
-  disabled, content is shown (no CSS pre-hide).
-- `services_texture_decorative`: the grain overlay is `aria-hidden`, not focusable, and
-  contributes no text content; the large row numbers are `aria-hidden`.
-- `cls_safe`: Services entrances animate transform/opacity only; the Lighthouse
-  `cumulative-layout-shift` budget still passes.
-- `lighthouse_budget_met`: the existing Lighthouse CI budget (`lighthouserc.json`) still
+- `skills_no_rainbow_no_gold`: the rendered `#skills` references no per-cluster hex colors
+  and no `--color-accent-2` (`d6a84e`); the `clusterColor` map and per-chip `--c` are gone;
+  green is the only chromatic signal in the section.
+- `skills_no_legacy`: the rendered `#skills` uses none of the old-palette utilities
+  (`bg-surface`, `border-border`, `text-ink`, `text-muted`, `accent-rule`, `rounded-*` on
+  chips); it consumes `--color-concrete-*` + green.
+- `cluster_hover_preserved`: hovering a chip or legend item still highlights that cluster
+  (its chips get `is-active`, others `is-dim`); the highlight color is green.
+- `marquee_preserved`: the three-row full-bleed marquee still renders and loops; under
+  emulated `prefers-reduced-motion: reduce` the loop stops.
+- `skills_entrance_reduced_motion`: under `prefers-reduced-motion: reduce`, the entrance
+  does not animate and content is shown; with JS disabled, content is shown (no CSS
+  pre-hide of `data-skills-anim`).
+- `skills_texture_decorative`: the grain overlay is `aria-hidden`, not focusable, no text.
+- `cls_safe`: the entrance animates transform/opacity only; the Lighthouse CLS budget still
   passes.
-- `content_unchanged`: `git diff` shows no copy changes (the Services text is relocated,
-  not edited) and no changes under `src/content/`.
+- `lighthouse_budget_met`: the existing Lighthouse CI budget (`lighthouserc.json`) passes.
+- `content_unchanged`: `git diff` shows no changes under `src/data/` or `src/content/`.
 
 ## Reproducibility
 
@@ -96,22 +98,21 @@ harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 - Build: `npm run build`; type-check: `npm run check`.
 - Performance: Lighthouse via CI per `lighthouserc.json`.
 - Reduced-motion: emulate `prefers-reduced-motion: reduce` in devtools, reload, scroll
-  Services into view.
+  Skills into view (marquee loop stops; entrance does not animate).
 - Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, GSAP `^3.x` (core +
   ScrollTrigger), Node 22 in CI.
 
 ## Risks and Assumptions
 
-- Assumption: static Astro, no React; ScrollTrigger imported from the existing `gsap`
-  package, no new dependency.
-- Assumption: presentation + content-relocation only; the Services copy is unchanged.
-- Risk: ScrollTrigger adds JS and scroll listeners. Mitigation: import only ScrollTrigger,
-  gate with `gsap.matchMedia()`, animate transform/opacity only, watch the Lighthouse
-  budget; if it breaks, reduce the motion scope.
-- Risk: the large ledger numbers could be read by assistive tech as redundant content.
-  Mitigation: mark them `aria-hidden`; the `<h3>` titles carry the structure.
-- Invalidation: a decision to introduce React, to keep the agro palette in Services, or to
-  make the capabilities interactive would invalidate this spec.
-- Decision lineage: the design language (ADR-0002), GSAP (ADR-0003), and ScrollTrigger as
-  the section-motion mechanism (ADR-0004) are already recorded; this phase needs no new
-  ADR.
+- Assumption: static Astro, no React; ScrollTrigger from the existing `gsap` package.
+- Assumption: presentation-only; `src/data/skills.ts` content unchanged.
+- Risk: restyling `.skill-chip` to drop `--c` could leave stale rainbow styling if any rule
+  still references `--c`. Mitigation: verify no per-cluster hex / `--c` remains in the
+  rendered `#skills` and in the chip CSS.
+- Risk: the marquee plus a scroll entrance plus the existing loop could affect performance.
+  Mitigation: entrance animates transform/opacity only and is matchMedia-gated; the loop is
+  unchanged and already CSS-only; watch the Lighthouse budget.
+- Invalidation: a decision to introduce React, keep the rainbow, or drop the marquee would
+  invalidate this spec.
+- Decision lineage: design language (ADR-0002), GSAP (ADR-0003), and ScrollTrigger as the
+  section-motion mechanism (ADR-0004) are already recorded; this phase needs no new ADR.
