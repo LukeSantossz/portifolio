@@ -19,7 +19,7 @@ import { services } from '../../data/services.ts';
       >
         What I build
       </h2>
-      <p class="mt-5 font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
+      <p class="mt-5 font-sans text-base leading-relaxed text-concrete-50 md:text-lg">
         {services.intro}
       </p>
     </div>
@@ -35,7 +35,7 @@ import { services } from '../../data/services.ts';
           >
             <span
               aria-hidden="true"
-              class="font-mono text-3xl font-bold leading-none text-concrete-300 transition-colors group-hover:text-accent md:text-5xl"
+              class="font-mono text-3xl font-bold leading-none text-concrete-50 transition-colors group-hover:text-accent md:text-5xl"
             >
               {String(index + 1).padStart(2, '0')}
             </span>
@@ -43,7 +43,7 @@ import { services } from '../../data/services.ts';
               <h3 class="font-mono text-base font-bold uppercase tracking-wide text-concrete-50 transition-colors group-hover:text-accent md:text-lg">
                 {service.title}
               </h3>
-              <p class="mt-2 max-w-2xl font-sans text-sm leading-relaxed text-concrete-300 md:text-base">
+              <p class="mt-2 max-w-2xl font-sans text-sm leading-relaxed text-concrete-50 md:text-base">
                 {service.body}
               </p>
             </div>
