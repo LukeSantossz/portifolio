@@ -384,6 +384,59 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
+   Concrete Terminal texture + interaction patterns (Hero scope).
+   Overlays are decorative (always aria-hidden + pointer-events:none in markup).
+---------------------------------------------------------------------------- */
+
+/* Cheap static film grain — one inline SVG noise tile, no animation. */
+.bt-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* CRT-style scanlines — static lines with a slow drift; drift is killed under
+   reduced motion (the lines themselves remain). */
+@keyframes bt-scan {
+  from { background-position: 0 0; }
+  to { background-position: 0 6px; }
+}
+
+.bt-scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    color-mix(in srgb, var(--color-stone-950) 60%, transparent) 2px 3px
+  );
+  animation: bt-scan 6s linear infinite;
+}
+
+/* High-contrast focus ring for Hero interactive elements. */
+#top a:focus-visible,
+#top button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Pre-paint anti-FOUC: when the intro will run (motion allowed, JS on), the
+   intro targets start hidden so GSAP can animate them in without a flash. The
+   class is set by an is:inline script and removed by GSAP (or a failsafe). It
+   is NEVER set under reduced motion, so reduced-motion users see final content. */
+html.hero-intro [data-hero-anim] {
+  opacity: 0;
+}
+
+/* ----------------------------------------------------------------------------
    Reduced motion — honor the OS/browser "reduce motion" setting.
    All motion here is decorative (cursor glow, hero grid drift, skills marquee,
    projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
@@ -411,7 +464,8 @@ details.reveal-details[open] > dl {
   .headline-gradient,
   .cursor-blink,
   .float-badge,
-  .scroll-wheel {
+  .scroll-wheel,
+  .bt-scanline {
     animation: none !important;
   }
 
