@@ -8,135 +8,53 @@ const projects = entries.sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
   return a.data.order - b.data.order;
 });
-const total = projects.length;
 ---
 
-<section id="projects" class="border-t border-border/60">
-  <div class="mx-auto max-w-5xl px-6 py-24">
-    <div data-reveal class="mb-10 flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <span class="font-mono text-sm text-accent">05 / Case studies</span>
-        <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+<section
+  id="projects"
+  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 text-concrete-50"
+>
+  <!-- Decorative analog grain (no semantics, not focusable). -->
+  <div class="bt-grain" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-6 pt-24 md:pt-28">
+    <div data-projects-anim class="mb-12 flex flex-wrap items-end justify-between gap-4">
+      <div class="max-w-2xl">
+        <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
+          <span class="text-accent">05 / CASE STUDIES</span>
+        </p>
+        <h2
+          class="mt-3 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-6xl"
+        >
           Case studies
         </h2>
-        <div class="accent-rule mt-4"></div>
-        <p class="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+        <p class="mt-5 font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
           Not a gallery of screenshots. Each one walks through the problem, the
-          constraints, the call I made, and what I would revisit. Open one and you
-          can explain it to someone else.
+          constraints, the call I made, and what I would revisit.
         </p>
       </div>
       <a
         href={site.github}
         target="_blank"
         rel="noopener noreferrer"
-        class="text-sm text-muted transition-colors hover:text-accent"
+        class="font-mono text-xs uppercase tracking-wider text-concrete-300 transition-colors hover:text-accent"
       >
-        All repositories on GitHub &rarr;
+        All repositories &rarr;
       </a>
     </div>
+  </div>
 
-    <!-- Selector: pick which of the stacked cards to bring to the front. -->
-    <div
-      data-reveal
-      class="mb-6 flex flex-wrap gap-2"
-      role="tablist"
-      aria-label="Select a project"
-    >
+  <!-- Case-file track: an accessible vertical stack by default; Task 4 turns it
+       into a pinned horizontal showcase on desktop with motion allowed. -->
+  <div class="relative z-10 pb-24 md:pb-28" data-projects-viewport>
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:gap-8" data-projects-track>
       {
         projects.map((project, i) => (
-          <button
-            type="button"
-            class="deck-tab"
-            role="tab"
-            id={`deck-tab-${i}`}
-            aria-controls={`deck-card-${i}`}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            data-index={i}
-          >
-            <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
-            {project.data.domain ?? project.data.title}
-          </button>
+          <div class="w-full" data-project-panel>
+            <ProjectCard {...project.data} index={i} />
+          </div>
         ))
       }
     </div>
-
-    <p class="mb-6 font-mono text-xs text-muted">
-      Tap a tab or a card behind to flip the deck.
-    </p>
-
-    <div data-reveal>
-      <div class="project-deck" data-active="0">
-        {
-          projects.map((project, i) => (
-            <div
-              class:list={['deck-card', i === 0 && 'is-active']}
-              id={`deck-card-${i}`}
-              role="tabpanel"
-              aria-labelledby={`deck-tab-${i}`}
-              data-index={i}
-              style={`--depth:${i}; z-index:${total - i};`}
-            >
-              <ProjectCard {...project.data} index={i} />
-            </div>
-          ))
-        }
-      </div>
-    </div>
   </div>
 </section>
-
-<script>
-  // 3D deck: the active card sits flat in front; the rest fan back and are
-  // clickable. Tabs and behind-cards both call activate(). The active card's
-  // measured height drives the absolutely-positioned stage's height.
-  const deck = document.querySelector<HTMLElement>('.project-deck');
-  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.deck-tab'));
-
-  if (deck) {
-    const cards = Array.from(deck.querySelectorAll<HTMLElement>('.deck-card'));
-    const count = cards.length;
-    let active = 0;
-
-    const setHeight = () => {
-      const card = cards[active];
-      if (card) deck.style.height = `${card.offsetHeight}px`;
-    };
-
-    const render = () => {
-      cards.forEach((card, i) => {
-        const depth = (i - active + count) % count;
-        card.style.setProperty('--depth', String(depth));
-        card.style.zIndex = String(count - depth);
-        const isActive = depth === 0;
-        card.classList.toggle('is-active', isActive);
-        card.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-        (card as HTMLElement & { inert: boolean }).inert = !isActive;
-      });
-      tabs.forEach((tab, i) =>
-        tab.setAttribute('aria-selected', i === active ? 'true' : 'false'),
-      );
-      deck.dataset.active = String(active);
-      setHeight();
-    };
-
-    const activate = (i: number) => {
-      active = ((i % count) + count) % count;
-      render();
-    };
-
-    tabs.forEach((tab, i) => tab.addEventListener('click', () => activate(i)));
-    cards.forEach((card, i) =>
-      card.addEventListener('click', () => {
-        if (i !== active) activate(i);
-      }),
-    );
-
-    // The active card grows/shrinks when its "case study" disclosure toggles.
-    deck.addEventListener('toggle', () => setHeight(), true);
-    window.addEventListener('resize', setHeight);
-    window.addEventListener('load', setHeight);
-
-    render();
-  }
-</script>
