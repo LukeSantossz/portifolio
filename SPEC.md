@@ -1,137 +1,150 @@
-# SPEC: chore(ui): final cleanup — remove dead legacy tokens/CSS, migrate 404, harden focus a11y
+# SPEC: feat(ui): add a "Signal" geo-tracking section — a line world map with you + the visitor
 
 ## Problem
 
-The Concrete Terminal migration is complete, leaving dead legacy code and two deferred a11y
-items. Grep-verified state:
-
-- **Dead `[data-reveal]` system** — no component uses `data-reveal` anymore (all sections moved
-  to the GSAP entrance). The five `[data-reveal*]` CSS rules, the reduced-motion
-  `[data-reveal]` rule, and the `Layout.astro` IntersectionObserver "reveal" `<script>` are
-  dead (its `querySelectorAll('[data-reveal]')` is always empty).
-- **Dead CSS** — `.accent-rule` and `.card-lit` have zero component references.
-- **Orphaned `@theme` tokens** — `--color-surface`, `--color-surface-2`, `--color-border`,
-  `--color-paper-soft` have zero uses; `--color-accent-2` is used only by `.accent-rule`;
-  `--color-paper` only by `.card-lit`; `--color-muted` only by `404.astro`.
-- **`404.astro`** still uses the legacy `text-muted` — the last legacy-token consumer.
-- **A11y deferrals** — the high-contrast `:focus-visible` ring is scoped to `#top`/`#about`
-  only (the rest of the site falls back to the UA outline); the Contact field labels read
-  `// Name` etc., so a screen reader announces "slash slash name".
-
-`--color-ink` stays (it is the global `body` text color and the `::selection` color);
-`details.reveal-details` + `@keyframes reveal-up` stay (used by the `ProjectCard` disclosure).
+The page ends at Contact → Footer with no personal "reach" flourish. A subtle, on-brand
+closing element that connects the author to each individual visitor — framed as a
+declassified/radar "tracking" panel — would be memorable for recruiters and reinforce the
+Concrete Terminal identity, without competing with content.
 
 ## Design Decision
 
-A single final-cleanup pass that removes the verified-dead code/tokens, migrates the last
-legacy consumer, and lands the two deferred a11y improvements — leaving the codebase with no
-dead tokens and a consistent, site-wide focus ring.
+Add **one dedicated "Signal" section** between Contact and the Footer: a **line-drawn world
+map** (continent outlines, equirectangular) with **two neon-green points** — the author
+(fixed) and the visitor (located client-side by IP). Minimal by choice: **no connecting arc,
+no distance/coordinate readouts** — just the two points on the map.
 
-- **Remove the dead `[data-reveal]` system**: the `[data-reveal]`, `[data-reveal].is-visible`,
-  `[data-reveal='card']`, `[data-reveal='left']`, `[data-reveal='right']` rules, the
-  reduced-motion `[data-reveal]` rule, and the Layout reveal `<script>` (the cursor-glow and
-  count-up scripts stay).
-- **Remove dead CSS + their now-orphaned tokens**: delete `.accent-rule` (→ remove
-  `--color-accent-2`) and `.card-lit` (→ remove `--color-paper`); remove the orphaned
-  `--color-surface`, `--color-surface-2`, `--color-border`, `--color-paper-soft`.
-- **Migrate `404.astro`**: `text-muted` → `text-concrete-300` (→ remove `--color-muted`).
-- **Harden focus a11y**: replace the `#top`/`#about`-scoped `:focus-visible` rule with a
-  site-wide one (`a`/`button`/`input`/`textarea`/`[tabindex]`), keeping the 3px accent ring.
-- **Label a11y**: wrap the decorative `// ` prefix of each Contact field label in
-  `<span aria-hidden="true">//</span>` so the accessible name is just "Name"/"Email"/"Message"
-  (the visible `// NAME` look is unchanged).
+- **Static-site-safe.** The site stays `output: 'static'`:
+  - The world map is generated at **build time** from a public dataset (`world-atlas`
+    TopoJSON via `topojson-client`, dev-dependencies) by a small script
+    (`scripts/generate-world-map.mjs`) that projects land/countries to an **equirectangular**
+    SVG `path` and writes it to `src/data/world-map.ts` (`{ viewBox, d }`). The component
+    inlines that path as a stroked (no-fill) concrete line drawing. No runtime map library.
+  - The **visitor location is fetched client-side** (no SSR/edge): a small module `<script>`
+    fetches `https://ipwho.is/` (free, no key, HTTPS, CORS, returns `latitude`/`longitude`),
+    projects it with the same equirectangular math, and reveals the visitor dot. **No browser
+    Geolocation permission prompt** (IP-based, coarse, country/city-level).
+- **The author's point is server-rendered** from `src/data/site.ts` (`site.location =
+  { lat, lon, label }`, Pompéia/SP, BR ≈ `-22.12, -50.18`) so it always shows, even with no
+  JS / failed geo.
+- **Graceful fallback:** if the geo fetch fails, times out (~3s), or returns bad data, only
+  the author's point shows — the section never errors or blocks.
+- **Accessibility / motion:** the map + points are decorative — the SVG is `aria-hidden` with
+  a concise text equivalent for the section's meaning; any point pulse / map line-draw is CSS
+  gated by `prefers-reduced-motion` (static otherwise); nothing flashes; the section reserves
+  its layout (no CLS when the visitor dot appears).
+- **Privacy:** a discreet note ("approximate location from your IP — not stored") sits under
+  the map; the IP only ever reaches the geo API (never our origin).
 
-Static Astro, no new dependency. No new ADR (pure cleanup + a11y; the existing ADRs hold). Any
-`@theme` token found to have zero uses during implementation (e.g. `--shadow-hard-ink`) is
-removed under the same rule; any token with a use is kept.
+This is a durable, externally-dependent architectural choice → record **ADR-0007
+(client-side IP geolocation + build-time world map for a static site)**.
 
 ## Alternatives Considered
 
-- **Leave the dead code** — rejected: now that migration is done, the orphans are pure debt and
-  confuse future work; removing them is safe (grep-verified zero references).
-- **Keep `:focus-visible` scoped to a few sections** — rejected: a consistent site-wide visible
-  focus ring is the correct a11y baseline (the Contact and Nav reviews both flagged the gap).
-- **Restyle `404.astro` fully into brutalist chrome** — rejected as scope creep; only the
-  legacy-token migration is in scope (the page already renders dark/legible).
-- **Remove `--color-ink` / `reveal-details` / `reveal-up`** — rejected: they are live (`body`
-  color / `::selection`; the ProjectCard disclosure animation).
+- **Visitor's country drawn as the full-page background** (the user's first idea) — rejected:
+  clutters the grain/CRT background, heavier, less tasteful than a contained panel.
+- **Placement in the Footer / inside Contact** — rejected: the user chose a dedicated section
+  at the end.
+- **Connecting arc + distance/lat-lon readouts** ("full telemetry") — rejected: the user chose
+  the minimal two-points treatment.
+- **SSR/edge geolocation** (Vercel `request.geo`) — rejected: it would force `output: 'server'`;
+  client-side IP geo keeps the site fully static.
+- **Browser Geolocation API** — rejected: it shows a permission prompt (intrusive; most
+  decline) for a decorative ambient element.
+- **A bare graticule/coordinate grid instead of continents** — rejected: the user wants a
+  recognizable world map (continent outlines), so real geometry is generated at build.
+- **A runtime map library (d3-geo / leaflet)** — rejected: build-time SVG generation keeps the
+  runtime lean (no map JS shipped).
 
 ## Scope
 
 - Includes:
-  - `src/styles/global.css`:
-    - Remove the `[data-reveal]` rules (the base rule + `.is-visible` + the `card`/`left`/`right`
-      variants) and the reduced-motion `[data-reveal] { … }` rule.
-    - Remove the `.accent-rule` rule and the `.card-lit` rule (+ its `::before`).
-    - Remove these `@theme` tokens: `--color-surface`, `--color-surface-2`, `--color-border`,
-      `--color-accent-2`, `--color-paper`, `--color-paper-soft`, `--color-muted` (and
-      `--shadow-hard-ink` if confirmed unused at implementation time). Keep `--color-ink`,
-      `--color-canvas`, `--color-accent`, `--color-concrete-*`, the font/text/shadow-hard
-      tokens.
-    - Replace the `#top`/`#about`-scoped `:focus-visible` block with a site-wide
-      `a, button, input, textarea, [tabindex]:focus-visible` rule (same 3px accent ring +
-      offset).
-    - Keep `details.reveal-details[open] > dl` + `@keyframes reveal-up`, `.bt-grain`, the CRT
-      overlay, the marquee, nav, and skills rules.
-  - `src/layouts/Layout.astro`: remove the `[data-reveal]` IntersectionObserver `<script>`
-    block only (the cursor-glow and count-up scripts are untouched).
-  - `src/pages/404.astro`: `text-muted` → `text-concrete-300`.
-  - `src/components/sections/Contact.astro`: wrap the `// ` prefix of the three field labels in
-    `<span aria-hidden="true">//</span>` (visible text unchanged; accessible name becomes the
-    bare field name).
+  - `src/data/site.ts`: add `location: { lat: number; lon: number; label: string }` (the
+    author's fixed point).
+  - Build-time map: add dev-dependencies `world-atlas` + `topojson-client`; add
+    `scripts/generate-world-map.mjs` (reads the world TopoJSON, projects land to
+    equirectangular, emits a stroked SVG `path`); add the generated `src/data/world-map.ts`
+    (`export const worldMap = { viewBox: string; d: string }`). Wire the generation into the
+    build (a `pregenerate`/`prebuild` step or a committed artifact + a documented regen
+    command).
+  - New `src/components/sections/Signal.astro`: Concrete Terminal chrome (`border-t-2
+    border-concrete-50 bg-concrete-950`, grain, `08 / SIGNAL` green mono label, a short
+    heading), and an inline SVG (`aria-hidden`) = the `worldMap.d` path (stroked, concrete
+    line) + the author's neon-green point at its projected position; a placeholder/hook for
+    the visitor point; the privacy note; a concise visible/sr text equivalent.
+  - The visitor-geo `<script>` (module): fetch `ipwho.is` with a ~3s timeout, project
+    `latitude`/`longitude` with the shared equirectangular helper, position + reveal the
+    visitor dot; on any failure leave only the author's dot. No permission prompt; no PII
+    stored.
+  - Render `<Signal />` between `<Contact />` and `<Footer />` in the page that composes the
+    sections (`src/pages/index.astro`).
+  - Shared projection helper (equirectangular: `x = (lon+180)/360 * W`, `y = (90-lat)/180 * H`)
+    used by both the build script and the runtime script (kept consistent with the SVG
+    `viewBox`).
+  - `docs/adr/0007-client-side-geolocation-and-build-time-world-map.md` + a README Engineering
+    Decisions row.
 - Does NOT include:
-  - Any visual redesign (no section restyle; the `404` keeps its layout/copy).
-  - Removing `--color-ink`, `details.reveal-details`, `@keyframes reveal-up`, `.bt-grain`, or
-    any live rule/token.
-  - Any content / `src/data/` / `src/content/` change.
-  - A new ADR.
+  - Any change to other sections, the Footer/Contact internals, or content copy.
+  - The connecting arc, distance, or coordinate readouts (minimal by choice).
+  - SSR/edge rendering, a runtime map library, or the browser Geolocation API.
+  - Storing/sending the visitor IP to our own origin or analytics.
 
 ## Acceptance Criteria
 
 Verified by build, type-check, the Lighthouse budget, and named manual checks (no unit
 harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 
-- `build_succeeds`: `npm run build` exits 0.
+- `build_succeeds`: `npm run build` exits 0 (including the world-map generation step).
 - `typecheck_clean`: `npm run check` reports 0 errors.
-- `no_dangling_refs`: after removal, the codebase contains **zero** references to each removed
-  token/class — `grep -rE "data-reveal|accent-rule|card-lit|bg-surface|surface-2|border-border|text-muted|var\(--color-(surface|surface-2|border|accent-2|paper|paper-soft|muted)\)" src` returns nothing (outside this note).
-- `dead_tokens_removed`: the removed `@theme` tokens no longer appear in `global.css`'s
-  `@theme` block; `--color-ink`/`--color-canvas`/`--color-accent`/`--color-concrete-*` remain.
-- `reveal_script_removed`: `Layout.astro` no longer contains the `[data-reveal]` IO script; its
-  cursor-glow and count-up scripts still work (`[data-countup]` still animates the Hero stats).
-- `live_css_kept`: `details.reveal-details[open] > dl`, `@keyframes reveal-up`, `.bt-grain`,
-  `.crt-overlay`/`.crt-beam`, and the marquee/nav/skills rules still exist.
-- `focus_ring_global`: the high-contrast 3px accent `:focus-visible` ring applies to
-  interactive elements site-wide (not only `#top`/`#about`); keyboard focus is visible on Nav,
-  Contact, Projects, etc.
-- `contact_labels_a11y`: each Contact field label's accessible name is the bare field name
-  ("Name"/"Email"/"Message") — the `// ` glyphs are `aria-hidden`; the visible `// NAME` look
-  is unchanged.
-- `404_migrated`: `404.astro` references no `text-muted`; its body text is `text-concrete-300`.
-- `content_unchanged`: `git diff` shows no `src/data/` or `src/content/` change.
+- `map_renders_static`: `#signal` server-renders the inline world-map SVG (the `worldMap.d`
+  path present) and the author's neon point at the projected `site.location` — visible with
+  **no JS** and on geo failure.
+- `visitor_point_progressive`: with JS + a successful `ipwho.is` response, a second neon point
+  appears at the visitor's projected lat/lon; on failure/timeout/no-JS, only the author's
+  point shows and nothing errors.
+- `no_permission_prompt`: the page never calls `navigator.geolocation` (IP-based only).
+- `minimal_treatment`: no connecting arc and no distance/coordinate readouts are rendered
+  (two points only).
+- `static_site_preserved`: the project stays `output: 'static'`; no SSR/edge; the only new
+  runtime code is the inline SVG + the geo `<script>` (no map library in the bundle).
+- `decorative_a11y`: the SVG is `aria-hidden`; the section has a concise text equivalent;
+  point pulse / line-draw is gated by `prefers-reduced-motion`; nothing flashes.
+- `cls_safe`: the section reserves its layout; the late-appearing visitor dot causes no layout
+  shift; the Lighthouse CLS budget (≤0.1) holds.
+- `privacy_note`: a discreet "approximate, from your IP, not stored" note is present; the IP
+  goes only to the geo API.
+- `content_decoupled`: the author's coordinates live in `src/data/site.ts` (not hard-coded in
+  the component).
+- `adr_recorded`: `docs/adr/0007-...md` exists and is linked from the README Engineering
+  Decisions table.
 - `lighthouse_budget_met`: the Lighthouse CI budget (`lighthouserc.json`) still passes
-  (accessibility ≥0.95 — ideally improved by the focus ring — and CLS ≤0.1).
+  (accessibility ≥0.95, CLS ≤0.1, performance not regressed by the inline SVG / async fetch).
 
 ## Reproducibility
 
-- Install: `npm install`. Build: `npm run build`; type-check: `npm run check`.
-- Dead-ref sweep: the `no_dangling_refs` grep above returns empty.
-- A11y: `npm run preview`; tab through Nav, the Contact form, and Projects — every focused
-  element shows the green ring; inspect a Contact input's accessible name (it is the bare field
-  name). Emulate reduced motion — nothing regressed (the removed `[data-reveal]` had no
-  consumers).
-- Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, Node 22 in CI.
+- Install: `npm install` (adds `world-atlas` + `topojson-client` devDeps). Regenerate the map:
+  `node scripts/generate-world-map.mjs` (also run by the build). Build: `npm run build`;
+  type-check: `npm run check`.
+- Static/fallback: load with JS disabled, or block `ipwho.is` in devtools → only the author's
+  point shows; the section renders fine.
+- Visitor point: with network on, the visitor dot appears after the geo fetch resolves.
+- Reduced motion: emulate `prefers-reduced-motion: reduce` → no pulse/draw, points static.
+- Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, Node 22 in CI; `world-atlas`
+  (TopoJSON world dataset, public domain) + `topojson-client` (BSD) as devDeps.
 
 ## Risks and Assumptions
 
-- Risk: removing a token/class that is secretly still used would break styling silently (a
-  missing CSS var renders wrong without a build error). Mitigation: each removal is grep-verified
-  to have zero references before AND after (the `no_dangling_refs` criterion is the gate); a
-  visual pass confirms no section changed.
-- Risk: removing the Layout reveal `<script>` could drop a live behavior. Mitigation: grep
-  confirms zero `[data-reveal]` consumers, so the script is inert; the count-up/cursor-glow
-  scripts are left untouched and independently verified.
-- Risk: a broad `:focus-visible` rule could surprise on unexpected elements. Mitigation: it is
-  the standard a11y baseline (visible focus everywhere) and matches the existing ring style.
-- Invalidation: discovering a live `data-reveal` / `.accent-rule` / removed-token consumer
-  invalidates the corresponding removal (keep it instead).
+- Risk: the geo API (`ipwho.is`) can fail, rate-limit, or be blocked. Mitigation: a short
+  timeout + a graceful fallback to the author-only map; the section never depends on it to
+  render.
+- Risk (privacy): the visitor's IP reaches a third-party geo service. Mitigation: coarse
+  (country/city-level), not stored by us, never sent to our origin/analytics, with a
+  transparent note; no Geolocation permission prompt. Document in the ADR.
+- Risk: the world SVG path could be large. Mitigation: use a simplified land outline
+  (low-precision TopoJSON) so the inline path stays small; it is static markup (cacheable).
+- Risk: IP geo is approximate (can be off by a city/region, or show the VPN exit). Acceptable
+  for a single decorative dot; the note says "approximate".
+- Risk: projection mismatch between the build SVG and the runtime dot. Mitigation: one shared
+  equirectangular formula keyed to the SVG `viewBox`.
+- Invalidation: requiring exact geolocation, adding a permission prompt, moving to SSR, or
+  shipping a runtime map library invalidates this spec.
