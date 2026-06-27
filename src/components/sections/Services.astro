@@ -53,3 +53,39 @@ import { services } from '../../data/services.ts';
     </ul>
   </div>
 </section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const mm = gsap.matchMedia();
+
+  // Motion allowed: hide the entrance targets (opacity only — keeps them in the
+  // a11y tree), then reveal them in a staggered batch as they scroll into view.
+  // Reduced motion / no-JS never hide anything.
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const targets = gsap.utils.toArray<Element>('#services [data-services-anim]');
+    gsap.set(targets, { opacity: 0, y: 24 });
+
+    const triggers = ScrollTrigger.batch(targets, {
+      start: 'top 85%',
+      once: true,
+      onEnter: (batch) =>
+        gsap.to(batch, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.08,
+          overwrite: true,
+        }),
+    });
+
+    return () => {
+      triggers.forEach((t) => t.kill());
+      gsap.set(targets, { clearProps: 'all' });
+    };
+  });
+</script>
