@@ -53,7 +53,7 @@ import { about } from '../../data/about.ts';
               height="800"
               loading="lazy"
               decoding="async"
-              class="h-full w-full object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-0 group-focus-within:grayscale-0 [@media(hover:none)]:grayscale-0"
+              class="h-full w-full object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-0 [@media(hover:none)]:grayscale-0"
             />
           </picture>
         </figure>
@@ -120,14 +120,14 @@ import { about } from '../../data/about.ts';
   // batch as they scroll into view. Reduced motion / no-JS never hide anything.
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const targets = gsap.utils.toArray<Element>('#about [data-about-anim]');
-    gsap.set(targets, { autoAlpha: 0, y: 24 });
+    gsap.set(targets, { opacity: 0, y: 24 });
 
     const triggers = ScrollTrigger.batch(targets, {
       start: 'top 85%',
       once: true,
       onEnter: (batch) =>
         gsap.to(batch, {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: 0.6,
           ease: 'power3.out',
