@@ -1,85 +1,68 @@
-# SPEC: feat(ui): redesign Nav in Concrete Terminal (mono nav bar + green progress)
+# SPEC: feat(ui): redesign Footer and SocialLinks in Concrete Terminal
 
 ## Problem
 
-`Nav.astro` (the fixed top navigation) is still on the legacy "dark tech" palette: it uses
-`border-border`, `text-ink`, `text-muted`, `hover:bg-surface`, `hover:text-ink`, and
-`rounded-lg`, and its scroll-progress bar is a green→**harvest-gold** gradient
-(`#scroll-progress` in `global.css` uses `--color-accent-2`). The desktop/mobile links are
-sentence-case sans, out of step with the site's mono-label terminal language. Nav is one of
-the two remaining legacy-palette pieces (with Footer).
+`Footer.astro` and the shared `SocialLinks.astro` are the last two legacy-palette pieces.
+The footer uses `border-border`, `text-ink`, `text-muted`; the social icon buttons use
+`rounded-lg`, `border-border`, `bg-surface`, `text-muted`. Because `SocialLinks` is shared by
+**Hero, Contact, and Footer**, its legacy styling currently shows rounded, surface-gray icon
+buttons inside three already-brutalist contexts — the most visible remaining inconsistency.
+Migrating both completes the Concrete Terminal migration of the whole page.
 
 ## Design Decision
 
-Rebuild Nav in Concrete Terminal, preserving all behavior (mobile toggle with
-`aria-expanded`, the scroll-progress bar driven by `--p`, the IntersectionObserver
-scroll-spy with the `.is-current` active state) and the links data.
+- **`SocialLinks.astro` → hard-bordered square icon buttons.** Drop `rounded-lg`; each
+  button becomes a hard-bordered concrete square (`border border-concrete-700`,
+  `bg-concrete-900`, `text-concrete-300`) whose border and icon turn green on hover
+  (`hover:border-accent hover:text-accent`). The `links` array, the `target`/`rel`
+  (`noopener noreferrer` on external), the `aria-label`s, the `Icon`, and the `class` prop are
+  unchanged. This single change propagates to Hero, Contact, and Footer.
+- **`Footer.astro` → Concrete Terminal chrome.** A hard top rule (`border-t-2
+  border-concrete-50`) on `bg-concrete-950`; the `> {site.name}` line recolored to
+  `text-concrete-50` (the `>` stays `text-accent`); the copyright line becomes
+  `font-mono text-xs text-concrete-300`. Add a **back-to-top** link: a mono uppercase
+  `↑ Top` anchor to `#top` (the `↑` glyph `aria-hidden`, `aria-label="Back to top"`,
+  `hover:text-accent`), grouped with `<SocialLinks>` on the right. The build-time
+  `year = new Date().getFullYear()` and the layout structure are kept.
 
-- **Header chrome:** `bg-concrete-950/80 backdrop-blur-md` with a `border-b border-concrete-700`
-  hard rule; the fixed positioning, height, and max-width are kept.
-- **Logo:** unchanged structure (`>` in `text-accent` + initials), recolored to
-  `text-concrete-50`.
-- **Links → mono uppercase.** Desktop and mobile nav links become `font-mono` uppercase with
-  tracking, `text-concrete-300` → `hover:text-concrete-50`. The **active section** keeps the
-  existing animated green underline mechanic: the `.nav-link::after` accent underline stays,
-  and `.nav-link.is-current` recolors from `--color-ink` to `--color-concrete-50`. The
-  scroll-spy JS that toggles `.is-current` is unchanged.
-- **Scroll-progress bar → green-only gradient.** The `#scroll-progress` background drops
-  `--color-accent-2` and becomes a green→light-green gradient
-  (`color-mix(in srgb, var(--color-accent) 50%, white)`); the `scaleX(var(--p))` fill behavior
-  is unchanged.
-- **Resume CTA → brutalist:** drop `rounded-lg`; a `border-2 border-accent` mono-uppercase
-  pill that fills green with dark text on hover (`hover:bg-accent hover:text-concrete-950`).
-- **Mobile:** the toggle button recolors to `text-concrete-50` (no rounded); the mobile menu
-  uses `border-t border-concrete-700 bg-concrete-950`, mono-uppercase links with
-  `hover:bg-concrete-900 hover:text-concrete-50` (no rounded), and the brutalist Resume CTA.
-- The Nav `<script>` (toggle, progress, scroll-spy) is preserved verbatim. Static Astro, no
-  React. Nav has no `[data-reveal]` and no entrance animation (it is a persistent fixed bar) —
-  no GSAP module is added.
-
-`SocialLinks.astro` and `Footer.astro` are out of scope (Footer phase). The harvest-gold token
-`--color-accent-2` is **not removed globally** (its only remaining use after this phase is the
-`.accent-rule` gradient in `global.css`; whether `.accent-rule` is now dead is a separate
-cleanup, tracked but not done here).
+Static Astro, no React. No new ADR (reuses ADR-0002). The now-possibly-dead legacy tokens
+(`--color-accent-2`, `.accent-rule`, `--color-surface*`, `--color-border`) and the `404.astro`
+`text-muted` remnant are a **separate final cleanup**, not done here.
 
 ## Alternatives Considered
 
-- **Sans sentence-case links (just recolor)** — rejected: mono uppercase matches the site's
-  terminal label language; the user chose it.
-- **`>` CLI-prefix active marker instead of the underline** — rejected: the user kept the
-  animated green underline mechanic (less churn, already accessible).
-- **Solid green progress bar / segmented blocky bar** — rejected in favor of the green→
-  light-green gradient (keeps the gradient feel, drops gold), per the user.
-- **Remove `--color-accent-2` + `.accent-rule` now** — deferred: a separate cleanup once the
-  last gold/`.accent-rule` consumer is confirmed gone; out of this phase's scope.
+- **Borderless social icons / fill-on-hover** — rejected: hard-bordered squares match the
+  site's hard-border language; the user chose them.
+- **Footer minimal restyle only (no back-to-top)** — rejected: a back-to-top shortcut is
+  useful on a long single-scroll page; the user chose to add it.
+- **Migrate `404.astro` / remove dead tokens now** — deferred to a final cleanup pass; out of
+  this phase's scope.
+- **Style `SocialLinks` per-context (different in Hero vs Footer)** — rejected: one shared
+  brutalist treatment is simpler and consistent; the `class` prop already handles spacing.
 
 ## Scope
 
 - Includes:
-  - Rewrite `src/components/layout/Nav.astro` markup:
-    - Header: `bg-concrete-950/80 backdrop-blur-md`, `border-b border-concrete-700`.
-    - Logo recolored to `text-concrete-50` (the `>` stays `text-accent`).
-    - Desktop links: `nav-link font-mono text-xs uppercase tracking-[0.2em] text-concrete-300
-      transition-colors hover:text-concrete-50` (keep `data-nav-link` + the `nav-link` class
-      for the underline/scroll-spy).
-    - Resume CTA: `border-2 border-accent px-3 py-1.5 font-mono text-xs font-bold uppercase
-      tracking-wider text-accent transition-colors hover:bg-accent hover:text-concrete-950`
-      (no rounded).
-    - Mobile toggle: `text-concrete-50` (no rounded). Mobile menu: `border-t
-      border-concrete-700 bg-concrete-950`; links mono-uppercase `text-concrete-300
-      hover:bg-concrete-900 hover:text-concrete-50` (no rounded); the brutalist Resume CTA.
-    - The `links` array and the entire `<script>` (toggle/progress/scroll-spy) are unchanged.
-  - `src/styles/global.css`:
-    - `#scroll-progress` `background`: replace the `accent → accent-2` gradient with
-      `linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 50%, white))`.
-    - `.nav-link.is-current` `color`: `var(--color-ink)` → `var(--color-concrete-50)`.
-    - The `.nav-link::after` accent underline rule is unchanged.
+  - `src/components/ui/SocialLinks.astro`: replace the anchor `class` with
+    `grid h-10 w-10 place-items-center border border-concrete-700 bg-concrete-900
+    text-concrete-300 transition-colors hover:border-accent hover:text-accent` (no
+    `rounded-lg`). Everything else (the `links` array, `target`/`rel`, `aria-label`, `Icon`,
+    the `class` prop merge) is unchanged.
+  - `src/components/layout/Footer.astro`:
+    - `<footer>` → `border-t-2 border-concrete-50 bg-concrete-950`.
+    - `> {site.name}` line → `text-concrete-50` (the `>` stays `text-accent`).
+    - copyright → `font-mono text-xs text-concrete-300`.
+    - Add the back-to-top `<a href="#top">` (mono uppercase, `↑` `aria-hidden`,
+      `aria-label="Back to top"`, `hover:text-accent`), grouped with `<SocialLinks>` on the
+      right (a flex group), so the two-column `justify-between` layout is preserved.
 - Does NOT include:
-  - `SocialLinks.astro`, `Footer.astro`, any content section, `src/data/`, `src/content/`.
-  - Removing `--color-accent-2`, the `.accent-rule` CSS, or `--color-ink`/`--color-muted`/etc.
-    tokens (still used by Footer/SocialLinks until those migrate).
-  - Changing the links, their order, or any copy.
-  - Any new ADR (reuses ADR-0002 industrial-brutalist language).
+  - Any change to Hero, Contact, or any section file (the `SocialLinks` restyle propagates to
+    them automatically — that is the intended, in-scope effect; their `.astro` files are not
+    edited).
+  - `src/data/site.ts`, `src/content/`, the `links` arrays, or any copy.
+  - Migrating `404.astro` or removing the dead legacy tokens / `.accent-rule` (separate final
+    cleanup).
+  - Any new ADR.
 
 ## Acceptance Criteria
 
@@ -88,43 +71,44 @@ harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 
 - `build_succeeds`: `npm run build` exits 0.
 - `typecheck_clean`: `npm run check` reports 0 errors.
-- `nav_no_legacy`: `Nav.astro` references none of `border-border`, `text-ink`, `text-muted`,
-  `bg-surface`, `hover:text-ink`, `rounded-lg`; its colors are the concrete ramp + `accent`.
-- `progress_green_only`: the rendered `#scroll-progress` background references no
-  `--color-accent-2` / `d6a84e`; green is the only chromatic signal (green→light-green).
-- `mono_uppercase_links`: the desktop and mobile nav links use `font-mono` + `uppercase`
-  tracking; the active link still gets the green underline (`.nav-link::after` +
-  `.is-current` now `concrete-50`).
-- `js_behavior_preserved`: the Nav `<script>` is unchanged — the mobile toggle still flips
-  `aria-expanded` and `aria-label` and shows/hides `#mobile-menu`; the progress bar still sets
-  `--p`; the scroll-spy still toggles `.is-current` on the in-view section's link.
-- `content_unchanged`: `git diff` shows no change to `src/data/` or `src/content/`; the links
-  array and labels are unchanged.
-- `sociallinks_footer_untouched`: `SocialLinks.astro` and `Footer.astro` are unchanged.
+- `sociallinks_brutalist`: `SocialLinks.astro` references none of `rounded-lg`, `border-border`,
+  `bg-surface`, `text-muted`; the anchor uses `border-concrete-700` + `bg-concrete-900` +
+  `text-concrete-300` with `hover:border-accent hover:text-accent`.
+- `footer_no_legacy`: `Footer.astro` references none of `border-border`, `text-ink`,
+  `text-muted`; its colors are the concrete ramp + `accent`; the top rule is
+  `border-t-2 border-concrete-50`.
+- `back_to_top_present`: `Footer.astro` has an `<a href="#top">` back-to-top link with an
+  accessible name ("Back to top"), mono uppercase, `hover:text-accent`; the `↑` glyph is
+  `aria-hidden`.
+- `sociallinks_contract`: the three links (`site.github`, `site.linkedin`, `mailto:site.email`)
+  remain with their `aria-label`s and the external `rel="noopener noreferrer"` /
+  `target="_blank"` (and the mail link without them) intact.
+- `propagation_safe`: Hero and Contact are not edited; their rendered social icons inherit the
+  new brutalist style via the shared component (verified visually).
+- `content_unchanged`: `git diff` shows no change to `src/data/` or `src/content/`.
 - `lighthouse_budget_met`: the Lighthouse CI budget (`lighthouserc.json`) still passes
   (accessibility ≥0.95, CLS ≤0.1).
 
 ## Reproducibility
 
 - Install: `npm install`. Build: `npm run build`; type-check: `npm run check`.
-- Color audit: `grep -nE "border-border|text-ink|text-muted|bg-surface|rounded-lg" src/components/layout/Nav.astro`
-  → expect none; `grep -n "accent-2" src/styles/global.css` → expect it gone from `#scroll-progress`.
-- Behavior: `npm run preview`; resize to mobile → the toggle opens/closes the menu
-  (`aria-expanded` flips); scroll → the green→light-green progress bar fills and the in-view
-  section's link shows the green underline.
+- Audit: `grep -nE "rounded-lg|border-border|bg-surface|text-muted" src/components/ui/SocialLinks.astro src/components/layout/Footer.astro`
+  → expect none. `grep -n 'href="#top"' src/components/layout/Footer.astro` → expect the
+  back-to-top link.
+- Visual: `npm run preview`; the footer has a hard top rule on concrete; the social icons
+  (footer, Hero, Contact) are hard-bordered squares that turn green on hover; the `↑ Top`
+  link scrolls to the top.
 - Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, Node 22 in CI.
 
 ## Risks and Assumptions
 
-- Assumption: static Astro; the `--color-base`→`--color-canvas` fix is in place (Nav already
-  uses `bg-canvas`; this phase moves it to `bg-concrete-950`).
-- Risk: rewriting the nav markup could break the scroll-spy/toggle wiring. Mitigation: keep
-  the `data-nav-link` attribute, the `nav-link` class, the element `id`s (`nav-toggle`,
-  `mobile-menu`, `scroll-progress`), and the `<script>` verbatim; only classes/markup styling
-  change.
-- Risk: mono-uppercase links could overflow on small desktop widths (e.g. "WHAT I DO").
-  Mitigation: the existing `gap`/flex layout and the mobile breakpoint; verify at desktop.
-- Risk: the `border-concrete-700` header rule is faint. Mitigation: the `backdrop-blur` + bg
-  separate the header; the rule is a subtle accent, consistent with other dividers.
-- Invalidation: introducing React, removing the underline/scroll-spy mechanic, or migrating
-  Footer/SocialLinks here invalidates this spec.
+- Assumption: static Astro; `SocialLinks` is consumed by Hero/Contact/Footer only; restyling
+  it is the intended shared change.
+- Risk: changing the shared `SocialLinks` could regress Hero/Contact spacing. Mitigation: only
+  the per-anchor visual classes change; the `class` prop (spacing) and the wrapper are kept, so
+  layout in Hero/Contact is unaffected — verify visually.
+- Risk: the `border-concrete-700` icon-button border is faint on the dark surface. Mitigation:
+  the icon (`concrete-300`) is the primary signal and the hover state is green; verify at
+  desktop. If too faint, nudge the border to `concrete-500` (one-line change).
+- Invalidation: introducing React, editing a section file to override `SocialLinks`, or
+  removing the dead tokens here invalidates this spec.
