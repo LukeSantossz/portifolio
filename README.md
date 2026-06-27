@@ -68,6 +68,7 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | GSAP (core) for the Hero intro, gated by `matchMedia` | CSS keyframes only; a React animation library | Precise reduced-motion-gated stagger in static Astro without introducing React. See [ADR-0003](docs/adr/0003-gsap-as-motion-library.md). |
 | GSAP ScrollTrigger for scroll-driven section entrances | Keep CSS `[data-reveal]`; no scroll motion | Cohesive staggered, reduced-motion-gated reveals as the brutalist redesign moves below the fold, with no new dependency. See [ADR-0004](docs/adr/0004-scrolltrigger-for-section-motion.md). |
 | Pinned horizontal Projects showcase over an accessible static base | Keep the 3D deck; static stack only | Maximum-impact case-study presentation on desktop, with a readable stack fallback for no-JS / reduced-motion / mobile. See [ADR-0005](docs/adr/0005-scrolltrigger-pin-projects-showcase.md). |
+| Global CRT scan-beam ambient overlay (decorative, reduced-motion-gated) | Per-section behind-content beam; animated grid / aurora / particles; brightness flicker | One continuous, cheap (single `transform`) page-wide CRT sweep unifies the terminal ambience; non-blocking, low-opacity for legibility, removed under reduced motion. See [ADR-0006](docs/adr/0006-crt-ambient-overlay.md). |
 
 ## Getting Started
 
