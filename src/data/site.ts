@@ -4,6 +4,8 @@
  */
 export const site = {
   // --- Identity -------------------------------------------------------------
+  // Author's approximate home location — the fixed point on the Signal map.
+  location: { lat: -22.21, lon: -49.95, label: 'Marília, BR' },
   name: 'Lucas Gonçalves',
   initials: 'LG',
   role: 'AI / ML Engineer',
