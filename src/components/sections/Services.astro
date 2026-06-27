@@ -62,29 +62,33 @@ import { services } from '../../data/services.ts';
 
   const mm = gsap.matchMedia();
 
-  // Motion allowed: hide the entrance targets (opacity only — keeps them in the
-  // a11y tree), then reveal them in a staggered batch as they scroll into view.
-  // Reduced motion / no-JS never hide anything.
+  // Motion allowed: each entrance target animates in as it scrolls into view.
+  // immediateRender:false means the hidden (opacity:0) state is applied ONLY when
+  // the trigger fires — so if ScrollTrigger never fires (or errors), the content
+  // stays at its natural, visible state. Reduced motion / no-JS never touch it.
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     const targets = gsap.utils.toArray<Element>('#services [data-services-anim]');
-    gsap.set(targets, { opacity: 0, y: 24 });
 
-    const triggers = ScrollTrigger.batch(targets, {
-      start: 'top 85%',
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: 0.08,
-          overwrite: true,
-        }),
-    });
+    const tweens = targets.map((el) =>
+      gsap.from(el, {
+        opacity: 0,
+        y: 24,
+        duration: 0.6,
+        ease: 'power3.out',
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          once: true,
+        },
+      }),
+    );
 
     return () => {
-      triggers.forEach((t) => t.kill());
+      tweens.forEach((tween) => {
+        if (tween.scrollTrigger) tween.scrollTrigger.kill();
+        tween.kill();
+      });
       gsap.set(targets, { clearProps: 'all' });
     };
   });
