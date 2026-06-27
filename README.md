@@ -64,6 +64,8 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | Serverless contact form (Web3Forms) | A dedicated backend + database for submissions | Keeps the app 100% static for SEO and CDN delivery while still supporting outreach, with zero server to run. |
 | Access key via `import.meta.env.PUBLIC_WEB3FORMS_KEY` with a safe fallback | Committing the key inline | Keeps active integration keys out of public Git history. |
 | Presentation-only verification (build + type-check + Lighthouse + manual) instead of unit TDD | Minimal or full unit-test harness | A static vitrine has no business logic to unit-test; the four gates catch real regressions at lower cost. See [ADR-0001](docs/adr/0001-presentation-only-verification-policy.md). |
+| Industrial-brutalist "Concrete Terminal" design language, shipped in phases | Heavier "Blueprint" industrial, quiet brutalist, big-bang redesign | A phased pilot delivers a distinctive recruiter-facing identity at low risk; other sections migrate later. See [ADR-0002](docs/adr/0002-industrial-brutalist-design-language.md). |
+| GSAP (core) for the Hero intro, gated by `matchMedia` | CSS keyframes only; a React animation library | Precise reduced-motion-gated stagger in static Astro without introducing React. See [ADR-0003](docs/adr/0003-gsap-as-motion-library.md). |
 
 ## Getting Started
 
