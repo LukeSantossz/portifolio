@@ -107,3 +107,38 @@ import { about } from '../../data/about.ts';
     </dl>
   </div>
 </section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const mm = gsap.matchMedia();
+
+  // Motion allowed: hide the entrance targets, then reveal them in a staggered
+  // batch as they scroll into view. Reduced motion / no-JS never hide anything.
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    const targets = gsap.utils.toArray<Element>('#about [data-about-anim]');
+    gsap.set(targets, { autoAlpha: 0, y: 24 });
+
+    const triggers = ScrollTrigger.batch(targets, {
+      start: 'top 85%',
+      once: true,
+      onEnter: (batch) =>
+        gsap.to(batch, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.08,
+          overwrite: true,
+        }),
+    });
+
+    return () => {
+      triggers.forEach((t) => t.kill());
+      gsap.set(targets, { clearProps: 'all' });
+    };
+  });
+</script>
