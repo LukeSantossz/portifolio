@@ -132,8 +132,8 @@ const links = [
     let ticking = false;
     const update = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      const p = max > 0 ? window.scrollY / max : 0;
-      progress.style.setProperty('--p', String(Math.min(1, Math.max(0, p))));
+      const ratio = max > 0 ? window.scrollY / max : 0;
+      progress.style.setProperty('--p', String(Math.min(1, Math.max(0, ratio))));
       ticking = false;
     };
     const onScroll = () => {

@@ -96,6 +96,8 @@ const personSchema = {
       const glow = document.getElementById('cursor-glow');
 
       if (glow) {
+        // Smoothing factor: fraction of the remaining distance the glow closes per frame.
+        const TRAIL_LERP = 0.12;
         let targetX = window.innerWidth / 2;
         let targetY = window.innerHeight / 2;
         let currentX = targetX;
@@ -103,8 +105,8 @@ const personSchema = {
         let frame = 0;
 
         const render = () => {
-          currentX += (targetX - currentX) * 0.12;
-          currentY += (targetY - currentY) * 0.12;
+          currentX += (targetX - currentX) * TRAIL_LERP;
+          currentY += (targetY - currentY) * TRAIL_LERP;
           glow.style.setProperty('--mx', `${currentX}px`);
           glow.style.setProperty('--my', `${currentY}px`);
 
@@ -157,9 +159,9 @@ const personSchema = {
       // with no number. Disabled under reduced-motion / no IntersectionObserver,
       // where the SSR'd final value already shows.
       const countEls = document.querySelectorAll('[data-countup]');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      if (countEls.length && !reduceMotion && 'IntersectionObserver' in window) {
+      if (countEls.length && !prefersReducedMotion && 'IntersectionObserver' in window) {
         const animateCount = (el: Element) => {
           const full = (el.textContent ?? '').trim();
           const match = full.match(/\d[\d.,]*\d|\d/);
@@ -188,10 +190,10 @@ const personSchema = {
           let startTs = 0;
           const step = (ts: number) => {
             if (!startTs) startTs = ts;
-            const p = Math.min(1, (ts - startTs) / duration);
-            const eased = 1 - Math.pow(1 - p, 3);
+            const progress = Math.min(1, (ts - startTs) / duration);
+            const eased = 1 - Math.pow(1 - progress, 3);
             el.textContent = before + format(target * eased) + after;
-            if (p < 1) {
+            if (progress < 1) {
               requestAnimationFrame(step);
             } else {
               el.textContent = full; // restore the exact original string
