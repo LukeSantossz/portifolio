@@ -110,7 +110,21 @@ const projects = entries.sort((a, b) => {
       },
     });
 
+    // Keyboard a11y: bring a focused off-screen panel into the pinned view
+    // (scrub maps window scroll position -> horizontal track position).
+    const st = tween.scrollTrigger;
+    const onFocusIn = (event: FocusEvent) => {
+      const panel = (event.target as HTMLElement | null)?.closest('[data-project-panel]');
+      if (!panel || !st) return;
+      const i = panels.indexOf(panel as HTMLElement);
+      if (i < 0) return;
+      const progress = panels.length > 1 ? i / (panels.length - 1) : 0;
+      window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: 'auto' });
+    };
+    viewport.addEventListener('focusin', onFocusIn);
+
     return () => {
+      viewport.removeEventListener('focusin', onFocusIn);
       if (tween.scrollTrigger) tween.scrollTrigger.kill();
       tween.kill();
       viewport.classList.remove('projects-pinned');
