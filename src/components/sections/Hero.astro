@@ -15,7 +15,7 @@ import Icon from '../ui/Icon.astro';
       document.documentElement.classList.add('hero-intro');
       window.setTimeout(function () {
         document.documentElement.classList.remove('hero-intro');
-      }, 2000);
+      }, 2500);
     }
   </script>
 
@@ -138,6 +138,7 @@ import Icon from '../ui/Icon.astro';
 
   // Motion allowed: play the staggered intro, then clear the pre-paint hide.
   mm.add('(prefers-reduced-motion: no-preference)', () => {
+    if (!root.classList.contains('hero-intro')) return;
     gsap.set('[data-hero-anim]', { autoAlpha: 0, y: 24 });
 
     const tl = gsap.timeline({
