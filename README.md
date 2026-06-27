@@ -1,6 +1,6 @@
 ![Astro](https://img.shields.io/badge/Astro-6.3-BC52EE?logo=astro&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?logo=tailwindcss&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 
 # Personal Portfolio — AI Engineering for Data, AI & Agribusiness
 
@@ -27,7 +27,7 @@ This is a **static web app** that compiles to a fully pre-rendered landing page 
 
 | Layer | Technology |
 | --- | --- |
-| Language | TypeScript 5, JavaScript |
+| Language | TypeScript 6, JavaScript |
 | Framework / Runtime | Astro 6 (`output: 'static'`) |
 | Styling | Tailwind CSS v4 (via PostCSS) |
 | Content layer | Astro Content Collections + typed `src/data/*.ts` |
@@ -63,6 +63,7 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | Content in Markdown collections + `src/data/*.ts` | Hard-coding copy inside `.astro` components | Updating a project, skill, or metric is a content edit — no HTML/CSS/TS changes — keeping components reusable and maintenance cheap. |
 | Serverless contact form (Web3Forms) | A dedicated backend + database for submissions | Keeps the app 100% static for SEO and CDN delivery while still supporting outreach, with zero server to run. |
 | Access key via `import.meta.env.PUBLIC_WEB3FORMS_KEY` with a safe fallback | Committing the key inline | Keeps active integration keys out of public Git history. |
+| Presentation-only verification (build + type-check + Lighthouse + manual) instead of unit TDD | Minimal or full unit-test harness | A static vitrine has no business logic to unit-test; the four gates catch real regressions at lower cost. See [ADR-0001](docs/adr/0001-presentation-only-verification-policy.md). |
 
 ## Getting Started
 
@@ -104,7 +105,10 @@ portifolio/
 │   ├── pages/             # index.astro (single entry point)
 │   └── styles/            # global.css (Tailwind v4 @theme)
 ├── public/                # static assets (résumé PDF, favicon, robots.txt)
-├── CLAUDE.md              # project memory → .claude/guidelines.md
+├── docs/adr/              # architecture decision records
+├── .standards/            # PONT STANDARDS governance (git submodule)
+├── .githooks/             # local R2 cross-provider review pre-push hook
+├── CLAUDE.md              # project memory → .standards governance
 ├── astro.config.mjs       # Astro + sitemap config
 └── postcss.config.mjs     # Tailwind v4 via PostCSS
 ```
@@ -133,7 +137,7 @@ portifolio/
 
 - **Single static page** — there is no router or multi-page navigation; everything lives on `index.astro`. Acceptable because the goal is a focused, single-scroll vitrine.
 - **Contact key is public by design** — Web3Forms uses a public access key (`PUBLIC_*`), so it ships to the client. This is expected for the service; abuse is mitigated on Web3Forms' side, not in this repo.
-- **No automated tests** — a presentational static site has little logic to unit-test; correctness is verified through the build and manual review.
+- **No unit-test harness** — a presentational static site has little logic to unit-test, so correctness is verified by the build, type-check, the Lighthouse budget, and a manual checklist rather than unit tests. This is a documented, scoped deviation from test-first; see [ADR-0001](docs/adr/0001-presentation-only-verification-policy.md).
 
 ## Contact
 
