@@ -1,5 +1,6 @@
 ---
 import { site } from '../../data/site.ts';
+import { worldMap } from '../../data/world-map.ts';
 import SocialLinks from '../ui/SocialLinks.astro';
 import Icon from '../ui/Icon.astro';
 
@@ -17,6 +18,11 @@ if (!formEnabled) {
     '[contact] PUBLIC_WEB3FORMS_KEY is not set — rendering the email-only fallback instead of the contact form.',
   );
 }
+
+// Easter-egg background map: my fixed point, projected with the same equirectangular
+// formula as scripts/generate-world-map.mjs (viewBox 0 0 360 180).
+const ax = (site.location.lon + 180).toFixed(2);
+const ay = (90 - site.location.lat).toFixed(2);
 ---
 
 <section
@@ -25,6 +31,30 @@ if (!formEnabled) {
 >
   <!-- Decorative analog grain (no semantics, not focusable). -->
   <div class="bt-grain" aria-hidden="true"></div>
+
+  <!-- Easter-egg world map behind the content: my point + the visitor's, unlabeled. -->
+  <div
+    class="pointer-events-none absolute inset-0 z-0 flex items-center justify-center px-6"
+    aria-hidden="true"
+  >
+    <svg viewBox={worldMap.viewBox} class="w-full max-w-5xl text-concrete-700">
+      <path
+        d={worldMap.d}
+        fill="none"
+        stroke="currentColor"
+        stroke-width="0.3"
+        stroke-linejoin="round"
+      />
+      <g transform={`translate(${ax} ${ay})`}>
+        <circle r="2.2" class="signal-pulse" />
+        <circle r="1" class="signal-point" />
+      </g>
+      <g data-visitor-point transform="translate(0 0)" style="display:none">
+        <circle r="2.2" class="signal-pulse" />
+        <circle r="1" class="signal-point" />
+      </g>
+    </svg>
+  </div>
 
   <div class="relative z-10 mx-auto max-w-5xl px-6 py-24 md:py-28">
     <div data-contact-anim class="mb-12 max-w-2xl">
@@ -211,4 +241,34 @@ if (!formEnabled) {
       gsap.set(targets, { clearProps: 'all' });
     };
   });
+</script>
+
+<script>
+  // Easter egg: place the visitor's point on the background map from a coarse IP
+  // lookup (no permission prompt). Fail-safe — on any error/timeout, only my point shows.
+  const point = document.querySelector('#contact [data-visitor-point]');
+  if (point) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 3000);
+    fetch('https://ipwho.is/', { signal: controller.signal })
+      .then((res) => res.json())
+      .then((geo) => {
+        window.clearTimeout(timer);
+        if (
+          geo &&
+          geo.success !== false &&
+          typeof geo.latitude === 'number' &&
+          typeof geo.longitude === 'number'
+        ) {
+          const x = geo.longitude + 180; // equirectangular, matches the map viewBox
+          const y = 90 - geo.latitude;
+          point.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+          (point as HTMLElement).style.display = '';
+        }
+      })
+      .catch(() => {
+        window.clearTimeout(timer);
+        /* graceful: leave only my point */
+      });
+  }
 </script>
