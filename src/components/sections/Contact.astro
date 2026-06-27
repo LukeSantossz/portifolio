@@ -3,8 +3,9 @@ import { site } from '../../data/site.ts';
 import SocialLinks from '../ui/SocialLinks.astro';
 import Icon from '../ui/Icon.astro';
 
+// Brutalist Concrete Terminal field: hard concrete border, dark surface, green focus.
 const inputClass =
-  'w-full rounded-lg border border-border bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent';
+  'w-full border-2 border-concrete-50 bg-concrete-900 px-4 py-3 font-sans text-sm text-concrete-50 focus:border-accent focus:outline-none';
 
 // The form posts to Web3Forms with site.web3formsKey. When PUBLIC_WEB3FORMS_KEY
 // is unset that key is empty, so rather than render a form that would fail on
@@ -18,19 +19,28 @@ if (!formEnabled) {
 }
 ---
 
-<section id="contact" class="border-t border-border/60">
-  <div class="mx-auto max-w-5xl px-6 py-24">
-    <div data-reveal class="mb-12">
-      <span class="font-mono text-sm text-accent">07 / Contact</span>
-      <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+<section
+  id="contact"
+  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 text-concrete-50"
+>
+  <!-- Decorative analog grain (no semantics, not focusable). -->
+  <div class="bt-grain" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-5xl px-6 py-24 md:py-28">
+    <div data-contact-anim class="mb-12 max-w-2xl">
+      <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
+        <span class="text-accent">07 / CONTACT</span>
+      </p>
+      <h2
+        class="mt-3 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-6xl"
+      >
         Let&apos;s talk
       </h2>
-      <div class="accent-rule mt-4"></div>
     </div>
 
     <div class="grid gap-12 md:grid-cols-2">
-      <div data-reveal="left">
-        <p class="max-w-md text-base leading-relaxed text-muted">
+      <div data-contact-anim>
+        <p class="max-w-md font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
           I&apos;m looking for a full-time AI/ML Engineer role on a distributed,
           remote team building production systems at scale. If that&apos;s what
           you&apos;re hiring for, let&apos;s talk. Email is the fastest way to reach
@@ -38,7 +48,7 @@ if (!formEnabled) {
         </p>
         <a
           href={`mailto:${site.email}`}
-          class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-accent"
+          class="mt-6 inline-flex items-center gap-2 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
         >
           <Icon name="mail" size={18} />
           {site.email}
@@ -47,7 +57,7 @@ if (!formEnabled) {
       </div>
 
       {formEnabled ? (
-      <form id="contact-form" data-reveal="right" style="--reveal-delay:120ms" class="space-y-4">
+      <form id="contact-form" data-contact-anim class="space-y-5">
         <input type="hidden" name="access_key" value={site.web3formsKey} />
         <input
           type="hidden"
@@ -65,57 +75,52 @@ if (!formEnabled) {
         />
 
         <div>
-          <label for="name" class="sr-only">Name</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            required
-            placeholder="Your name"
-            class={inputClass}
-          />
+          <label
+            for="name"
+            class="mb-1.5 block font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
+          >
+            // Name
+          </label>
+          <input id="name" type="text" name="name" required class={inputClass} />
         </div>
         <div>
-          <label for="email" class="sr-only">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            required
-            placeholder="Your email"
-            class={inputClass}
-          />
+          <label
+            for="email"
+            class="mb-1.5 block font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
+          >
+            // Email
+          </label>
+          <input id="email" type="email" name="email" required class={inputClass} />
         </div>
         <div>
-          <label for="message" class="sr-only">Message</label>
-          <textarea
-            id="message"
-            name="message"
-            required
-            rows="5"
-            placeholder="Your message"
-            class={inputClass}></textarea>
+          <label
+            for="message"
+            class="mb-1.5 block font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
+          >
+            // Message
+          </label>
+          <textarea id="message" name="message" required rows="5" class={inputClass}></textarea>
         </div>
 
         <button
           type="submit"
-          class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-canvas transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          class="inline-flex w-full items-center justify-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           Send message
           <Icon name="arrow-right" size={18} />
         </button>
 
-        <p id="form-status" class="text-sm" role="status" aria-live="polite"></p>
+        <p id="form-status" class="font-mono text-sm" role="status" aria-live="polite"></p>
       </form>
       ) : (
-      <div data-reveal="right" style="--reveal-delay:120ms" class="rounded-lg border border-border bg-surface p-6">
-        <p class="text-base leading-relaxed text-muted">
+      <div data-contact-anim class="border-2 border-concrete-50 bg-concrete-900 p-6">
+        <p class="font-sans text-base leading-relaxed text-concrete-300">
           The contact form is being set up. In the meantime the quickest way to
           reach me is by email, and I usually reply within a day.
         </p>
         <a
           href={`mailto:${site.email}`}
-          class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-canvas transition-transform hover:-translate-y-0.5"
+          class="mt-6 inline-flex items-center justify-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
         >
           <Icon name="mail" size={18} />
           Email me
@@ -137,7 +142,7 @@ if (!formEnabled) {
       const data = new FormData(form);
 
       status.textContent = 'Sending…';
-      status.className = 'text-sm text-muted';
+      status.className = 'font-mono text-sm text-concrete-300';
       if (button) button.disabled = true;
 
       try {
@@ -150,17 +155,17 @@ if (!formEnabled) {
 
         if (result.success) {
           status.textContent = 'Thanks! Your message has been sent.';
-          status.className = 'text-sm text-accent';
+          status.className = 'font-mono text-sm text-accent';
           form.reset();
         } else {
           status.textContent =
             result.message || 'Something went wrong. Please email me directly.';
-          status.className = 'text-sm text-red-400';
+          status.className = 'font-mono text-sm text-red-400';
         }
       } catch {
         status.textContent =
           'Network error. Please email me directly instead.';
-        status.className = 'text-sm text-red-400';
+        status.className = 'font-mono text-sm text-red-400';
       } finally {
         if (button) button.disabled = false;
       }
