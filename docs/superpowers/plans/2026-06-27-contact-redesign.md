@@ -216,7 +216,7 @@ if (!formEnabled) {
 - [ ] **Step 2: Verify no legacy palette / no data-reveal; ramp + labels + form contract present**
 
 Run: `grep -Ec "border-border|bg-surface|text-ink|text-muted|placeholder:text-muted|accent-rule|data-reveal" src/components/sections/Contact.astro` → Expected: `0`.
-Run: `grep -c "data-contact-anim" src/components/sections/Contact.astro` → Expected: `3` (heading block + left column + form; the fallback `<div>` also carries it but only one branch renders).
+Run: `grep -c "data-contact-anim" src/components/sections/Contact.astro` → Expected: `4` (heading block + left column + form + fallback `<div>`; both ternary branches appear in source, only one renders at runtime).
 Run (visible bound labels, not sr-only): `grep -Ec 'for="name"|for="email"|for="message"' src/components/sections/Contact.astro` → Expected: `3`. Run: `grep -c "sr-only" src/components/sections/Contact.astro` → Expected: `0`.
 Run (Web3Forms contract intact): `grep -Ec 'name="name"|name="email"|name="message"|name="access_key"|name="subject"|name="botcheck"' src/components/sections/Contact.astro` → Expected: `6`. Run: `grep -c "api.web3forms.com/submit" src/components/sections/Contact.astro` → Expected: `1`.
 Run (CTA dark-on-green): `grep -c "bg-accent" src/components/sections/Contact.astro` → Expected: `>= 1`; `grep -c "text-concrete-950" src/components/sections/Contact.astro` → Expected: `>= 1`.
