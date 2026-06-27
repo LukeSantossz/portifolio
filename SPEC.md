@@ -1,94 +1,96 @@
-# SPEC: refactor(ui): unify migrated sections on the Concrete text ramp and brighten meaning-carrying hairlines
+# SPEC: feat(ui): redesign Contact as a Concrete Terminal contact terminal
 
 ## Problem
 
-The audit of the already-migrated sections found two coherence defects (the un-migrated
-legacy sections — Contact, Nav, Footer, SocialLinks, 404 — are out of scope; they are
-separate redesign phases):
-
-1. **Body-text color is split.** Five sections use the designed Concrete ramp
-   (`text-concrete-50` headings + `text-concrete-300` body): Hero, About, Skills, Projects,
-   ProjectCard. Two sections — Services and Experience — were forced to pure `text-white`
-   for *every* text node during the earlier "invisible text" incidents. Those incidents were
-   later root-caused to a Tailwind v4 token collision (`--color-base` ↔ the `text-base`
-   font-size utility), now fixed by the `--color-base` → `--color-canvas` rename. With the
-   real cause gone, `concrete-300` (#b8b5ad, ~8.9:1) is fully legible, so the pure-white
-   override is no longer needed and now makes Services/Experience the off-ramp outliers
-   (harsher/cooler than the warm concrete palette, and flatter — no primary/secondary
-   hierarchy).
-
-2. **Meaning-carrying hairlines are near-invisible.** `border-concrete-700` (#3a3a3a) on
-   `bg-concrete-950` (#0e0e0e) is ~1.6:1. That is acceptable for purely decorative chip/marker
-   outlines, but the **Experience timeline spine** (which IS the timeline) and the **About
-   stack-list dividers** (structural row separators) carry meaning and are effectively
-   invisible.
-
-There are no other token↔utility collisions (audit confirmed all 15 `@theme` color names and
-both `--text-*` tokens are safe after the `canvas` rename).
+Contact (`src/components/sections/Contact.astro`) is the last content section still on the
+legacy "dark tech" palette. It uses `border-border`, `bg-surface`, `text-ink`, `text-muted`,
+`placeholder:text-muted`, the `.accent-rule` underline, and the legacy `[data-reveal]`
+IntersectionObserver entrance — while every other content section (Hero…Experience) is in the
+Concrete Terminal language with the GSAP `matchMedia` + ScrollTrigger entrance. The contact
+form (a functional Web3Forms form with an email-only fallback) also relies on
+placeholder-as-label (`sr-only` labels + placeholders), an accessibility anti-pattern: the
+placeholder disappears on input, leaving the field unlabeled.
 
 ## Design Decision
 
-Adopt one canonical **Concrete text ramp** across all migrated sections and bring the two
-outliers onto it; brighten only the meaning-carrying hairlines.
+Rebuild Contact as a **Concrete Terminal "contact terminal"**, preserving all behavior
+(Web3Forms submit, the `formEnabled` email-only fallback, the honeypot, the status
+`aria-live` region) and the copy.
 
-- **Canonical text ramp** (already followed by Hero/About/Skills/Projects/ProjectCard):
-  - Primary (section headings `h1/h2`, item titles `h3`, key values): `text-concrete-50`.
-  - Secondary (intro/body paragraphs, descriptions, highlights, meta labels, periods, kind
-    tags, org suffix, section-label wrapper): `text-concrete-300`.
-  - Signal: `text-accent` (green) for the section-label inner span, the role tagline,
-    "Result", and hover states — unchanged.
-  - Section wrapper default: `text-concrete-50`.
-  Services and Experience are rewritten from blanket `text-white` to this ramp. The five
-  conformant sections are unchanged (verified to already match).
-- **Hairlines:** add one mid-ramp token `--color-concrete-500: #6b675f` (~3.4:1 on
-  `concrete-950`) and apply it to the Experience timeline spine and the About stack-list
-  dividers. Purely decorative borders (ProjectCard stack chips, Skills legend marker, the
-  `.skill-chip` outline) stay at `concrete-700`.
+- **Section chrome** matches the other sections: `relative overflow-hidden border-t-2
+  border-concrete-50 bg-concrete-950 text-concrete-50`, a decorative `.bt-grain` overlay
+  (`aria-hidden`), the `07 / CONTACT` green mono uppercase label, the brutalist display
+  heading ("Let's talk", font-black uppercase, `concrete-50`), and intro copy in
+  `concrete-300`. The `.accent-rule` underline is dropped.
+- **Two-column layout kept** (left: intro + email link + social; right: the form / fallback),
+  restyled onto the concrete ramp.
+- **Form = terminal form.** The placeholder-as-label pattern is replaced with **visible mono
+  field labels** (`// NAME`, `// EMAIL`, `// MESSAGE`) tied to each input via `for`/`id` (an
+  accessibility win and the on-brand declassified-form look). Inputs are hard-bordered
+  (visible concrete border, no rounded corners), `bg-concrete-900`, `text-concrete-50`, with
+  `focus:border-accent` (green). The submit button keeps its dark-on-green treatment
+  (`bg-accent text-canvas`) restyled to match the site's brutalist CTA (hard edges; no
+  `rounded-lg`). The status line (`#form-status`, `aria-live="polite"`) is kept; its JS-set
+  classes move to the concrete ramp: sending → `text-concrete-300`, success → `text-accent`,
+  error → a functional red (`text-red-400`, the one semantic exception to the monochrome+green
+  rule).
+- **Motion** migrates from `[data-reveal]` to a `gsap.matchMedia('(prefers-reduced-motion:
+  no-preference)')` + ScrollTrigger entrance on `data-contact-anim` targets, modeled on the
+  shipped Services/Experience module (`immediateRender:false` fail-safe; reduced-motion / no-JS
+  show the final content; cleanup reverts).
+- The submit `<script>` (Web3Forms `fetch`) is preserved; only the three status `className`
+  strings change to the concrete ramp. Static Astro, no React. Section index stays `07`.
 
-This also resolves the redundant/dead text-color nits: the Experience `· org` span (was
-`text-white` inside a `text-white` h3) becomes a meaningful `text-concrete-300`, and the
-Services/Experience wrapper defaults become the meaningful primary `concrete-50`.
+`SocialLinks.astro` is **rendered but not migrated** in this phase (it is shared with the
+Footer and migrates with the Footer phase) — a small, accepted temporary mismatch.
 
 ## Alternatives Considered
 
-- **Standardize on `concrete-50` everywhere (bright warm off-white)** — rejected: flattens the
-  primary/secondary hierarchy the ramp is built on; the five conformant sections would all
-  change.
-- **Standardize on pure `#fff`** — rejected: off the warm concrete ramp (harsh/cool), and
-  would change five sections to chase the two outliers.
-- **Brighten hairlines to `concrete-300`** — rejected for hairlines: ~8.9:1 reads too heavy
-  for a 1–2px rule; a dedicated ~3.4:1 mid token is the right weight.
-- **Keep all hairlines at `concrete-700`** — rejected: the timeline spine and structural
-  dividers carry meaning and were effectively invisible (user-confirmed).
-- **Migrate the legacy sections now (Contact/Nav/Footer/SocialLinks/404)** — rejected: those
-  are separate redesign phases, not this coherence pass.
+- **Keep placeholders + `sr-only` labels (just restyle)** — rejected: the visible mono labels
+  are both more accessible (persistent label) and more on-brand (terminal form); the user
+  chose them.
+- **Drop the form, email-only CTA** — rejected: the working contact form is valuable on a
+  job-seeking portfolio; the user chose to keep it.
+- **Migrate `SocialLinks` now** — rejected for this phase: it is shared with the Footer and
+  belongs to the Footer phase; migrating it here would touch a component this phase does not
+  own.
+- **Keep the `[data-reveal]` IntersectionObserver reveal** — rejected for consistency with the
+  site-wide GSAP entrance.
+- **Introduce a red error token / restyle the error state monochrome** — rejected: a
+  conventional functional red for the error status is the clearest, accessible exception; no
+  new token is warranted.
 
 ## Scope
 
 - Includes:
-  - `src/styles/global.css`: add `--color-concrete-500: #6b675f;` to the `@theme` concrete
-    ramp (between `concrete-700` and `concrete-300`), with a one-line comment ("mid hairline
-    rule on dark, ~3.4:1").
-  - `src/components/sections/Services.astro`: replace blanket `text-white` with the ramp —
-    heading/`h3` titles → `text-concrete-50`; intro + service body + the ledger index numbers
-    + the section-label wrapper → `text-concrete-300`; section wrapper default →
-    `text-concrete-50`. Green accent / `group-hover:text-accent` unchanged.
-  - `src/components/sections/Experience.astro`: replace blanket `text-white` with the ramp —
-    section wrapper + heading + role `h3` → `text-concrete-50`; section-label wrapper +
-    period + kind tag + `· org` span + description + highlights → `text-concrete-300`. Markers
-    (`bg-accent` / `border-accent`), the green `▸` bullets, and the section-label inner span
-    stay green. The timeline spine `border-concrete-700` → `border-concrete-500`.
-  - `src/components/sections/About.astro`: the stack-list dividers `border-concrete-700` →
-    `border-concrete-500` (structural separators). No other About change.
+  - Rewrite `src/components/sections/Contact.astro`:
+    - Section chrome (concrete-950 bg, `border-t-2 border-concrete-50`, `.bt-grain`
+      `aria-hidden`), `07 / CONTACT` green mono label, display heading, `concrete-300` intro,
+      drop `.accent-rule`.
+    - Left column: intro (`concrete-300`), the `mailto` email link (restyled to the concrete
+      ramp, green hover), and `<SocialLinks>` (unchanged component).
+    - Right column: the form (when `formEnabled`) or the email-only fallback (restyled,
+      hard-bordered concrete card). Replace `inputClass` with brutalist input styling (hard
+      concrete border, `bg-concrete-900`, `text-concrete-50`, `focus:border-accent`, no
+      rounded). Add a **visible mono `<label>`** per field (`// NAME` / `// EMAIL` /
+      `// MESSAGE`) bound by `for`/`id`; remove the `sr-only` on those labels. Keep the hidden
+      `access_key`/`subject` inputs and the honeypot.
+    - Restyle the submit button to the brutalist CTA (keep `bg-accent text-canvas`, drop
+      `rounded-lg`, hard edges) and preserve `disabled` handling.
+    - Replace the three `[data-reveal]` hooks with `data-contact-anim`; append the GSAP
+      `matchMedia` + ScrollTrigger entrance `<script>` (mirrors Services/Experience).
+    - Update the submit `<script>`'s three status `className` strings to the concrete ramp
+      (`text-concrete-300` / `text-accent` / `text-red-400`); the fetch/Web3Forms logic is
+      otherwise unchanged.
 - Does NOT include:
-  - Any change to Hero, Skills, Projects, ProjectCard (verified already on the ramp) beyond
-    a no-op conformance check.
-  - Any migration of the legacy-palette sections (Contact, Nav, Footer, SocialLinks, 404).
-  - The purely decorative `concrete-700` borders (ProjectCard chips, Skills legend marker,
-    `.skill-chip`) — they stay.
-  - Any content/copy change, any layout/motion change, any new section behavior.
-  - Removing `text-white` from places it is legitimately required (e.g. the dark-on-green CTA
-    buttons use `text-canvas`, not `text-white`; unaffected).
+  - Migrating `SocialLinks.astro` (Footer phase), `Nav.astro`, or `Footer.astro`.
+  - Any change to `src/data/site.ts` or any copy (the intro, heading "Let's talk", field
+    names, and form behavior are preserved).
+  - The Web3Forms integration logic, the `formEnabled` fallback behavior, or the honeypot.
+  - Changing the section-index label (Contact is already `07`).
+  - Any new global token or `global.css` change (the form uses existing concrete/accent
+    tokens and Tailwind `focus:` utilities).
+  - A new ADR — this reuses ADR-0002 (language), ADR-0003 (GSAP), ADR-0004 (ScrollTrigger).
 
 ## Acceptance Criteria
 
@@ -97,48 +99,54 @@ harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 
 - `build_succeeds`: `npm run build` exits 0.
 - `typecheck_clean`: `npm run check` reports 0 errors.
-- `ramp_unified`: `Services.astro` and `Experience.astro` contain **no** `text-white`; their
-  text uses only `text-concrete-50` (primary) and `text-concrete-300` (secondary) plus
-  `text-accent` (green). Headings/titles are `concrete-50`; body/meta are `concrete-300`.
-- `conformant_unchanged`: Hero, Skills, Projects, ProjectCard, and the About *text* colors are
-  unchanged (the only About edit is the divider border token).
-- `token_added`: `--color-concrete-500: #6b675f` is defined in the `@theme` block; the
-  Experience timeline spine and About stack dividers reference `border-concrete-500`; no
-  decorative chip/marker border was changed (they remain `concrete-700`).
-- `nits_resolved`: the Experience `· org` span is `text-concrete-300` (distinct from its
-  `concrete-50` `h3`); no element carries two conflicting `text-*` color classes.
-- `still_visible`: with the `text-base` collision fixed, every changed body text renders its
-  intended concrete tone at all breakpoints (no element resolves to the page background);
-  spot-checked at desktop width.
-- `no_collisions_remain`: no `@theme` color name collides with a Tailwind utility scale word
-  (regression guard for the `base` class of bug).
+- `contact_no_legacy`: the rendered `#contact` references none of the legacy-palette utilities
+  (`border-border`, `bg-surface`, `text-ink`, `text-muted`, `placeholder:text-muted`,
+  `accent-rule`) and no `[data-reveal]`; its text uses the concrete ramp + `text-accent`
+  (the error status's `text-red-400` is the single allowed functional exception).
+- `labels_visible_and_bound`: each form field has a **visible** `<label>` (mono, not
+  `sr-only`) whose `for` matches the input `id` (`name`/`email`/`message`); placeholders are
+  no longer the only label.
+- `form_behavior_preserved`: the hidden `access_key`/`subject` inputs, the honeypot checkbox,
+  the submit `fetch` to `https://api.web3forms.com/submit`, the `formEnabled` email-only
+  fallback, and the `#form-status` `aria-live="polite"` region are all intact; submitting
+  still sets sending/success/error states (now in concrete-ramp colors).
+- `motion_failsafe_and_gated`: the entrance runs only under `(prefers-reduced-motion:
+  no-preference)` via `gsap.matchMedia`; under reduced-motion or no-JS the full section is
+  visible; cleanup reverts. No `[data-reveal]` remains in `#contact`.
+- `cta_contrast`: the submit and fallback CTAs keep dark-on-green text (`text-canvas` on
+  `bg-accent`); the email link and form controls are keyboard-focusable with a visible focus
+  state.
+- `content_unchanged`: `git diff` shows no change to `src/data/` or `src/content/`; the
+  Contact copy and field names are unchanged.
+- `sociallinks_untouched`: `SocialLinks.astro` is unchanged (rendered as-is).
+- `texture_decorative`: the `.bt-grain` overlay is `aria-hidden`, not focusable, no text.
 - `lighthouse_budget_met`: the Lighthouse CI budget (`lighthouserc.json`) still passes
   (accessibility ≥0.95, CLS ≤0.1).
-- `content_unchanged`: `git diff` shows no change under `src/content/` or `src/data/`.
 
 ## Reproducibility
 
-- Install: `npm install`. Build: `npm run build`; type-check: `npm run check`.
-- Color audit: `grep -n "text-white\|text-concrete-\|border-concrete-" src/components/sections/{Services,Experience}.astro`
-  — expect no `text-white`, only `concrete-50`/`concrete-300`/`concrete-500`/accent.
-- Token: `grep -n "concrete-500" src/styles/global.css` — expect the new token; grep the
-  spine/divider usages.
-- Visual: `npm run preview`; at **desktop width** confirm Services and Experience body text is
-  the warm `concrete-300`, headings `concrete-50`, the timeline spine is visible, and nothing
-  is invisible.
-- Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, Node 22 in CI.
+- Install: `npm install` (`gsap` + ScrollTrigger already present). Build: `npm run build`;
+  type-check: `npm run check`.
+- Form path: with `PUBLIC_WEB3FORMS_KEY` set, the form renders; unset → the email-only
+  fallback renders (build-time warning). Both restyled.
+- Motion: emulate `prefers-reduced-motion: reduce` / disable JS → the full section shows, no
+  entrance; with motion → the staggered entrance.
+- A11y spot-check: each input has a visible bound label; tab order reaches labels-as-text,
+  inputs, the submit button, the email link, and social links.
+- Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, GSAP `^3.x`, Node 22 in CI.
 
 ## Risks and Assumptions
 
-- Assumption: the `--color-base` → `--color-canvas` fix is in place (it is, commit `7a5a179`),
-  so `concrete-300` body text renders correctly at all widths.
-- Assumption: the five conformant sections already follow the ramp (audit-confirmed); this
-  pass only touches the two outliers + the two hairline spots + the token.
-- Risk: `concrete-500` (#6b675f, ~3.4:1) could still read faint for the user's environment.
-  Mitigation: it is a decorative rule (not text); if too faint, nudge the token lighter — a
-  single-line change. Text legibility does not depend on it.
-- Risk: reverting Services/Experience off pure white could re-introduce a perceived
-  "too dim" reaction. Mitigation: the prior dimness was the `text-base` collision (now fixed),
-  not `concrete-300`; the user chose the concrete ramp with that understanding.
-- Invalidation: re-introducing a blanket `text-white` override, or migrating a legacy section
-  here, invalidates this spec.
+- Assumption: static Astro, no React; Web3Forms key via `site.web3formsKey` as today; the
+  `--color-base`→`--color-canvas` fix is in place so `text-canvas` CTAs render dark-on-green.
+- Risk: rewriting the form markup could break the Web3Forms field contract. Mitigation: keep
+  the exact `name` attributes (`name`/`email`/`message`/`access_key`/`subject`/`botcheck`) and
+  the hidden inputs/honeypot verbatim; only styling and the label elements change.
+- Risk: a GSAP entrance can leave content hidden if ScrollTrigger never fires. Mitigation:
+  `immediateRender:false` + `matchMedia` gating — the proven pattern shipped in
+  Services/Experience.
+- Risk: hard-bordered inputs could read faint on the dark bg (the recurring visibility theme).
+  Mitigation: use a clearly visible concrete border on `bg-concrete-900` with a green focus
+  state; verify at desktop width.
+- Invalidation: introducing React, changing the Web3Forms contract, or migrating
+  `SocialLinks`/`Nav`/`Footer` here invalidates this spec.
