@@ -34,11 +34,12 @@ const ay = (90 - site.location.lat).toFixed(2);
 
   <!-- Easter-egg world map behind the content: my point + the visitor's, unlabeled. -->
   <div
-    class="pointer-events-none absolute inset-0 z-0 flex items-center justify-center px-6"
+    class="pointer-events-none absolute inset-0 z-0 flex items-center justify-center"
     aria-hidden="true"
   >
-    <svg viewBox={worldMap.viewBox} class="w-full max-w-5xl text-concrete-700">
+    <svg viewBox={worldMap.viewBox} class="w-full text-concrete-700">
       <path
+        class="opacity-40"
         d={worldMap.d}
         fill="none"
         stroke="currentColor"
