@@ -113,9 +113,9 @@ harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 - `motion_failsafe_and_gated`: the entrance runs only under `(prefers-reduced-motion:
   no-preference)` via `gsap.matchMedia`; under reduced-motion or no-JS the full section is
   visible; cleanup reverts. No `[data-reveal]` remains in `#contact`.
-- `cta_contrast`: the submit and fallback CTAs keep dark-on-green text (`text-canvas` on
-  `bg-accent`); the email link and form controls are keyboard-focusable with a visible focus
-  state.
+- `cta_contrast`: the submit and fallback CTAs keep dark-on-green text (`text-concrete-950` on
+  `bg-accent`, matching the Hero CTA); the email link and form controls are keyboard-focusable
+  with a visible focus state.
 - `content_unchanged`: `git diff` shows no change to `src/data/` or `src/content/`; the
   Contact copy and field names are unchanged.
 - `sociallinks_untouched`: `SocialLinks.astro` is unchanged (rendered as-is).
