@@ -6,7 +6,8 @@
    Tailwind v4 turns each token into utilities, e.g. --color-accent -> bg-accent.
 ---------------------------------------------------------------------------- */
 @theme {
-  --color-base: #0d100e; /* softened from #0a0c0a — less pure black */
+  --color-canvas: #0d100e; /* page background; renamed from `base` so `text-base`
+     stays the font-size utility (a color named `base` hijacks it to a color) */
   --color-surface: #151a16;
   --color-surface-2: #1d241e;
   --color-border: #2b332b;
@@ -44,7 +45,7 @@ html {
 }
 
 body {
-  background-color: var(--color-base);
+  background-color: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
