@@ -13,6 +13,9 @@ const projects = defineCollection({
     title: z.string(),
     tagline: z.string(),
     domain: z.string().optional(),
+    // Curated headline metric for the case-study showcase (the giant hero number).
+    metric: z.string(), // e.g. "0.19°C", "3rd / 1,300+"
+    metricLabel: z.string().optional(), // short context under the metric
     // Depth case-study framework (six moves). problem (context), decision and
     // result are the spine; constraints + alternatives are what prove judgement.
     problem: z.string(), // 1. Context

@@ -2,6 +2,8 @@
 title: "Global Temperature Forecasting That Never Bets on One Model"
 tagline: "Forecasts daily temperature across 211 countries to within about 0.19°C, using a blend of models so it never bets everything on one."
 domain: "Data Engineering & MLOps"
+metric: "0.19°C"
+metricLabel: "avg error (RMSE) · ~75% below Prophet"
 problem: "Frost warnings, irrigation timing and energy demand all hang on short-term temperature forecasts. The trouble is that most forecasting pipelines stake everything on a single model and have nothing to fall back on when that model has a bad day. This pipeline forecasts daily temperature across 211 countries and is built so one weak model cannot sink the whole forecast."
 constraints: "The data was large and messy: more than 133,000 daily readings, full of outliers and gaps. The result had to be explainable rather than a black box, so a person could see why a forecast came out the way it did. And any claim about accuracy had to be measured against a credible public baseline, not simply asserted."
 approach: "Rather than pick one model and hope, I tested five different forecasting approaches against the same baseline and then combined the strongest ones into a weighted blend, giving more influence to the more accurate models. The baseline to beat was Prophet, an open-source forecasting tool from Meta. Accuracy is reported as RMSE, a standard error measure in degrees Celsius where a lower number is better."

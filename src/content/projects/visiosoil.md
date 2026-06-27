@@ -2,6 +2,8 @@
 title: "VisioSoil: Reading Soil Texture From a Photo, Offline"
 tagline: "Reads soil texture from a photo on the phone itself, tagged with its location, with no signal needed. Placed 3rd of more than 1,300 entries at a state science fair."
 domain: "Computer Vision"
+metric: "3rd / 1,300+"
+metricLabel: "FETEPS 2025 · ICPA 2026 paper accepted"
 problem: "A soil's texture is its mix of sand, silt and clay, and it drives real decisions about irrigation and planting. Reading it normally means sending a sample to a lab or calling in a specialist, and on a large farm with no phone signal neither of those happens, so most fields are never assessed at all. VisioSoil classifies soil texture from a single photo, right on the phone."
 constraints: "It had to work with no internet whatsoever, because that is exactly where it is needed. It had to fit and run on an ordinary phone rather than a server. And the reading had to be trustworthy, since a soil measurement is only useful if you also know exactly where it was taken."
 approach: "I run the image model fully on the device using TensorFlow Lite, which is Google's tool for running models on phones, on a compact network called MobileNetV2 that is designed to be light enough for mobile hardware. It was trained in two stages for accuracy. The classification runs in a background thread so the screen never freezes, and every reading is saved on the phone together with its GPS location, behind a storage layer that does not care whether the data later syncs to a server."

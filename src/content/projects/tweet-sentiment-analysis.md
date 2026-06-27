@@ -2,6 +2,8 @@
 title: "Tweet Sentiment, Tuned for the Mess of Real Tweets"
 tagline: "A sentiment pipeline built for messy real tweets, with the slow preprocessing rebuilt in Rust to run about 42 times faster."
 domain: "NLP & LLMs"
+metric: "42× faster"
+metricLabel: "Rust preprocessing rewrite, byte-identical"
 problem: "Sentiment analysis means automatically judging whether a piece of text is positive, negative or neutral. The catch is that most ready-made sentiment tools are trained on clean, formal writing and quietly fall apart on tweets, where slang, mentions, hashtags and emojis break the assumptions they were built on. This project builds a sentiment pipeline tuned for exactly that informal, noisy text."
 constraints: "The cleaning of tweets had to be correct down to individual emojis, which are easy to corrupt when a program splits text the wrong way. The preprocessing had to be fast enough to handle a million or more tweets, not just a small sample. And any claim of improvement needed a measured starting point to beat, rather than a vague before and after."
 approach: "I started from RoBERTa, a language model for understanding text, in a version already specialized for Twitter, and first measured its accuracy out of the box to set an honest baseline. Then, because the Python cleaning step is the bottleneck at large volumes, I rebuilt that step a second time in Rust, a language known for speed and safety, and proved it produces byte-for-byte the same output as the original Python."
