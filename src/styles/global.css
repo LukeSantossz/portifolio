@@ -160,10 +160,9 @@ details.reveal-details[open] > dl {
 .skill-chip {
   margin-right: 0.625rem;
   white-space: nowrap;
-  border-radius: 0.375rem;
-  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
-  background: color-mix(in srgb, var(--c) 8%, transparent);
-  color: color-mix(in srgb, var(--c) 65%, var(--color-ink));
+  border: 1px solid var(--color-concrete-700);
+  background: transparent;
+  color: var(--color-concrete-50);
   padding: 0.375rem 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
@@ -171,23 +170,18 @@ details.reveal-details[open] > dl {
     opacity 0.3s ease,
     border-color 0.3s ease,
     background-color 0.3s ease,
-    color 0.3s ease,
-    transform 0.3s ease,
-    filter 0.3s ease;
+    color 0.3s ease;
 }
 
-/* Same-cluster chips light up; everything else fades back — clusters revealed. */
+/* Same-cluster chips light up green; everything else fades back. */
 .skill-chip.is-active {
-  border-color: var(--c);
-  background: color-mix(in srgb, var(--c) 20%, transparent);
-  color: color-mix(in srgb, var(--c) 30%, var(--color-ink));
-  transform: translateY(-1px);
-  box-shadow: 0 0 18px -6px var(--c);
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  color: var(--color-accent);
 }
 
 .skill-chip.is-dim {
-  opacity: 0.2;
-  filter: grayscale(0.5);
+  opacity: 0.25;
 }
 
 .skill-legend {
@@ -196,7 +190,12 @@ details.reveal-details[open] > dl {
 }
 
 .skill-legend.is-active {
-  color: var(--color-ink);
+  color: var(--color-accent);
+}
+
+.skill-legend.is-active .skill-legend-marker {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
 }
 
 /* ----------------------------------------------------------------------------

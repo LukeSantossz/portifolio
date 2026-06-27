@@ -1,34 +1,19 @@
 ---
 import { skillGroups } from '../../data/skills.ts';
 
-// Each category is a cluster with its own hue. Hovering any chip (or legend
-// entry) lights up its cluster and fades the rest — the grouping is revealed
-// indirectly rather than spelled out.
-const clusterColor: Record<string, string> = {
-  Languages: '#5ea9ff',
-  'ML & Data': '#46c06a',
-  'LLM & RAG': '#d6a84e',
-  'Mobile & Backend': '#b07bff',
-  'Cloud & Tooling': '#3fc9c0',
-};
-const fallback = '#46c06a';
-
 interface Chip {
   name: string;
   cluster: string;
-  color: string;
 }
 
-// Flatten by zipping across categories so the colors are scattered through the
-// carousel (a chip and its cluster-mates are far apart until you hover).
+// Flatten by zipping across categories so cluster-mates are scattered through the
+// carousel — they only visibly group when you hover and the cluster lights up.
 const flat: Chip[] = [];
 const maxLen = Math.max(...skillGroups.map((g) => g.items.length));
 for (let i = 0; i < maxLen; i++) {
   for (const group of skillGroups) {
     const item = group.items[i];
-    if (item) {
-      flat.push({ name: item, cluster: group.category, color: clusterColor[group.category] ?? fallback });
-    }
+    if (item) flat.push({ name: item, cluster: group.category });
   }
 }
 
@@ -37,8 +22,8 @@ const ROWS = 3;
 const rows: Chip[][] = Array.from({ length: ROWS }, () => []);
 flat.forEach((chip, i) => rows[i % ROWS].push(chip));
 
-// Repeat each row enough times that a single "set" is wider than any screen,
-// then render the set twice so the -50% loop is seamless on every resolution.
+// Repeat each row so one "set" is wider than any screen, then render the set
+// twice so the -50% loop is seamless at any resolution.
 const REPEAT = 3;
 const buildSet = (row: Chip[]) => Array.from({ length: REPEAT }, () => row).flat();
 
@@ -46,15 +31,24 @@ const buildSet = (row: Chip[]) => Array.from({ length: REPEAT }, () => row).flat
 const durations = ['52s', '66s', '59s'];
 ---
 
-<section id="skills" class="overflow-hidden border-t border-border/60 py-24">
-  <div class="mx-auto mb-12 max-w-5xl px-6">
-    <div data-reveal>
-      <span class="font-mono text-sm text-accent">04 / Skills</span>
-      <h2 class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
+<section
+  id="skills"
+  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 py-24 text-concrete-50 md:py-28"
+>
+  <!-- Decorative analog grain (no semantics, not focusable). -->
+  <div class="bt-grain" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto mb-12 max-w-6xl px-6">
+    <div data-skills-anim class="max-w-2xl">
+      <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
+        <span class="text-accent">04 / SKILLS</span>
+      </p>
+      <h2
+        class="mt-3 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-6xl"
+      >
         Skills &amp; stack
       </h2>
-      <div class="accent-rule mt-4"></div>
-      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+      <p class="mt-5 max-w-2xl font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
         Every tool here earns its place in one of the case studies below, not on a
         logo wall. Hover any tag to surface its cluster: related tools light up and
         the rest fade back.
@@ -62,8 +56,8 @@ const durations = ['52s', '66s', '59s'];
     </div>
   </div>
 
-  <!-- Full-bleed: the carousel spans the whole viewport, not the centered column. -->
-  <div data-reveal class="skills-marquee space-y-3">
+  <!-- Full-bleed: the marquee spans the whole viewport, not the centered column. -->
+  <div data-skills-anim class="skills-marquee relative z-10 space-y-3">
     {
       rows.map((row, r) => {
         const set = buildSet(row);
@@ -77,7 +71,6 @@ const durations = ['52s', '66s', '59s'];
                 <span
                   class="skill-chip"
                   data-cluster={chip.cluster}
-                  style={`--c:${chip.color}`}
                   aria-hidden={idx >= row.length ? 'true' : undefined}
                 >
                   {chip.name}
@@ -90,17 +83,17 @@ const durations = ['52s', '66s', '59s'];
     }
   </div>
 
-  <div class="mx-auto mt-8 max-w-5xl px-6">
-    <ul data-reveal class="flex flex-wrap gap-x-5 gap-y-2" style="--reveal-delay:120ms">
+  <div class="relative z-10 mx-auto mt-8 max-w-6xl px-6">
+    <ul data-skills-anim class="flex flex-wrap gap-x-5 gap-y-2">
       {
         skillGroups.map((group) => (
           <li
-            class="skill-legend flex items-center gap-2 text-xs text-muted hover:text-ink"
+            class="skill-legend flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-concrete-300"
             data-cluster={group.category}
           >
             <span
-              class="h-2.5 w-2.5 rounded-full"
-              style={`background:${clusterColor[group.category] ?? fallback}`}
+              class="skill-legend-marker h-2.5 w-2.5 border border-concrete-700"
+              aria-hidden="true"
             />
             {group.category}
           </li>
