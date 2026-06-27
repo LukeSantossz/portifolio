@@ -66,6 +66,7 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | Presentation-only verification (build + type-check + Lighthouse + manual) instead of unit TDD | Minimal or full unit-test harness | A static vitrine has no business logic to unit-test; the four gates catch real regressions at lower cost. See [ADR-0001](docs/adr/0001-presentation-only-verification-policy.md). |
 | Industrial-brutalist "Concrete Terminal" design language, shipped in phases | Heavier "Blueprint" industrial, quiet brutalist, big-bang redesign | A phased pilot delivers a distinctive recruiter-facing identity at low risk; other sections migrate later. See [ADR-0002](docs/adr/0002-industrial-brutalist-design-language.md). |
 | GSAP (core) for the Hero intro, gated by `matchMedia` | CSS keyframes only; a React animation library | Precise reduced-motion-gated stagger in static Astro without introducing React. See [ADR-0003](docs/adr/0003-gsap-as-motion-library.md). |
+| GSAP ScrollTrigger for scroll-driven section entrances | Keep CSS `[data-reveal]`; no scroll motion | Cohesive staggered, reduced-motion-gated reveals as the brutalist redesign moves below the fold, with no new dependency. See [ADR-0004](docs/adr/0004-scrolltrigger-for-section-motion.md). |
 
 ## Getting Started
 
