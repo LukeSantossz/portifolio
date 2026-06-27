@@ -217,7 +217,7 @@ Add the import `import Signal from '../components/sections/Signal.astro';` and p
 
 Run: `grep -c 'id="signal"' src/components/sections/Signal.astro` → `1`.
 Run: `grep -c "data-visitor-point" src/components/sections/Signal.astro` → `1`.
-Run: `grep -Ec "arc|distance|~.*km|stroke-dasharray.*arc" src/components/sections/Signal.astro` → `0` (no arc/readouts — minimal).
+Run (minimal — no connecting arc/line, only the world path): `grep -c "<path" src/components/sections/Signal.astro` → `1` (only the world-map path); `grep -c "<line" src/components/sections/Signal.astro` → `0` (no connector). Two point `<g>`s only; no distance/coordinate readout markup.
 Run: `grep -c "navigator.geolocation" src/components/sections/Signal.astro` → `0` (no permission prompt).
 Run: `grep -c "Signal" src/pages/index.astro` → `>= 2` (import + element).
 Run: `npm run check` → `0 errors`; `npm run build` → exit 0.
@@ -349,7 +349,7 @@ git commit -m "docs: record ADR-0007 for the Signal geo-map"
 
 - [ ] **Step 1: gates** — `npm run check` → `0 errors`; `npm run build` → exit 0.
 - [ ] **Step 2: `map_renders_static` + `content_decoupled`** — `grep -c "id=\"signal\"" dist/index.html` → `1`; `grep -c "worldMap" src/components/sections/Signal.astro` → `1`; `grep -c "location:" src/data/site.ts` → `>= 1`; the author dot `<g transform=` is present in `dist/index.html`.
-- [ ] **Step 3: `visitor_point_progressive` + `no_permission_prompt` + `static_site_preserved`** — `grep -c "ipwho.is" src/components/sections/Signal.astro` → `1`; `grep -c "AbortController" …` → `1`; `grep -rc "navigator.geolocation" src` → `0`; `grep -c "output:" astro.config*` shows `'static'` (unchanged); no map library in `package.json` `dependencies`.
+- [ ] **Step 3: `visitor_point_progressive` + `no_permission_prompt` + `static_site_preserved`** — `grep -c "ipwho.is" src/components/sections/Signal.astro` → `1`; `grep -c "AbortController" …` → `1`; `grep -rc "navigator.geolocation" src` → `0`; `grep -rc "output: 'server'" astro.config*` → `0` (no SSR) and no SSR adapter / runtime map library in `package.json` `dependencies` (`world-atlas`/`topojson-client` are devDependencies only).
 - [ ] **Step 4: `minimal_treatment` + `decorative_a11y` + `cls_safe`** — no arc/readout markup; the SVG is `aria-hidden`; the section copy is the text equivalent; `grep -A2 "prefers-reduced-motion" src/styles/global.css | grep -c "signal-pulse"` → `>= 1`; the visitor `<g>` starts `display:none` (no layout box) so revealing it shifts nothing.
 - [ ] **Step 5: `privacy_note` + `adr_recorded`** — `grep -c "never stored" src/components/sections/Signal.astro` → `1`; ADR file exists + README links it.
 - [ ] **Step 6: `lighthouse_budget_met` (browser/CI)** — manual: map + dots legible, fallback works, reduced-motion stops the ping; Lighthouse per `lighthouserc.json` (a11y ≥0.95, CLS ≤0.1, perf not regressed by the inline SVG). Record evidence; note R2.
