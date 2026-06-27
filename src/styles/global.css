@@ -246,6 +246,28 @@ textarea:focus-visible,
   outline-offset: 3px;
 }
 
+/* ----------------------------------------------------------------------------
+   Signal geo-map — neon points on a line world map. The map stroke uses
+   `currentColor` (set to a concrete tone on the <svg>); the points are accent
+   green with a glow + a slow ping ring that is removed under reduced motion.
+---------------------------------------------------------------------------- */
+.signal-point {
+  fill: var(--color-accent);
+  filter: drop-shadow(0 0 1px var(--color-accent));
+}
+
+.signal-pulse {
+  fill: var(--color-accent);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: signal-ping 2.6s ease-out infinite;
+}
+
+@keyframes signal-ping {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
 /* Pre-paint anti-FOUC: when the intro will run (motion allowed, JS on), the
    intro targets start hidden so GSAP can animate them in without a flash. The
    class is set by an is:inline script and removed by GSAP (or a failsafe). It
@@ -278,6 +300,12 @@ html.hero-intro [data-hero-anim] {
   /* Remove the CRT scan-beam entirely (it only conveys ambience). */
   .crt-beam {
     display: none !important;
+  }
+
+  /* Freeze the Signal ping (the static dots still show). */
+  .signal-pulse {
+    animation: none !important;
+    opacity: 0 !important;
   }
 }
 
