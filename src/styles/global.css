@@ -17,6 +17,22 @@
   --color-paper: #f4f6f1; /* light "paper" — glass highlights, grids, badges */
   --color-paper-soft: #e3e8df; /* slightly greyed light, for soft light borders */
 
+  /* --- Concrete Terminal (industrial-brutalist) design system ---------------
+     Additive monochrome ramp + hard-surface + type-scale tokens. The Hero
+     consumes only these plus --color-accent (green signal). Existing tokens
+     above remain for the not-yet-redesigned sections. */
+  --color-stone-950: #0e0e0e; /* concrete near-black — Hero background */
+  --color-stone-900: #161616; /* raised concrete surface */
+  --color-stone-700: #3a3a3a; /* hard rule / divider on dark */
+  --color-stone-300: #b8b5ad; /* muted off-white — secondary text */
+  --color-stone-50: #ece9e2; /* off-white ink — primary text on concrete */
+
+  --shadow-hard: 6px 6px 0 0 var(--color-stone-50); /* hard-offset, no blur */
+  --shadow-hard-ink: 6px 6px 0 0 var(--color-stone-950);
+
+  --text-display: clamp(3rem, 11vw, 8.5rem); /* extreme display scale */
+  --text-label: 0.75rem; /* mono label scale (paired with tracking/uppercase) */
+
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
 }
