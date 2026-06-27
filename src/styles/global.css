@@ -312,15 +312,6 @@ details.reveal-details[open] > dl {
    About-photo floating stack badges — looping decorative motion, neutralized
    by the prefers-reduced-motion block below.
 ---------------------------------------------------------------------------- */
-/* Floating tech badges that bob gently around the About portrait. */
-@keyframes badge-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-.float-badge {
-  animation: badge-float 4.5s ease-in-out infinite;
-}
 
 
 /* ----------------------------------------------------------------------------
@@ -402,7 +393,6 @@ html.hero-intro [data-hero-anim] {
 
   /* Stop continuously looping effects outright. */
   .marquee-track,
-  .float-badge,
   .bt-scanline {
     animation: none !important;
   }
