@@ -52,3 +52,33 @@ const ay = (90 - lat).toFixed(2);
     </p>
   </div>
 </section>
+
+<script>
+  // Place the visitor's point from a coarse IP lookup (no permission prompt).
+  // Static-site-safe + fail-safe: on any error/timeout, only the author point shows.
+  const group = document.querySelector('#signal [data-visitor-point]');
+  if (group) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 3000);
+    fetch('https://ipwho.is/', { signal: controller.signal })
+      .then((res) => res.json())
+      .then((geo) => {
+        window.clearTimeout(timer);
+        if (
+          geo &&
+          geo.success !== false &&
+          typeof geo.latitude === 'number' &&
+          typeof geo.longitude === 'number'
+        ) {
+          const x = geo.longitude + 180; // equirectangular, matches the SVG viewBox
+          const y = 90 - geo.latitude;
+          group.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+          (group as HTMLElement).style.display = '';
+        }
+      })
+      .catch(() => {
+        window.clearTimeout(timer);
+        /* graceful: leave only the author point */
+      });
+  }
+</script>
