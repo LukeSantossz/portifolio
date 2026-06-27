@@ -6,7 +6,7 @@ import Icon from '../ui/Icon.astro';
 
 <section
   id="top"
-  class="relative min-h-screen overflow-hidden bg-stone-950 text-stone-50"
+  class="relative min-h-screen overflow-hidden bg-concrete-950 text-concrete-50"
 >
   <!-- Pre-paint: arm the intro only when motion is allowed and JS runs; a
        failsafe reveals the content if the GSAP module never loads. -->
@@ -30,10 +30,10 @@ import Icon from '../ui/Icon.astro';
     <p
       data-hero-anim
       data-hero-label
-      class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-label uppercase tracking-[0.25em] text-stone-300"
+      class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-label uppercase tracking-[0.25em] text-concrete-300"
     >
       <span class="text-accent">01 / HELLO</span>
-      <span aria-hidden="true" class="text-stone-700">//</span>
+      <span aria-hidden="true" class="text-concrete-700">//</span>
       <span class="normal-case tracking-normal">{site.availability}</span>
     </p>
 
@@ -41,7 +41,7 @@ import Icon from '../ui/Icon.astro';
     <h1
       data-hero-anim
       data-hero-headline
-      class="mt-6 font-sans text-display font-black uppercase leading-[0.9] tracking-[-0.03em] text-stone-50"
+      class="mt-6 font-sans text-display font-black uppercase leading-[0.9] tracking-[-0.03em] text-concrete-50"
     >
       {site.name}
     </h1>
@@ -59,7 +59,7 @@ import Icon from '../ui/Icon.astro';
     <p
       data-hero-anim
       data-hero-sub
-      class="mt-6 max-w-2xl font-sans text-base leading-relaxed text-stone-300 md:text-lg"
+      class="mt-6 max-w-2xl font-sans text-base leading-relaxed text-concrete-300 md:text-lg"
     >
       {site.headline}
     </p>
@@ -72,7 +72,7 @@ import Icon from '../ui/Icon.astro';
     >
       <a
         href="#projects"
-        class="inline-flex items-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-stone-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+        class="inline-flex items-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
       >
         View projects
         <Icon name="arrow-right" size={18} />
@@ -80,7 +80,7 @@ import Icon from '../ui/Icon.astro';
       <a
         href={site.cvPath}
         download
-        class="inline-flex items-center gap-2 border-2 border-stone-50 bg-transparent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-stone-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+        class="inline-flex items-center gap-2 border-2 border-concrete-50 bg-transparent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
       >
         <Icon name="download" size={18} />
         Download CV
@@ -91,25 +91,25 @@ import Icon from '../ui/Icon.astro';
     </div>
 
     <!-- Proof strip: hard-bordered grid; the first stat is the green signal. -->
-    <dl class="mt-14 grid max-w-4xl grid-cols-1 border-2 border-stone-50 sm:grid-cols-3">
+    <dl class="mt-14 grid max-w-4xl grid-cols-1 border-2 border-concrete-50 sm:grid-cols-3">
       {
         site.heroStats.map((stat, index) => (
           <div
             data-hero-anim
             data-hero-stat
-            class={`border-stone-50 p-5 ${
+            class={`border-concrete-50 p-5 ${
               index > 0 ? 'border-t-2 sm:border-l-2 sm:border-t-0' : ''
             }`}
           >
             <dt
               class={`font-mono text-3xl font-bold ${
-                index === 0 ? 'text-accent' : 'text-stone-50'
+                index === 0 ? 'text-accent' : 'text-concrete-50'
               }`}
               data-countup
             >
               {stat.value}
             </dt>
-            <dd class="mt-2 font-mono text-xs leading-snug text-stone-300">
+            <dd class="mt-2 font-mono text-xs leading-snug text-concrete-300">
               {stat.label}
             </dd>
           </div>
@@ -122,7 +122,7 @@ import Icon from '../ui/Icon.astro';
   <a
     href="#about"
     aria-label="Scroll to content"
-    class="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 font-mono text-label uppercase tracking-[0.25em] text-stone-300 transition-colors hover:text-accent md:block"
+    class="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 font-mono text-label uppercase tracking-[0.25em] text-concrete-300 transition-colors hover:text-accent md:block"
   >
     Scroll ↓
   </a>

@@ -21,14 +21,14 @@
      Additive monochrome ramp + hard-surface + type-scale tokens. The Hero
      consumes only these plus --color-accent (green signal). Existing tokens
      above remain for the not-yet-redesigned sections. */
-  --color-stone-950: #0e0e0e; /* concrete near-black — Hero background */
-  --color-stone-900: #161616; /* raised concrete surface */
-  --color-stone-700: #3a3a3a; /* hard rule / divider on dark */
-  --color-stone-300: #b8b5ad; /* muted off-white — secondary text */
-  --color-stone-50: #ece9e2; /* off-white ink — primary text on concrete */
+  --color-concrete-950: #0e0e0e; /* concrete near-black — Hero background */
+  --color-concrete-900: #161616; /* raised concrete surface */
+  --color-concrete-700: #3a3a3a; /* hard rule / divider on dark */
+  --color-concrete-300: #b8b5ad; /* muted off-white — secondary text */
+  --color-concrete-50: #ece9e2; /* off-white ink — primary text on concrete */
 
-  --shadow-hard: 6px 6px 0 0 var(--color-stone-50); /* hard-offset, no blur */
-  --shadow-hard-ink: 6px 6px 0 0 var(--color-stone-950);
+  --shadow-hard: 6px 6px 0 0 var(--color-concrete-50); /* hard-offset, no blur */
+  --shadow-hard-ink: 6px 6px 0 0 var(--color-concrete-950);
 
   --text-display: clamp(3rem, 11vw, 8.5rem); /* extreme display scale */
   --text-label: 0.75rem; /* mono label scale (paired with tracking/uppercase) */
@@ -356,7 +356,7 @@ details.reveal-details[open] > dl {
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0 2px,
-    color-mix(in srgb, var(--color-stone-950) 60%, transparent) 2px 3px
+    color-mix(in srgb, var(--color-concrete-950) 60%, transparent) 2px 3px
   );
   animation: bt-scan 6s linear infinite;
 }
