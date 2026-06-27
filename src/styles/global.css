@@ -8,20 +8,12 @@
 @theme {
   --color-canvas: #0d100e; /* page background; renamed from `base` so `text-base`
      stays the font-size utility (a color named `base` hijacks it to a color) */
-  --color-surface: #151a16;
-  --color-surface-2: #1d241e;
-  --color-border: #2b332b;
-  --color-ink: #e9ece3;
-  --color-muted: #8b938a;
-  --color-accent: #46c06a; /* grass green */
-  --color-accent-2: #d6a84e; /* wheat / harvest gold */
-  --color-paper: #f4f6f1; /* light "paper" — glass highlights, grids, badges */
-  --color-paper-soft: #e3e8df; /* slightly greyed light, for soft light borders */
+  --color-ink: #e9ece3; /* global body / ::selection text color */
+  --color-accent: #46c06a; /* grass green — the only chromatic signal */
 
   /* --- Concrete Terminal (industrial-brutalist) design system ---------------
-     Additive monochrome ramp + hard-surface + type-scale tokens. The Hero
-     consumes only these plus --color-accent (green signal). Existing tokens
-     above remain for the not-yet-redesigned sections. */
+     The monochrome concrete ramp + hard-surface + type-scale tokens the whole
+     (now fully migrated) site is built on, plus --color-accent. */
   --color-concrete-950: #0e0e0e; /* concrete near-black — Hero background */
   --color-concrete-900: #161616; /* raised concrete surface */
   --color-concrete-700: #3a3a3a; /* hard rule / divider on dark */
@@ -30,7 +22,6 @@
   --color-concrete-50: #ece9e2; /* off-white ink — primary text on concrete */
 
   --shadow-hard: 6px 6px 0 0 var(--color-concrete-50); /* hard-offset, no blur */
-  --shadow-hard-ink: 6px 6px 0 0 var(--color-concrete-950);
 
   --text-display: clamp(3rem, 11vw, 8.5rem); /* extreme display scale */
   --text-label: 0.75rem; /* mono label scale (paired with tracking/uppercase) */
@@ -64,62 +55,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-
-/* Scroll-driven reveal: elements start hidden and animate in when they enter
-   the viewport (the IntersectionObserver in Layout.astro adds .is-visible).
-   Stagger children by setting --reveal-delay inline. */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
-}
-
-[data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* Card-style entrance variant: a touch of scale for the "dealing cards" feel. */
-[data-reveal='card'] {
-  transform: translateY(36px) scale(0.97);
-}
-
-/* Directional entrances — elements can slide in from the side instead of below. */
-[data-reveal='left'] {
-  transform: translateX(-40px);
-}
-
-[data-reveal='right'] {
-  transform: translateX(40px);
-}
-
-/* Thin "lit edge" along the top of a card — a sliver of light (paper token) that
-   gives surfaces a glassy highlight without lightening the whole panel. */
-.card-lit::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--color-paper) 22%, transparent),
-    transparent
-  );
-  pointer-events: none;
-}
-
-/* Animated accent rule used under section headings — adds life to the layout. */
-.accent-rule {
-  height: 2px;
-  width: 3rem;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
-}
 
 /* Fluid expand for the project "case study" disclosure. */
 details.reveal-details[open] > dl {
@@ -301,11 +236,12 @@ details.reveal-details[open] > dl {
   to { transform: translateY(130vh); }
 }
 
-/* High-contrast focus ring for Hero interactive elements. */
-#top a:focus-visible,
-#top button:focus-visible,
-#about a:focus-visible,
-#about button:focus-visible {
+/* High-contrast focus ring for all interactive elements, site-wide. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
 }
@@ -332,12 +268,6 @@ html.hero-intro [data-hero-anim] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-
-  /* Don't leave scroll-reveal content stuck hidden when its transition is cut. */
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
   }
 
   /* Stop continuously looping effects outright. */
