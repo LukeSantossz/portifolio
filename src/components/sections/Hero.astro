@@ -8,6 +8,17 @@ import Icon from '../ui/Icon.astro';
   id="top"
   class="relative min-h-screen overflow-hidden bg-stone-950 text-stone-50"
 >
+  <!-- Pre-paint: arm the intro only when motion is allowed and JS runs; a
+       failsafe reveals the content if the GSAP module never loads. -->
+  <script is:inline>
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      document.documentElement.classList.add('hero-intro');
+      window.setTimeout(function () {
+        document.documentElement.classList.remove('hero-intro');
+      }, 2000);
+    }
+  </script>
+
   <!-- Decorative analog texture (no semantics, not focusable). -->
   <div class="bt-grain" aria-hidden="true"></div>
   <div class="bt-scanline" aria-hidden="true"></div>
@@ -116,3 +127,41 @@ import Icon from '../ui/Icon.astro';
     Scroll ↓
   </a>
 </section>
+
+<script>
+  import gsap from 'gsap';
+
+  const root = document.documentElement;
+  const reveal = () => root.classList.remove('hero-intro');
+
+  const mm = gsap.matchMedia();
+
+  // Motion allowed: play the staggered intro, then clear the pre-paint hide.
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    gsap.set('[data-hero-anim]', { autoAlpha: 0, y: 24 });
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out', duration: 0.7 },
+      onComplete: reveal,
+    });
+
+    tl.to('[data-hero-label]', { autoAlpha: 1, y: 0 })
+      .to('[data-hero-headline]', { autoAlpha: 1, y: 0 }, '-=0.45')
+      .to('[data-hero-role]', { autoAlpha: 1, y: 0 }, '-=0.5')
+      .to('[data-hero-sub]', { autoAlpha: 1, y: 0 }, '-=0.5')
+      .to('[data-hero-cta]', { autoAlpha: 1, y: 0 }, '-=0.5')
+      .to('[data-hero-stat]', { autoAlpha: 1, y: 0, stagger: 0.1 }, '-=0.4');
+
+    return () => {
+      tl.kill();
+      gsap.set('[data-hero-anim]', { clearProps: 'all' });
+      reveal();
+    };
+  });
+
+  // Reduced motion: never animate; ensure nothing stays hidden.
+  mm.add('(prefers-reduced-motion: reduce)', () => {
+    reveal();
+    return () => {};
+  });
+</script>
