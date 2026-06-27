@@ -25,6 +25,7 @@
   --color-concrete-950: #0e0e0e; /* concrete near-black — Hero background */
   --color-concrete-900: #161616; /* raised concrete surface */
   --color-concrete-700: #3a3a3a; /* hard rule / divider on dark */
+  --color-concrete-500: #6b675f; /* mid hairline rule on dark, ~3.4:1 */
   --color-concrete-300: #b8b5ad; /* muted off-white — secondary text */
   --color-concrete-50: #ece9e2; /* off-white ink — primary text on concrete */
 
