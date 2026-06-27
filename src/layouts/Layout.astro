@@ -80,6 +80,12 @@ const personSchema = {
       style="background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--color-accent) 13%, transparent), transparent 65%);"
     >
     </div>
+    <!-- Decorative global CRT overlay: faint scanlines + a slow scan-beam sweep.
+         Non-interactive (pointer-events:none) + aria-hidden; the beam is removed
+         under prefers-reduced-motion. Supersedes the old Hero-only scanline. -->
+    <div class="crt-overlay" aria-hidden="true">
+      <div class="crt-beam"></div>
+    </div>
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-canvas focus:font-medium"

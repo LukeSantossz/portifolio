@@ -261,25 +261,44 @@ details.reveal-details[open] > dl {
   background-size: 160px 160px;
 }
 
-/* CRT-style scanlines — static lines with a slow drift; drift is killed under
-   reduced motion (the lines themselves remain). */
-@keyframes bt-scan {
-  from { background-position: 0 0; }
-  to { background-position: 0 6px; }
-}
-
-.bt-scanline {
-  position: absolute;
+/* ----------------------------------------------------------------------------
+   Global CRT ambient overlay — faint static scanlines + a slow scan-beam that
+   sweeps top->bottom across the whole page. Decorative (the markup is
+   aria-hidden + pointer-events:none). It sits above content but below the fixed
+   nav (z-40) and never blocks interaction; low opacity keeps text legible. The
+   beam is removed under reduced motion (see the media query below).
+---------------------------------------------------------------------------- */
+.crt-overlay {
+  position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 30;
   pointer-events: none;
-  opacity: 0.4;
+  overflow: hidden;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0 2px,
-    color-mix(in srgb, var(--color-concrete-950) 60%, transparent) 2px 3px
+    color-mix(in srgb, #000 10%, transparent) 2px 3px
   );
-  animation: bt-scan 6s linear infinite;
+}
+
+.crt-beam {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 28vh;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--color-accent) 12%, transparent),
+    transparent
+  );
+  animation: crt-sweep 10s linear infinite;
+  will-change: transform;
+}
+
+@keyframes crt-sweep {
+  from { transform: translateY(-30vh); }
+  to { transform: translateY(130vh); }
 }
 
 /* High-contrast focus ring for Hero interactive elements. */
@@ -322,9 +341,13 @@ html.hero-intro [data-hero-anim] {
   }
 
   /* Stop continuously looping effects outright. */
-  .marquee-track,
-  .bt-scanline {
+  .marquee-track {
     animation: none !important;
+  }
+
+  /* Remove the CRT scan-beam entirely (it only conveys ambience). */
+  .crt-beam {
+    display: none !important;
   }
 }
 
