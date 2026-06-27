@@ -66,31 +66,6 @@ body {
   animation: reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Hero headline — a slow gradient that drifts ink -> accent -> gold and back.
-   Clipped to the text, so the glyphs themselves shimmer. The static fallback
-   (reduced motion) keeps the readable ink-leading gradient. */
-@keyframes headline-flow {
-  0%,
-  100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.headline-gradient {
-  background-image: linear-gradient(
-    110deg,
-    var(--color-ink),
-    var(--color-ink),
-    var(--color-accent),
-    var(--color-accent-2),
-    var(--color-ink)
-  );
-  background-size: 250% 100%;
-  background-position: 0% 50%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: headline-flow 9s ease-in-out infinite;
-}
 
 /* Scroll-driven reveal: elements start hidden and animate in when they enter
    the viewport (the IntersectionObserver in Layout.astro adds .is-visible).
@@ -298,19 +273,6 @@ details.reveal-details[open] > dl {
   background: color-mix(in srgb, var(--color-accent) 12%, transparent);
 }
 
-/* Slow, wave-like drift for the hero background grid.
-   Disabled automatically by the prefers-reduced-motion block below. */
-@keyframes grid-wave {
-  0%   { background-position: 0px 0px; }
-  25%  { background-position: 12px 18px; }
-  50%  { background-position: 24px 0px; }
-  75%  { background-position: 12px -18px; }
-  100% { background-position: 0px 0px; }
-}
-
-.hero-grid {
-  animation: grid-wave 22s ease-in-out infinite;
-}
 
 /* ----------------------------------------------------------------------------
    Navbar — scroll progress bar + active-section ("scroll-spy") link state.
@@ -351,19 +313,9 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
-   Hero intro cursor, the about-photo floating stack badges, and the scroll cue.
-   All looping + decorative; neutralized by the prefers-reduced-motion block.
+   About-photo floating stack badges — looping decorative motion, neutralized
+   by the prefers-reduced-motion block below.
 ---------------------------------------------------------------------------- */
-@keyframes cursor-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.cursor-blink {
-  color: var(--color-accent);
-  animation: cursor-blink 1.1s step-end infinite;
-}
-
 /* Floating tech badges that bob gently around the About portrait. */
 @keyframes badge-float {
   0%, 100% { transform: translateY(0); }
@@ -374,14 +326,6 @@ details.reveal-details[open] > dl {
   animation: badge-float 4.5s ease-in-out infinite;
 }
 
-@keyframes scroll-wheel {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(12px); opacity: 0; }
-}
-
-.scroll-wheel {
-  animation: scroll-wheel 1.8s ease-in-out infinite;
-}
 
 /* ----------------------------------------------------------------------------
    Concrete Terminal texture + interaction patterns (Hero scope).
@@ -460,17 +404,8 @@ html.hero-intro [data-hero-anim] {
 
   /* Stop continuously looping effects outright. */
   .marquee-track,
-  .hero-grid,
-  .headline-gradient,
-  .cursor-blink,
   .float-badge,
-  .scroll-wheel,
   .bt-scanline {
     animation: none !important;
-  }
-
-  /* Keep the headline a readable, static ink->accent gradient. */
-  .headline-gradient {
-    background-position: 0% 50% !important;
   }
 }
