@@ -300,7 +300,8 @@ Add to the very bottom of `src/components/sections/Contact.astro` (after the clo
 
 Run: `npm run check` → Expected: `0 errors`.
 Run: `npm run build` → Expected: exit 0, no "failed to resolve import 'gsap/ScrollTrigger'".
-Run: `grep -c "Contact.astro_astro_type_script" dist/index.html` → Expected: `2` (the submit handler + the entrance module both bundled).
+Run: `grep -c "Contact.astro_astro_type_script" dist/index.html` → Expected: `1` (the gsap entrance module externalizes into `dist/_astro/`; the import-free submit handler is inlined directly into `index.html`, so it is NOT a separate `Contact.astro_astro_type_script` ref).
+Run (submit handler present, inlined): `grep -c "api.web3forms.com/submit" dist/index.html` → Expected: `1`.
 
 - [ ] **Step 3: Manual behavior check**
 
@@ -348,7 +349,7 @@ Run: `grep -c "formEnabled" src/components/sections/Contact.astro` → Expected:
 
 - [ ] **Step 5: `motion_failsafe_and_gated` + `texture_decorative`**
 
-Run: `grep -c "Contact.astro_astro_type_script" dist/index.html` → Expected: `2`.
+Run: `grep -c "Contact.astro_astro_type_script" dist/index.html` → Expected: `1` (entrance externalized). Run: `grep -c "api.web3forms.com/submit" dist/index.html` → Expected: `1` (submit handler inlined). Both scripts thus ship.
 Run: `grep -roh "data-contact-anim]{opacity:0}" dist/_astro/*.css | wc -l` → Expected: `0` (no CSS pre-hide; content visible without JS).
 Run: `grep -c 'class="bt-grain" aria-hidden="true"' src/components/sections/Contact.astro` → Expected: `1`.
 
