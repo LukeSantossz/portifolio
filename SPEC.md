@@ -1,85 +1,90 @@
-# SPEC: feat(ui): add a global CRT scan-beam background animation
+# SPEC: chore(ui): final cleanup — remove dead legacy tokens/CSS, migrate 404, harden focus a11y
 
 ## Problem
 
-The Concrete Terminal design hints at a CRT/terminal identity — a static film grain
-(`.bt-grain`) on every section and CRT scanlines (`.bt-scanline`) — but the scanlines exist
-**only on the Hero**, and nothing moves in the background elsewhere. The ambient texture is
-fragmented and almost entirely static, so the "terminal screen" feel doesn't carry across the
-page. The site wants one cohesive, subtle, page-wide CRT ambience that reinforces the
-aesthetic without competing with content or regressing the performance / accessibility
-baseline.
+The Concrete Terminal migration is complete, leaving dead legacy code and two deferred a11y
+items. Grep-verified state:
+
+- **Dead `[data-reveal]` system** — no component uses `data-reveal` anymore (all sections moved
+  to the GSAP entrance). The five `[data-reveal*]` CSS rules, the reduced-motion
+  `[data-reveal]` rule, and the `Layout.astro` IntersectionObserver "reveal" `<script>` are
+  dead (its `querySelectorAll('[data-reveal]')` is always empty).
+- **Dead CSS** — `.accent-rule` and `.card-lit` have zero component references.
+- **Orphaned `@theme` tokens** — `--color-surface`, `--color-surface-2`, `--color-border`,
+  `--color-paper-soft` have zero uses; `--color-accent-2` is used only by `.accent-rule`;
+  `--color-paper` only by `.card-lit`; `--color-muted` only by `404.astro`.
+- **`404.astro`** still uses the legacy `text-muted` — the last legacy-token consumer.
+- **A11y deferrals** — the high-contrast `:focus-visible` ring is scoped to `#top`/`#about`
+  only (the rest of the site falls back to the UA outline); the Contact field labels read
+  `// Name` etc., so a screen reader announces "slash slash name".
+
+`--color-ink` stays (it is the global `body` text color and the `::selection` color);
+`details.reveal-details` + `@keyframes reveal-up` stay (used by the `ProjectCard` disclosure).
 
 ## Design Decision
 
-Add **one global, decorative CRT overlay** (in `Layout.astro`) that unifies the terminal
-ambience across the whole page:
+A single final-cleanup pass that removes the verified-dead code/tokens, migrates the last
+legacy consumer, and lands the two deferred a11y improvements — leaving the codebase with no
+dead tokens and a consistent, site-wide focus ring.
 
-- A `position: fixed`, full-viewport overlay, `aria-hidden="true"`, `pointer-events: none`,
-  containing two purely-decorative layers:
-  1. **Faint static scanlines** — a `repeating-linear-gradient` of horizontal lines at very
-     low opacity (~3%), spanning the viewport.
-  2. **An animated scan-beam** — a soft, tall (~30vh) translucent band that sweeps top→bottom
-     on a slow linear loop (~10s), evoking a CRT refresh beam. Pure CSS `transform: translateY`
-     (GPU-composited), no JS.
-- The overlay sits **above content** (the canonical CRT-screen treatment) but is non-blocking
-  (`pointer-events: none`) and tuned to **low opacities** so text legibility is preserved. It
-  uses a subtle blend so it tints the page rather than darkening it.
-- **Reduced motion:** under `prefers-reduced-motion: reduce`, the scan-beam is removed
-  (`display: none` / `animation: none`); the static scanlines may remain (they are not motion)
-  but are already neutral. No flashing at any point (WCAG 2.3.1) and no perceptible brightness
-  flicker.
-- The now-redundant Hero-only `.bt-scanline` div + its CSS are removed (the global overlay
-  supersedes it); the per-section `.bt-grain` static grain stays.
+- **Remove the dead `[data-reveal]` system**: the `[data-reveal]`, `[data-reveal].is-visible`,
+  `[data-reveal='card']`, `[data-reveal='left']`, `[data-reveal='right']` rules, the
+  reduced-motion `[data-reveal]` rule, and the Layout reveal `<script>` (the cursor-glow and
+  count-up scripts stay).
+- **Remove dead CSS + their now-orphaned tokens**: delete `.accent-rule` (→ remove
+  `--color-accent-2`) and `.card-lit` (→ remove `--color-paper`); remove the orphaned
+  `--color-surface`, `--color-surface-2`, `--color-border`, `--color-paper-soft`.
+- **Migrate `404.astro`**: `text-muted` → `text-concrete-300` (→ remove `--color-muted`).
+- **Harden focus a11y**: replace the `#top`/`#about`-scoped `:focus-visible` rule with a
+  site-wide one (`a`/`button`/`input`/`textarea`/`[tabindex]`), keeping the 3px accent ring.
+- **Label a11y**: wrap the decorative `// ` prefix of each Contact field label in
+  `<span aria-hidden="true">//</span>` so the accessible name is just "Name"/"Email"/"Message"
+  (the visible `// NAME` look is unchanged).
 
-No JS, no layout impact (a fixed overlay reserves no space), no new dependency. Static Astro.
-This is a durable, site-wide visual-identity decision → record **ADR-0006 (CRT ambient
-overlay)**.
+Static Astro, no new dependency. No new ADR (pure cleanup + a11y; the existing ADRs hold). Any
+`@theme` token found to have zero uses during implementation (e.g. `--shadow-hard-ink`) is
+removed under the same rule; any token with a use is kept.
 
 ## Alternatives Considered
 
-- **Per-section, behind-content scan-beam** (a beam inside each section at `z-0`, like the
-  grain, so it never overlays text) — content-safest, but the beam resets per section instead
-  of a continuous page-wide sweep, and it multiplies the effect across 9 sections. Rejected for
-  the single, continuous, cheaper global overlay — but this is the fallback if the
-  above-content overlay proves to harm legibility (see Risks).
-- **Animated grid / drifting blueprint lines** — on-brand for the brutalist side, but a
-  different metaphor than the CRT the site already leans into; rejected for cohesion.
-- **Animated gradients / aurora / particles / "matrix rain" / heavy parallax** — rejected:
-  off-brand AI-slop for an industrial-brutalist site, and a perf/distraction risk.
-- **Brightness flicker for CRT realism** — rejected: flashing/flicker is an accessibility
-  hazard (WCAG 2.3) and distracting.
-- **Keep the scanlines Hero-only, add only the beam** — viable, but the user approved unifying
-  the scanlines site-wide too; the overlay does both in one layer.
+- **Leave the dead code** — rejected: now that migration is done, the orphans are pure debt and
+  confuse future work; removing them is safe (grep-verified zero references).
+- **Keep `:focus-visible` scoped to a few sections** — rejected: a consistent site-wide visible
+  focus ring is the correct a11y baseline (the Contact and Nav reviews both flagged the gap).
+- **Restyle `404.astro` fully into brutalist chrome** — rejected as scope creep; only the
+  legacy-token migration is in scope (the page already renders dark/legible).
+- **Remove `--color-ink` / `reveal-details` / `reveal-up`** — rejected: they are live (`body`
+  color / `::selection`; the ProjectCard disclosure animation).
 
 ## Scope
 
 - Includes:
-  - `src/layouts/Layout.astro`: add one decorative overlay element near the existing
-    `#cursor-glow` — `<div class="crt-overlay" aria-hidden="true"><div class="crt-beam"></div></div>`
-    (`pointer-events: none`, fixed, full-viewport). It must not intercept clicks or enter the
-    a11y tree.
   - `src/styles/global.css`:
-    - `.crt-overlay` — `position: fixed; inset: 0; pointer-events: none;` a high but
-      non-blocking stacking position; the static scanline `repeating-linear-gradient` at low
-      opacity.
-    - `.crt-beam` — the soft translucent band; a `@keyframes crt-sweep` translating it
-      top→bottom; a slow linear infinite duration.
-    - A `@media (prefers-reduced-motion: reduce)` rule that disables the beam (no sweep).
-    - Remove the now-dead `.bt-scanline` rule + its `@keyframes bt-scan` (superseded), and the
-      reduced-motion entry that referenced `.bt-scanline`.
-  - `src/components/sections/Hero.astro`: remove the `<div class="bt-scanline" aria-hidden="true"></div>`
-    element (the global overlay replaces it); keep the `.bt-grain` div.
-  - `docs/adr/0006-crt-ambient-overlay.md`: record the decision (global CRT overlay, above
-    content, reduced-motion-gated, the legibility trade-off and the per-section fallback); add a
-    README Engineering Decisions row.
+    - Remove the `[data-reveal]` rules (the base rule + `.is-visible` + the `card`/`left`/`right`
+      variants) and the reduced-motion `[data-reveal] { … }` rule.
+    - Remove the `.accent-rule` rule and the `.card-lit` rule (+ its `::before`).
+    - Remove these `@theme` tokens: `--color-surface`, `--color-surface-2`, `--color-border`,
+      `--color-accent-2`, `--color-paper`, `--color-paper-soft`, `--color-muted` (and
+      `--shadow-hard-ink` if confirmed unused at implementation time). Keep `--color-ink`,
+      `--color-canvas`, `--color-accent`, `--color-concrete-*`, the font/text/shadow-hard
+      tokens.
+    - Replace the `#top`/`#about`-scoped `:focus-visible` block with a site-wide
+      `a, button, input, textarea, [tabindex]:focus-visible` rule (same 3px accent ring +
+      offset).
+    - Keep `details.reveal-details[open] > dl` + `@keyframes reveal-up`, `.bt-grain`, the CRT
+      overlay, the marquee, nav, and skills rules.
+  - `src/layouts/Layout.astro`: remove the `[data-reveal]` IntersectionObserver `<script>`
+    block only (the cursor-glow and count-up scripts are untouched).
+  - `src/pages/404.astro`: `text-muted` → `text-concrete-300`.
+  - `src/components/sections/Contact.astro`: wrap the `// ` prefix of the three field labels in
+    `<span aria-hidden="true">//</span>` (visible text unchanged; accessible name becomes the
+    bare field name).
 - Does NOT include:
-  - Removing or changing the per-section `.bt-grain` grain or the `#cursor-glow`.
-  - Any content, section markup (other than the Hero scanline removal), `src/data/`, or
-    `src/content/` change.
-  - The separate final cleanup (dead tokens / `404.astro` / focus-ring) — that follows this
-    phase.
-  - Any JS-driven animation.
+  - Any visual redesign (no section restyle; the `404` keeps its layout/copy).
+  - Removing `--color-ink`, `details.reveal-details`, `@keyframes reveal-up`, `.bt-grain`, or
+    any live rule/token.
+  - Any content / `src/data/` / `src/content/` change.
+  - A new ADR.
 
 ## Acceptance Criteria
 
@@ -88,47 +93,45 @@ harness, per `docs/adr/0001-presentation-only-verification-policy.md`).
 
 - `build_succeeds`: `npm run build` exits 0.
 - `typecheck_clean`: `npm run check` reports 0 errors.
-- `overlay_decorative`: the `.crt-overlay` is `aria-hidden="true"`, `pointer-events: none`,
-  not focusable, contains no text, and does not intercept pointer events over any
-  link/button/input.
-- `beam_motion_gated`: the scan-beam animates only when motion is allowed; under emulated
-  `prefers-reduced-motion: reduce` the beam does not move (no sweep) and nothing flashes.
-- `no_js`: the effect is pure CSS — no `<script>` is added for it.
-- `cls_safe`: the overlay is `position: fixed` (reserves no layout) and animates `transform`
-  only; the Lighthouse `cumulative-layout-shift` budget (≤0.1) is not regressed.
-- `legibility_preserved`: with the overlay active, body text across sections remains clearly
-  legible at desktop and mobile widths (low opacity; the beam pass is brief). This is the
-  primary visual gate — verified in a real browser.
-- `hero_scanline_deduped`: the Hero `.bt-scanline` element and the `.bt-scanline` CSS +
-  `@keyframes bt-scan` are removed; no double scanlines on the Hero; the `.bt-grain` grain
-  remains.
-- `adr_recorded`: `docs/adr/0006-crt-ambient-overlay.md` exists and is linked from the README
-  Engineering Decisions table.
+- `no_dangling_refs`: after removal, the codebase contains **zero** references to each removed
+  token/class — `grep -rE "data-reveal|accent-rule|card-lit|bg-surface|surface-2|border-border|text-muted|var\(--color-(surface|surface-2|border|accent-2|paper|paper-soft|muted)\)" src` returns nothing (outside this note).
+- `dead_tokens_removed`: the removed `@theme` tokens no longer appear in `global.css`'s
+  `@theme` block; `--color-ink`/`--color-canvas`/`--color-accent`/`--color-concrete-*` remain.
+- `reveal_script_removed`: `Layout.astro` no longer contains the `[data-reveal]` IO script; its
+  cursor-glow and count-up scripts still work (`[data-countup]` still animates the Hero stats).
+- `live_css_kept`: `details.reveal-details[open] > dl`, `@keyframes reveal-up`, `.bt-grain`,
+  `.crt-overlay`/`.crt-beam`, and the marquee/nav/skills rules still exist.
+- `focus_ring_global`: the high-contrast 3px accent `:focus-visible` ring applies to
+  interactive elements site-wide (not only `#top`/`#about`); keyboard focus is visible on Nav,
+  Contact, Projects, etc.
+- `contact_labels_a11y`: each Contact field label's accessible name is the bare field name
+  ("Name"/"Email"/"Message") — the `// ` glyphs are `aria-hidden`; the visible `// NAME` look
+  is unchanged.
+- `404_migrated`: `404.astro` references no `text-muted`; its body text is `text-concrete-300`.
+- `content_unchanged`: `git diff` shows no `src/data/` or `src/content/` change.
 - `lighthouse_budget_met`: the Lighthouse CI budget (`lighthouserc.json`) still passes
-  (accessibility ≥0.95, performance not regressed, CLS ≤0.1).
+  (accessibility ≥0.95 — ideally improved by the focus ring — and CLS ≤0.1).
 
 ## Reproducibility
 
 - Install: `npm install`. Build: `npm run build`; type-check: `npm run check`.
-- Visual: `npm run preview`; scroll the page — a faint scan-beam sweeps top→bottom over the
-  whole page, with subtle scanlines, and **all text stays legible**. Emulate
-  `prefers-reduced-motion: reduce` and reload — the beam is static/absent, content unchanged.
-- Non-blocking: click links/buttons under the overlay — they respond (the overlay never
-  intercepts).
+- Dead-ref sweep: the `no_dangling_refs` grep above returns empty.
+- A11y: `npm run preview`; tab through Nav, the Contact form, and Projects — every focused
+  element shows the green ring; inspect a Contact input's accessible name (it is the bare field
+  name). Emulate reduced motion — nothing regressed (the removed `[data-reveal]` had no
+  consumers).
 - Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, Node 22 in CI.
 
 ## Risks and Assumptions
 
-- Risk (primary): an above-content overlay can reduce text legibility — a recurring concern on
-  this site. Mitigation: very low scanline opacity (~3%) and a brief, faint moving beam; the
-  opacities are single-line tunables; `legibility_preserved` is a hard visual gate. If it still
-  reads poorly, fall back to the per-section behind-content beam (Alternatives) — a contained
-  change.
-- Risk: a moving full-screen overlay could distract or cost GPU. Mitigation: a single slow
-  `transform` animation (compositor-only), low opacity, and full removal under reduced motion.
-- Risk: flashing/flicker is a WCAG 2.3 hazard. Mitigation: no opacity/brightness flicker — only
-  a slow positional sweep; nothing flashes.
-- Assumption: removing the Hero `.bt-scanline` has no other consumer (grep-confirmed
-  Hero-only).
-- Invalidation: introducing JS for the effect, a flashing/flicker treatment, or an opacity that
-  measurably harms contrast invalidates this spec.
+- Risk: removing a token/class that is secretly still used would break styling silently (a
+  missing CSS var renders wrong without a build error). Mitigation: each removal is grep-verified
+  to have zero references before AND after (the `no_dangling_refs` criterion is the gate); a
+  visual pass confirms no section changed.
+- Risk: removing the Layout reveal `<script>` could drop a live behavior. Mitigation: grep
+  confirms zero `[data-reveal]` consumers, so the script is inert; the count-up/cursor-glow
+  scripts are left untouched and independently verified.
+- Risk: a broad `:focus-visible` rule could surprise on unexpected elements. Mitigation: it is
+  the standard a11y baseline (visible focus everywhere) and matches the existing ring style.
+- Invalidation: discovering a live `data-reveal` / `.accent-rule` / removed-token consumer
+  invalidates the corresponding removal (keep it instead).
