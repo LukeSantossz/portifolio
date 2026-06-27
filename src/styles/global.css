@@ -209,7 +209,7 @@ details.reveal-details[open] > dl {
   transform: scaleX(var(--p, 0));
   transform-origin: left center;
   transition: transform 0.1s linear;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+  background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 50%, white));
 }
 
 .nav-link {
@@ -231,7 +231,7 @@ details.reveal-details[open] > dl {
 }
 
 .nav-link.is-current {
-  color: var(--color-ink);
+  color: var(--color-concrete-50);
 }
 
 .nav-link.is-current::after {
