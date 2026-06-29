@@ -56,6 +56,11 @@ export const site = {
   web3formsKey:
     import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'efb07a21-8678-4d14-aa17-27262fd76ad3',
 
+  // hCaptcha sitekey for the contact form (optional). When empty the form shows no
+  // captcha and behaves exactly as before; set PUBLIC_HCAPTCHA_SITEKEY (and enable
+  // hCaptcha in the Web3Forms dashboard) to turn it on. Public by design.
+  hcaptchaSitekey: import.meta.env.PUBLIC_HCAPTCHA_SITEKEY ?? '',
+
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Lucas Gonçalves · AI/ML Engineer',
   seoDescription:
