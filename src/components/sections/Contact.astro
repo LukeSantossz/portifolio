@@ -138,7 +138,7 @@ const ay = (90 - site.location.lat).toFixed(2);
         </div>
 
         {captchaEnabled && (
-          <div class="h-captcha" data-captcha="true"></div>
+          <div class="h-captcha" data-sitekey={site.hcaptchaSitekey}></div>
         )}
 
         <button
@@ -282,4 +282,4 @@ const ay = (90 - site.location.lat).toFixed(2);
   }
 </script>
 
-{captchaEnabled && <script src="https://web3forms.com/client/script.js" async defer is:inline></script>}
+{captchaEnabled && <script src="https://js.hcaptcha.com/1/api.js" async defer is:inline></script>}
