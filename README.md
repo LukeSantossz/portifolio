@@ -149,7 +149,7 @@ portifolio/
 ## Security
 
 - **Response headers** (via `vercel.json`): `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, and a Content-Security-Policy in **Report-Only** mode (observe-before-enforce).
-- **Contact form**: a honeypot plus an optional Web3Forms-managed hCaptcha toggled by `PUBLIC_HCAPTCHA_SITEKEY` (set it and enable hCaptcha in the Web3Forms dashboard); the report-only CSP allows the Web3Forms client-script origin; the public Web3Forms key should also be domain-restricted in the Web3Forms dashboard.
+- **Contact form**: a honeypot plus an optional hCaptcha widget rendered via the own-sitekey integration. Set `PUBLIC_HCAPTCHA_SITEKEY` to your hCaptcha sitekey and also add the matching hCaptcha secret to your Web3Forms dashboard so Web3Forms validates the token. The report-only CSP allows the hCaptcha origins. The public Web3Forms key should also be domain-restricted in the Web3Forms dashboard.
 - **Supply chain**: GitHub Actions pinned to commit SHAs; dependencies tracked via Dependabot.
 - **Disclosure**: see [`/.well-known/security.txt`](public/.well-known/security.txt).
 
