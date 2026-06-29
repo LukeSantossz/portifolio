@@ -23,7 +23,7 @@ import Icon from '../ui/Icon.astro';
   <div class="bt-grain" aria-hidden="true"></div>
 
   <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 pb-16 pt-32 md:pt-36"
+    class="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-start px-6 pb-16 pt-24 md:justify-center md:pt-36"
   >
     <!-- Index + availability label (recruiter smell test). -->
     <p
@@ -67,11 +67,11 @@ import Icon from '../ui/Icon.astro';
     <div
       data-hero-anim
       data-hero-cta
-      class="mt-10 flex flex-wrap items-center gap-4"
+      class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 md:mt-10"
     >
       <a
         href="#projects"
-        class="inline-flex items-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+        class="inline-flex w-full items-center justify-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 sm:w-auto"
       >
         View projects
         <Icon name="arrow-right" size={18} />
@@ -79,18 +79,18 @@ import Icon from '../ui/Icon.astro';
       <a
         href={site.cvPath}
         download
-        class="inline-flex items-center gap-2 border-2 border-concrete-50 bg-transparent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+        class="inline-flex w-full items-center justify-center gap-2 border-2 border-concrete-50 bg-transparent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 sm:w-auto"
       >
         <Icon name="download" size={18} />
         Download CV
       </a>
-      <div class="ml-1 flex items-center gap-4">
+      <div class="ml-1 hidden items-center gap-4 md:flex">
         <SocialLinks />
       </div>
     </div>
 
     <!-- Proof strip: hard-bordered grid; the first stat is the green signal. -->
-    <dl class="mt-14 grid max-w-4xl grid-cols-1 border-2 border-concrete-50 sm:grid-cols-3">
+    <dl class="mt-8 grid max-w-4xl grid-cols-1 border-2 border-concrete-50 sm:grid-cols-3 md:mt-14">
       {
         site.heroStats.map((stat, index) => (
           <div
