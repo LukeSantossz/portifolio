@@ -34,7 +34,7 @@ const ay = (90 - site.location.lat).toFixed(2);
 
   <!-- Easter-egg world map behind the content: my point + the visitor's, unlabeled. -->
   <div
-    class="pointer-events-none absolute inset-0 z-0 flex items-center justify-center"
+    class="pointer-events-none absolute inset-0 z-0 hidden items-center justify-center md:flex"
     aria-hidden="true"
   >
     <svg viewBox={worldMap.viewBox} class="w-full text-concrete-700">
@@ -248,7 +248,8 @@ const ay = (90 - site.location.lat).toFixed(2);
   // Easter egg: place the visitor's point on the background map from a coarse IP
   // lookup (no permission prompt). Fail-safe — on any error/timeout, only my point shows.
   const point = document.querySelector('#contact [data-visitor-point]');
-  if (point) {
+  // The map is desktop-only (hidden < md), so skip the third-party IP lookup on mobile.
+  if (point && window.matchMedia('(min-width: 768px)').matches) {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), 3000);
     fetch('https://ipwho.is/', { signal: controller.signal })
