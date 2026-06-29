@@ -1,0 +1,36 @@
+---
+import Icon from '../ui/Icon.astro';
+import { site } from '../../data/site.ts';
+
+// Mobile-only sticky action bar: the three highest-intent recruiter actions in the
+// thumb zone, always one tap away. Hidden at md+ (desktop keeps the hero CTAs and
+// the Contact section). Reads the single source of truth in site.ts.
+const actions = [
+  { href: `mailto:${site.email}`, label: 'Email', icon: 'mail' as const, external: false, download: false },
+  { href: site.cvPath, label: 'CV', icon: 'download' as const, external: false, download: true },
+  { href: site.linkedin, label: 'LinkedIn', icon: 'linkedin' as const, external: true, download: false },
+];
+---
+
+<nav
+  aria-label="Quick contact"
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t-2 border-concrete-50 bg-concrete-950 md:hidden"
+  style="padding-bottom: env(safe-area-inset-bottom);"
+>
+  {
+    actions.map((action, index) => (
+      <a
+        href={action.href}
+        download={action.download ? true : undefined}
+        target={action.external ? '_blank' : undefined}
+        rel={action.external ? 'noopener noreferrer' : undefined}
+        class={`flex min-h-[3.25rem] flex-col items-center justify-center gap-1 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.15em] text-concrete-50 transition-colors hover:text-accent ${
+          index > 0 ? 'border-l-2 border-concrete-50' : ''
+        }`}
+      >
+        <Icon name={action.icon} size={20} />
+        {action.label}
+      </a>
+    ))
+  }
+</nav>
