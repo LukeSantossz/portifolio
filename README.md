@@ -70,6 +70,7 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | Pinned horizontal Projects showcase over an accessible static base | Keep the 3D deck; static stack only | Maximum-impact case-study presentation on desktop, with a readable stack fallback for no-JS / reduced-motion / mobile. See [ADR-0005](docs/adr/0005-scrolltrigger-pin-projects-showcase.md). |
 | Global CRT scan-beam ambient overlay (decorative, reduced-motion-gated) | Per-section behind-content beam; animated grid / aurora / particles; brightness flicker | One continuous, cheap (single `transform`) page-wide CRT sweep unifies the terminal ambience; non-blocking, low-opacity for legibility, removed under reduced motion. See [ADR-0006](docs/adr/0006-crt-ambient-overlay.md). |
 | Client-side IP geolocation + build-time world map (unlabeled Contact-background easter egg) | SSR/edge geolocation; Browser Geolocation API; runtime map library (d3-geo/leaflet); a dedicated labeled section | Keeps the site fully static and runtime lean (no map library), no permission prompt, graceful fallback (author point renders on geo failure). Trade-off: visitor IP reaches a third-party geo API (coarse, not stored). See [ADR-0007](docs/adr/0007-client-side-geolocation-and-build-time-world-map.md). |
+| Defensive hardening: response headers + report-only CSP, env-gated form hCaptcha, SHA-pinned Actions, security.txt | Enforcing CSP immediately; no captcha; major dependency bumps now | Closes real hardening gaps with zero behavior change and zero breakage risk; CSP observes before enforcing, and the captcha is off until configured. See [ADR-0010](docs/adr/0010-security-hardening.md). |
 
 ## Getting Started
 
@@ -144,6 +145,15 @@ portifolio/
 - **Single static page** — there is no router or multi-page navigation; everything lives on `index.astro`. Acceptable because the goal is a focused, single-scroll vitrine.
 - **Contact key is public by design** — Web3Forms uses a public access key (`PUBLIC_*`), so it ships to the client. This is expected for the service; abuse is mitigated on Web3Forms' side, not in this repo.
 - **No unit-test harness** — a presentational static site has little logic to unit-test, so correctness is verified by the build, type-check, the Lighthouse budget, and a manual checklist rather than unit tests. This is a documented, scoped deviation from test-first; see [ADR-0001](docs/adr/0001-presentation-only-verification-policy.md).
+
+## Security
+
+- **Response headers** (via `vercel.json`): `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, and a Content-Security-Policy in **Report-Only** mode (observe-before-enforce).
+- **Contact form**: a honeypot plus an optional Web3Forms-managed hCaptcha toggled by `PUBLIC_HCAPTCHA_SITEKEY` (set it and enable hCaptcha in the Web3Forms dashboard); the public Web3Forms key should also be domain-restricted in the Web3Forms dashboard.
+- **Supply chain**: GitHub Actions pinned to commit SHAs; dependencies tracked via Dependabot.
+- **Disclosure**: see [`/.well-known/security.txt`](public/.well-known/security.txt).
+
+See [ADR-0010](docs/adr/0010-security-hardening.md) for the rationale.
 
 ## Contact
 
