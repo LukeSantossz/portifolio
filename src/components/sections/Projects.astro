@@ -17,7 +17,7 @@ const projects = entries.sort((a, b) => {
   <!-- Decorative analog grain (no semantics, not focusable). -->
   <div class="bt-grain" aria-hidden="true"></div>
 
-  <div class="relative z-10 mx-auto max-w-6xl px-6 pt-24 md:pt-28">
+  <div class="relative z-10 mx-auto max-w-6xl px-6 pt-16 md:pt-28">
     <div data-projects-anim class="mb-12 flex flex-wrap items-end justify-between gap-4">
       <div class="max-w-2xl">
         <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
@@ -46,7 +46,7 @@ const projects = entries.sort((a, b) => {
 
   <!-- Case-file track: an accessible vertical stack by default; Task 4 turns it
        into a pinned horizontal showcase on desktop with motion allowed. -->
-  <div class="relative z-10 pb-24 md:pb-28" data-projects-viewport>
+  <div class="relative z-10 pb-16 md:pb-28" data-projects-viewport>
     <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:gap-8" data-projects-track>
       {
         projects.map((project, i) => (
