@@ -41,4 +41,25 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { projects };
+/**
+ * Personal blog — long-form technical notes.
+ * Add a post by creating a Markdown file in `src/content/blog/`. Unlike
+ * `projects` (frontmatter-only cards), each post's Markdown body IS the page,
+ * rendered at `/blog/<slug>/`. Set `draft: true` to keep a post off the site.
+ */
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    // Card excerpt + the page's meta/OG description.
+    description: z.string(),
+    // Publication date; drives the newest-first ordering. `coerce` accepts a
+    // plain `YYYY-MM-DD` string in the frontmatter.
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
+    // A draft is excluded from the section, the index, and the built routes.
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects, blog };
