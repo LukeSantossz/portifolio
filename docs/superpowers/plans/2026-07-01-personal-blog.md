@@ -4,7 +4,7 @@
 
 **Goal:** Add a personal blog — a `07 / WRITING` landing section (between Experience and Contact) that lists recent posts, plus statically generated `/blog/<slug>/` pages and a `/blog/` index — backed by a Markdown `blog` content collection, in the Concrete Terminal design language, fully `output: 'static'`.
 
-**Architecture:** A `blog` collection (`src/content/blog/*.md`, schema in `src/content.config.ts`) supplies frontmatter + Markdown bodies. `Blog.astro` reads non-draft posts (newest first) and renders `PostCard`s linking to `/blog/<slug>/`; `src/pages/blog/[...slug].astro` uses `getStaticPaths` + `astro:content` `render()` to emit one page per post, and `src/pages/blog/index.astro` lists them all. Post pages reuse `Layout` (head/SEO/CRT/glow) with a subpage-safe `/`-home header (NOT the landing hash `Nav`) and a scoped `.prose-terminal` body layer. Reading time is derived from the body word count. ADR-0008 records the decision.
+**Architecture:** A `blog` collection (`src/content/blog/*.md`, schema in `src/content.config.ts`) supplies frontmatter + Markdown bodies. `Blog.astro` reads non-draft posts (newest first) and renders `PostCard`s linking to `/blog/<slug>/`; `src/pages/blog/[...slug].astro` uses `getStaticPaths` + `astro:content` `render()` to emit one page per post, and `src/pages/blog/index.astro` lists them all. Post pages reuse `Layout` (head/SEO/CRT/glow) with a subpage-safe `/`-home header (NOT the landing hash `Nav`) and a scoped `.prose-terminal` body layer. Reading time is derived from the body word count. ADR-0011 records the decision.
 
 **Tech Stack:** Astro 6 (`output: 'static'`), Tailwind v4, TypeScript 6. No new dependencies — reuses `astro:content` (already used by `projects`) and `@astrojs/sitemap`.
 
@@ -184,21 +184,21 @@ git commit -m "feat(blog): generate static post pages and the writing index"
 
 ---
 
-### Task 4: ADR-0008 + README row
+### Task 4: ADR-0011 + README row
 
-**Files:** `docs/adr/0008-blog-content-collection-and-static-post-pages.md` (create), `README.md`
+**Files:** `docs/adr/0011-blog-content-collection-and-static-post-pages.md` (create), `README.md`
 
 - [ ] **Step 1: Create the ADR** — record: a Markdown `blog` content collection + build-time per-post pages (`getStaticPaths`) for a static personal blog; reading time derived from the body; drafts excluded from build; post pages use a subpage-safe header (not the landing hash Nav) and a scoped `.prose-terminal` layer. Status: Accepted. Considered options: this (chosen), landing-only teaser (rejected), external host (rejected), SSR (rejected). Consequences: no new runtime dep; sitemap auto-covers routes; adding a post = dropping a `.md`.
 
-- [ ] **Step 2: Add a README Engineering Decisions row** after the ADR-0007 row, linking `docs/adr/0008-blog-content-collection-and-static-post-pages.md` with a one-line summary; also reflect the blog in any "content" section of the README if present.
+- [ ] **Step 2: Add a README Engineering Decisions row** after the ADR-0007 row, linking `docs/adr/0011-blog-content-collection-and-static-post-pages.md` with a one-line summary; also reflect the blog in any "content" section of the README if present.
 
 - [ ] **Step 3: Verify + commit**
 
-Run: `test -f docs/adr/0008-blog-content-collection-and-static-post-pages.md && echo OK`; `grep -c "0008-blog-content-collection" README.md` → `1`; `npm run build` → exit 0.
+Run: `test -f docs/adr/0011-blog-content-collection-and-static-post-pages.md && echo OK`; `grep -c "0011-blog-content-collection" README.md` → `1`; `npm run build` → exit 0.
 
 ```bash
-git add docs/adr/0008-blog-content-collection-and-static-post-pages.md README.md
-git commit -m "docs: record ADR-0008 for the blog content collection"
+git add docs/adr/0011-blog-content-collection-and-static-post-pages.md README.md
+git commit -m "docs: record ADR-0011 for the blog content collection"
 ```
 
 ---

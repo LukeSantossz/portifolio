@@ -19,6 +19,10 @@ if (!formEnabled) {
   );
 }
 
+// hCaptcha is optional: render the widget only when a sitekey is configured, so an
+// unconfigured deploy renders the exact same form as before.
+const captchaEnabled = site.hcaptchaSitekey.trim().length > 0;
+
 // Easter-egg background map: my fixed point, projected with the same equirectangular
 // formula as scripts/generate-world-map.mjs (viewBox 0 0 360 180).
 const ax = (site.location.lon + 180).toFixed(2);
@@ -58,7 +62,7 @@ const ay = (90 - site.location.lat).toFixed(2);
     </svg>
   </div>
 
-  <div class="relative z-10 mx-auto max-w-5xl px-6 py-24 md:py-28">
+  <div class="relative z-10 mx-auto max-w-5xl px-6 py-16 md:py-28">
     <div data-contact-anim class="mb-12 max-w-2xl">
       <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
         <span class="text-accent">08 / CONTACT</span>
@@ -133,6 +137,10 @@ const ay = (90 - site.location.lat).toFixed(2);
           </label>
           <textarea id="message" name="message" required rows="5" class={inputClass}></textarea>
         </div>
+
+        {captchaEnabled && (
+          <div class="h-captcha" data-sitekey={site.hcaptchaSitekey}></div>
+        )}
 
         <button
           type="submit"
@@ -249,7 +257,7 @@ const ay = (90 - site.location.lat).toFixed(2);
   // Easter egg: place the visitor's point on the background map from a coarse IP
   // lookup (no permission prompt). Fail-safe — on any error/timeout, only my point shows.
   const point = document.querySelector('#contact [data-visitor-point]');
-  // The map is desktop-only (hidden below md); skip the IP lookup on mobile.
+  // The map is desktop-only (hidden below md); skip the third-party IP lookup on mobile.
   if (point && window.matchMedia('(min-width: 768px)').matches) {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), 3000);
@@ -275,3 +283,5 @@ const ay = (90 - site.location.lat).toFixed(2);
       });
   }
 </script>
+
+{captchaEnabled && <script src="https://js.hcaptcha.com/1/api.js" async defer is:inline></script>}

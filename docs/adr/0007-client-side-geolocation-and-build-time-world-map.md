@@ -33,6 +33,6 @@ Accepted.
 - The map SVG is purely decorative: `aria-hidden`, `pointer-events: none`, behind the Contact
   content, unlabeled. Points pulse only with motion allowed; the layer reserves no layout
   (no CLS); the visitor IP is never sent to our origin/analytics.
-- The map is **desktop-only** (`hidden md:flex`): below the `md` breakpoint it is not rendered
-  and the IP lookup is skipped, so it never crowds the mobile contact layout or spends a mobile
-  visitor's data on a decorative fetch.
+- The map and its client-side IP lookup are **desktop-only**: the layer is hidden below `md` (768px)
+  and the `ipwho.is` request is skipped on mobile, so phones make no third-party geo call. See
+  [ADR-0008](0008-adaptive-mobile-experience.md).

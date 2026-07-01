@@ -10,6 +10,7 @@ import Experience from '../components/sections/Experience.astro';
 import Blog from '../components/sections/Blog.astro';
 import Contact from '../components/sections/Contact.astro';
 import Footer from '../components/layout/Footer.astro';
+import MobileActionBar from '../components/layout/MobileActionBar.astro';
 ---
 
 <Layout>
@@ -25,4 +26,7 @@ import Footer from '../components/layout/Footer.astro';
     <Contact />
   </main>
   <Footer />
+  <!-- Bottom clearance so the fixed mobile action bar never overlaps the footer. -->
+  <div aria-hidden="true" class="md:hidden" style="height: calc(4rem + env(safe-area-inset-bottom));"></div>
+  <MobileActionBar />
 </Layout>

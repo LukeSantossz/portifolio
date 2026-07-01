@@ -1,15 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/layout/Footer.astro';
 import SubpageHeader from '../../components/layout/SubpageHeader.astro';
 import PostCard from '../../components/ui/PostCard.astro';
 import { site } from '../../data/site.ts';
-import { readingTime } from '../../data/blog.ts';
+import { getPosts, readingTime } from '../../data/blog.ts';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = await getPosts();
 
 const pageTitle = `Writing · ${site.name}`;
 const pageDescription = `Technical notes by ${site.name} on retrieval, forecasting, and applied machine learning.`;

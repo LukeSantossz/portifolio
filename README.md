@@ -69,8 +69,10 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | GSAP ScrollTrigger for scroll-driven section entrances | Keep CSS `[data-reveal]`; no scroll motion | Cohesive staggered, reduced-motion-gated reveals as the brutalist redesign moves below the fold, with no new dependency. See [ADR-0004](docs/adr/0004-scrolltrigger-for-section-motion.md). |
 | Swipe carousel for Case studies (native scroll-snap) | Pinned scroll-scrub showcase (superseded); a JS transform carousel | Alternate between case files by swiping sideways — works on mobile (where the pinned scrub was invisible) and desktop, without hijacking scroll; no-JS keeps a native scrollable list. Supersedes ADR-0005. See [ADR-0009](docs/adr/0009-projects-swipe-carousel.md). |
 | Global CRT scan-beam ambient overlay (decorative, reduced-motion-gated) | Per-section behind-content beam; animated grid / aurora / particles; brightness flicker | One continuous, cheap (single `transform`) page-wide CRT sweep unifies the terminal ambience; non-blocking, low-opacity for legibility, removed under reduced motion. See [ADR-0006](docs/adr/0006-crt-ambient-overlay.md). |
-| Client-side IP geolocation + build-time world map (unlabeled Contact-background easter egg) | SSR/edge geolocation; Browser Geolocation API; runtime map library (d3-geo/leaflet); a dedicated labeled section | Keeps the site fully static and runtime lean (no map library), no permission prompt, graceful fallback (author point renders on geo failure). Trade-off: visitor IP reaches a third-party geo API (coarse, not stored). Desktop-only (`hidden md:flex`) so it never crowds mobile. See [ADR-0007](docs/adr/0007-client-side-geolocation-and-build-time-world-map.md). |
-| Personal blog as a Markdown content collection + build-time per-post pages | A landing-only teaser; an external host (Medium/Dev.to); SSR post pages | A `07 / WRITING` section + `/blog/<slug>/` pages generated statically from `src/content/blog/*.md` — content-decoupled, SEO-owned, no new dependency, no SSR; drafts are excluded from the build. See [ADR-0008](docs/adr/0008-blog-content-collection-and-static-post-pages.md). |
+| Client-side IP geolocation + build-time world map (unlabeled Contact-background easter egg) | SSR/edge geolocation; Browser Geolocation API; runtime map library (d3-geo/leaflet); a dedicated labeled section | Keeps the site fully static and runtime lean (no map library), no permission prompt, graceful fallback (author point renders on geo failure). Trade-off: visitor IP reaches a third-party geo API (coarse, not stored). See [ADR-0007](docs/adr/0007-client-side-geolocation-and-build-time-world-map.md). |
+| Adaptive mobile experience: mobile-only sticky action bar + divergent feature treatments below `md` | One responsive layout stretched to all widths; a dedicated mobile information architecture | Recruiters mostly arrive on phones and decide in seconds, so mobile gets thumb-zone contact/CV, scannable static skills, a compacted hero, and a hidden decorative map — while desktop is untouched and there is no dual-IA to maintain. See [ADR-0008](docs/adr/0008-adaptive-mobile-experience.md). |
+| Defensive hardening: response headers + report-only CSP, env-gated form hCaptcha, SHA-pinned Actions, security.txt | Enforcing CSP immediately; no captcha; major dependency bumps now | Closes real hardening gaps with zero behavior change and zero breakage risk; CSP observes before enforcing, and the captcha is off until configured. See [ADR-0010](docs/adr/0010-security-hardening.md). |
+| Personal blog as a Markdown content collection + build-time per-post pages | A landing-only teaser; an external host (Medium/Dev.to); SSR post pages | A `07 / WRITING` section + `/blog/<slug>/` pages generated statically from `src/content/blog/*.md` — content-decoupled, SEO-owned, no new dependency, no SSR; drafts are excluded from the build. See [ADR-0011](docs/adr/0011-blog-content-collection-and-static-post-pages.md). |
 
 ## Getting Started
 
@@ -146,6 +148,15 @@ portifolio/
 - **Single static page** — there is no router or multi-page navigation; everything lives on `index.astro`. Acceptable because the goal is a focused, single-scroll vitrine.
 - **Contact key is public by design** — Web3Forms uses a public access key (`PUBLIC_*`), so it ships to the client. This is expected for the service; abuse is mitigated on Web3Forms' side, not in this repo.
 - **No unit-test harness** — a presentational static site has little logic to unit-test, so correctness is verified by the build, type-check, the Lighthouse budget, and a manual checklist rather than unit tests. This is a documented, scoped deviation from test-first; see [ADR-0001](docs/adr/0001-presentation-only-verification-policy.md).
+
+## Security
+
+- **Response headers** (via `vercel.json`): `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, and a Content-Security-Policy in **Report-Only** mode (observe-before-enforce).
+- **Contact form**: a honeypot plus an optional hCaptcha widget rendered via the own-sitekey integration. Set `PUBLIC_HCAPTCHA_SITEKEY` to your hCaptcha sitekey and also add the matching hCaptcha secret to your Web3Forms dashboard so Web3Forms validates the token. The report-only CSP allows the hCaptcha origins. The public Web3Forms key should also be domain-restricted in the Web3Forms dashboard.
+- **Supply chain**: GitHub Actions pinned to commit SHAs; dependencies tracked via Dependabot.
+- **Disclosure**: see [`/.well-known/security.txt`](public/.well-known/security.txt).
+
+See [ADR-0010](docs/adr/0010-security-hardening.md) for the rationale.
 
 ## Contact
 

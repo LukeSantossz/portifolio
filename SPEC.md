@@ -40,7 +40,7 @@ whose bodies are unused) and surface it two ways:
 
 This introduces no new runtime dependency; it reuses Astro content collections (already used by
 `projects`), the Concrete Terminal tokens, and the sitemap integration. The durable choice
-(Markdown collection + build-time per-post pages for a static blog) is recorded in **ADR-0008**.
+(Markdown collection + build-time per-post pages for a static blog) is recorded in **ADR-0011**.
 
 ## Alternatives Considered
 
@@ -75,7 +75,7 @@ This introduces no new runtime dependency; it reuses Astro content collections (
   - `src/pages/index.astro`: import + render `<Blog />` between `<Experience />` and `<Contact />`.
   - `src/layouts/Layout.astro`: add an optional `tabTitle` prop (default `site.tabTitle`).
   - `src/styles/global.css`: add a scoped `.prose-terminal` typographic layer for post bodies.
-  - `docs/adr/0008-...md` + a README Engineering Decisions row.
+  - `docs/adr/0011-...md` + a README Engineering Decisions row.
 - Does NOT include:
   - SSR/edge rendering, comments, pagination, tag-filter pages, RSS, or search.
   - Any change to other sections' copy beyond the Contact label renumber.
@@ -106,7 +106,7 @@ per `docs/adr/0001-presentation-only-verification-policy.md`).
   `package.json` `dependencies`.
 - `a11y_motion`: the section is keyboard-reachable, the entrance motion is opacity-only and gated by
   `prefers-reduced-motion`, and post bodies are readable with JS/motion off.
-- `adr_recorded`: ADR-0008 exists and is linked from the README.
+- `adr_recorded`: ADR-0011 exists and is linked from the README.
 - `lighthouse_budget_met`: the Lighthouse CI budget (`lighthouserc.json`) still passes on `/`
   (accessibility ≥0.95, CLS ≤0.1, performance not regressed).
 

@@ -1,13 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
 import PostCard from '../ui/PostCard.astro';
-import { readingTime } from '../../data/blog.ts';
+import { getPosts, readingTime } from '../../data/blog.ts';
 
 // Non-draft posts, newest first. The landing section shows the most recent few;
 // the full list lives at /blog/.
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = await getPosts();
 const recent = posts.slice(0, 4);
 ---
 

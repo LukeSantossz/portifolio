@@ -317,11 +317,11 @@ html.hero-intro [data-hero-anim] {
 ---------------------------------------------------------------------------- */
 .projects-carousel {
   scroll-padding-inline: 1.5rem;
-  scrollbar-width: none; /* Firefox */
 }
 
 /* Utility: hide the scrollbar while keeping the element scrollable/swipeable. */
 .no-scrollbar {
+  scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/legacy Edge */
 }
 

@@ -17,7 +17,7 @@ const projects = entries.sort((a, b) => {
   <!-- Decorative analog grain (no semantics, not focusable). -->
   <div class="bt-grain" aria-hidden="true"></div>
 
-  <div class="relative z-10 mx-auto max-w-6xl px-6 pt-24 md:pt-28">
+  <div class="relative z-10 mx-auto max-w-6xl px-6 pt-16 md:pt-28">
     <div data-projects-anim class="mb-12 flex flex-wrap items-end justify-between gap-4">
       <div class="max-w-2xl">
         <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
@@ -47,14 +47,14 @@ const projects = entries.sort((a, b) => {
   <!-- Swipe carousel: a horizontal scroll-snap track. Swipe/drag on touch, use
        the prev/next controls or arrow keys on desktop. With no JS the track is
        still a native horizontally-scrollable list, so every card stays reachable. -->
-  <div class="relative z-10 pb-24 md:pb-28">
+  <div class="relative z-10 pb-16 md:pb-28">
     <div
       class="projects-carousel no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 md:gap-8"
       data-projects-track
       tabindex="0"
       role="region"
       aria-roledescription="carousel"
-      aria-label="Case studies — swipe or use the previous and next buttons"
+      aria-label="Case studies carousel"
     >
       {
         projects.map((project, i) => (
@@ -182,8 +182,10 @@ const projects = entries.sort((a, b) => {
       prev.addEventListener('click', () => goTo(currentIndex() - 1));
       next.addEventListener('click', () => goTo(currentIndex() + 1));
 
-      // Arrow keys when the carousel (or a child) has focus.
+      // Arrow keys — only when the track itself is focused, so links/buttons and
+      // the <details> summary inside a card keep their own arrow-key behavior.
       track.addEventListener('keydown', (event) => {
+        if (event.target !== track) return;
         if (event.key === 'ArrowRight') {
           event.preventDefault();
           goTo(currentIndex() + 1);
@@ -208,6 +210,9 @@ const projects = entries.sort((a, b) => {
         },
         { passive: true },
       );
+
+      // Recompute after layout changes (orientation/resize) without a scroll.
+      window.addEventListener('resize', sync, { passive: true });
 
       sync();
     }

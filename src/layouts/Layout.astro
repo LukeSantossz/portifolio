@@ -76,7 +76,7 @@ const personSchema = {
 
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} is:inline />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema).replace(/</g, '\\u003c')} is:inline />
   </head>
   <body class="min-h-screen">
     <!-- Accent glow that trails the cursor across the whole page -->
