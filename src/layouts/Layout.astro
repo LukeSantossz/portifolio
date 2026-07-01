@@ -8,9 +8,16 @@ import Analytics from '@vercel/analytics/astro';
 interface Props {
   title?: string;
   description?: string;
+  // Browser-tab label. Defaults to the branded site title; subpages (e.g. blog
+  // posts) override it so the tab reads the post title.
+  tabTitle?: string;
 }
 
-const { title = site.seoTitle, description = site.seoDescription } = Astro.props;
+const {
+  title = site.seoTitle,
+  description = site.seoDescription,
+  tabTitle = site.tabTitle,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = new URL(site.ogImage, Astro.site);
 
@@ -43,7 +50,7 @@ const personSchema = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Branded tab label; og:title below keeps the descriptive sharing title. -->
-    <title>{site.tabTitle}</title>
+    <title>{tabTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -41,8 +41,7 @@ const {
   index = 0,
 } = Astro.props;
 
-// Full narrative for the static base (read in the <details>). The showcase panel
-// shows the impact view above it; this disclosure is hidden in pin mode.
+// Full narrative, read in the <details> disclosure below the impact view.
 const caseMoves = [
   { label: 'Context', value: problem },
   { label: 'Constraints', value: constraints },
@@ -89,7 +88,7 @@ const caseMoves = [
     {tagline}
   </p>
 
-  <!-- Result punchline (green signal); full here, clamped only in the pinned panel via .projects-pinned [data-result]. -->
+  <!-- Result punchline (green signal). -->
   <div class="mt-5 border-l-2 border-accent pl-3">
     <p class="font-mono text-xs uppercase tracking-wide text-accent">Result</p>
     <p data-result class="mt-1 font-sans text-sm leading-relaxed text-concrete-50">{result}</p>
@@ -106,7 +105,7 @@ const caseMoves = [
     }
   </ul>
 
-  <!-- Links + full case study (the disclosure is hidden in pin mode by global.css). -->
+  <!-- Links + full case study disclosure. -->
   <div class="mt-auto pt-6">
     <div class="flex flex-wrap items-center gap-3">
       {

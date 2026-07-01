@@ -39,7 +39,7 @@ This is a **static web app** that compiles to a fully pre-rendered landing page 
 ```mermaid
 flowchart LR
     subgraph Data ["Decoupled content"]
-        MD["src/content/projects/*.md"]
+        MD["src/content/projects/*.md + blog/*.md"]
         TS["src/data/*.ts (site, skills, experience)"]
     end
     subgraph Build ["Astro 6 SSG"]
@@ -67,11 +67,12 @@ Content (projects, skills, experience, identity) is fully decoupled from renderi
 | Industrial-brutalist "Concrete Terminal" design language, shipped in phases | Heavier "Blueprint" industrial, quiet brutalist, big-bang redesign | A phased pilot delivers a distinctive recruiter-facing identity at low risk; other sections migrate later. See [ADR-0002](docs/adr/0002-industrial-brutalist-design-language.md). |
 | GSAP (core) for the Hero intro, gated by `matchMedia` | CSS keyframes only; a React animation library | Precise reduced-motion-gated stagger in static Astro without introducing React. See [ADR-0003](docs/adr/0003-gsap-as-motion-library.md). |
 | GSAP ScrollTrigger for scroll-driven section entrances | Keep CSS `[data-reveal]`; no scroll motion | Cohesive staggered, reduced-motion-gated reveals as the brutalist redesign moves below the fold, with no new dependency. See [ADR-0004](docs/adr/0004-scrolltrigger-for-section-motion.md). |
-| Pinned horizontal Projects showcase over an accessible static base | Keep the 3D deck; static stack only | Maximum-impact case-study presentation on desktop, with a readable stack fallback for no-JS / reduced-motion / mobile. See [ADR-0005](docs/adr/0005-scrolltrigger-pin-projects-showcase.md). |
+| Swipe carousel for Case studies (native scroll-snap) | Pinned scroll-scrub showcase (superseded); a JS transform carousel | Alternate between case files by swiping sideways — works on mobile (where the pinned scrub was invisible) and desktop, without hijacking scroll; no-JS keeps a native scrollable list. Supersedes ADR-0005. See [ADR-0009](docs/adr/0009-projects-swipe-carousel.md). |
 | Global CRT scan-beam ambient overlay (decorative, reduced-motion-gated) | Per-section behind-content beam; animated grid / aurora / particles; brightness flicker | One continuous, cheap (single `transform`) page-wide CRT sweep unifies the terminal ambience; non-blocking, low-opacity for legibility, removed under reduced motion. See [ADR-0006](docs/adr/0006-crt-ambient-overlay.md). |
 | Client-side IP geolocation + build-time world map (unlabeled Contact-background easter egg) | SSR/edge geolocation; Browser Geolocation API; runtime map library (d3-geo/leaflet); a dedicated labeled section | Keeps the site fully static and runtime lean (no map library), no permission prompt, graceful fallback (author point renders on geo failure). Trade-off: visitor IP reaches a third-party geo API (coarse, not stored). See [ADR-0007](docs/adr/0007-client-side-geolocation-and-build-time-world-map.md). |
 | Adaptive mobile experience: mobile-only sticky action bar + divergent feature treatments below `md` | One responsive layout stretched to all widths; a dedicated mobile information architecture | Recruiters mostly arrive on phones and decide in seconds, so mobile gets thumb-zone contact/CV, scannable static skills, a compacted hero, and a hidden decorative map — while desktop is untouched and there is no dual-IA to maintain. See [ADR-0008](docs/adr/0008-adaptive-mobile-experience.md). |
 | Defensive hardening: response headers + report-only CSP, env-gated form hCaptcha, SHA-pinned Actions, security.txt | Enforcing CSP immediately; no captcha; major dependency bumps now | Closes real hardening gaps with zero behavior change and zero breakage risk; CSP observes before enforcing, and the captcha is off until configured. See [ADR-0010](docs/adr/0010-security-hardening.md). |
+| Personal blog as a Markdown content collection + build-time per-post pages | A landing-only teaser; an external host (Medium/Dev.to); SSR post pages | A `07 / WRITING` section + `/blog/<slug>/` pages generated statically from `src/content/blog/*.md` — content-decoupled, SEO-owned, no new dependency, no SSR; drafts are excluded from the build. See [ADR-0011](docs/adr/0011-blog-content-collection-and-static-post-pages.md). |
 
 ## Getting Started
 
@@ -108,9 +109,10 @@ portifolio/
 │   │   ├── ui/            # reusable widgets (Icon, SocialLinks, ProjectCard)
 │   │   └── layout/        # site chrome (Nav, Footer)
 │   ├── content/projects/  # one Markdown file per project (case-study schema)
+│   ├── content/blog/      # one Markdown file per blog post (title/date/tags/body)
 │   ├── data/              # typed site config, skills, experience
 │   ├── layouts/           # base Layout.astro
-│   ├── pages/             # index.astro (single entry point)
+│   ├── pages/             # index.astro + blog/ (index + [...slug] post pages)
 │   └── styles/            # global.css (Tailwind v4 @theme)
 ├── public/                # static assets (résumé PDF, favicon, robots.txt)
 ├── docs/adr/              # architecture decision records

@@ -36,7 +36,8 @@ const ay = (90 - site.location.lat).toFixed(2);
   <!-- Decorative analog grain (no semantics, not focusable). -->
   <div class="bt-grain" aria-hidden="true"></div>
 
-  <!-- Easter-egg world map behind the content: my point + the visitor's, unlabeled. -->
+  <!-- Easter-egg world map behind the content: my point + the visitor's, unlabeled.
+       Desktop-only: hidden below md so it never crowds the mobile contact layout. -->
   <div
     class="pointer-events-none absolute inset-0 z-0 hidden items-center justify-center md:flex"
     aria-hidden="true"
@@ -64,7 +65,7 @@ const ay = (90 - site.location.lat).toFixed(2);
   <div class="relative z-10 mx-auto max-w-5xl px-6 py-16 md:py-28">
     <div data-contact-anim class="mb-12 max-w-2xl">
       <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
-        <span class="text-accent">07 / CONTACT</span>
+        <span class="text-accent">08 / CONTACT</span>
       </p>
       <h2
         class="mt-3 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-6xl"
@@ -256,7 +257,7 @@ const ay = (90 - site.location.lat).toFixed(2);
   // Easter egg: place the visitor's point on the background map from a coarse IP
   // lookup (no permission prompt). Fail-safe — on any error/timeout, only my point shows.
   const point = document.querySelector('#contact [data-visitor-point]');
-  // The map is desktop-only (hidden < md), so skip the third-party IP lookup on mobile.
+  // The map is desktop-only (hidden below md); skip the third-party IP lookup on mobile.
   if (point && window.matchMedia('(min-width: 768px)').matches) {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), 3000);
