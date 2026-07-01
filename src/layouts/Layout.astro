@@ -54,7 +54,9 @@ const personSchema = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#0d100e" />
+    <!-- Browser UI tint follows the visitor's theme (see the light-mode block in global.css). -->
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d100e" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ece9e2" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Open Graph -->
