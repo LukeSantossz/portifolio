@@ -79,12 +79,15 @@ const ay = (90 - site.location.lat).toFixed(2);
         <p class="max-w-md font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
           I&apos;m looking for a full-time AI/ML Engineer role on a distributed,
           remote team building production systems at scale. If that&apos;s what
-          you&apos;re hiring for, let&apos;s talk. Email is the fastest way to reach
-          me, or use the form below, and I usually reply within a day.
+          you&apos;re hiring for, send the form &mdash; it&apos;s the surest way to
+          reach me and I usually reply within a day.
+        </p>
+        <p class="mt-6 font-mono text-xs uppercase tracking-[0.2em] text-concrete-300">
+          <span aria-hidden="true">//</span> Prefer email?
         </p>
         <a
           href={`mailto:${site.email}`}
-          class="mt-6 inline-flex items-center gap-2 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
+          class="mt-2 inline-flex items-center gap-2 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
         >
           <Icon name="mail" size={18} />
           {site.email}
@@ -168,6 +171,14 @@ const ay = (90 - site.location.lat).toFixed(2);
       </div>
       )}
     </div>
+
+    <!-- Peak-end close: the last thing a recruiter sees restates the honest availability. -->
+    <p
+      data-contact-anim
+      class="mt-14 border-t-2 border-concrete-700 pt-6 font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
+    >
+      <span class="text-accent">Currently</span> &mdash; {site.availability}
+    </p>
   </div>
 </section>
 
