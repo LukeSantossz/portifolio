@@ -8,7 +8,6 @@ const links = [
   { href: '#skills', label: 'Skills' },
   { href: '#projects', label: 'Projects' },
   { href: '#experience', label: 'Experience' },
-  { href: '#writing', label: 'Writing' },
   { href: '#contact', label: 'Contact' },
 ];
 ---
@@ -56,6 +55,15 @@ const links = [
           Resume
         </a>
       </li>
+      <!-- Blog is a separate page, not a landing section — placed after Resume. -->
+      <li>
+        <a
+          href="/blog/"
+          class="nav-link font-mono text-xs uppercase tracking-[0.2em] text-concrete-300 transition-colors hover:text-concrete-50"
+        >
+          Blog
+        </a>
+      </li>
     </ul>
 
     <!-- Mobile toggle -->
@@ -94,6 +102,16 @@ const links = [
           data-nav-link
         >
           Download Resume
+        </a>
+      </li>
+      <!-- Blog is a separate page, not a landing section — placed after Resume. -->
+      <li>
+        <a
+          href="/blog/"
+          class="block px-3 py-2 font-mono text-sm uppercase tracking-[0.2em] text-concrete-300 transition-colors hover:bg-concrete-900 hover:text-concrete-50"
+          data-nav-link
+        >
+          Blog
         </a>
       </li>
     </ul>
