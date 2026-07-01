@@ -350,3 +350,105 @@ html.hero-intro [data-hero-anim] {
   -webkit-line-clamp: 3;
   overflow: hidden;
 }
+
+/* ----------------------------------------------------------------------------
+   Blog post typography — a scoped reading layer for rendered Markdown bodies
+   (`/blog/<slug>/`). No new tokens: it reuses the concrete ramp + accent, the
+   sans display face for headings and the mono face for code.
+---------------------------------------------------------------------------- */
+.prose-terminal {
+  color: var(--color-concrete-300);
+  font-family: var(--font-sans);
+  line-height: 1.75;
+}
+
+.prose-terminal > * + * {
+  margin-top: 1.25rem;
+}
+
+.prose-terminal h2,
+.prose-terminal h3 {
+  color: var(--color-concrete-50);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin-top: 2.5rem;
+}
+
+.prose-terminal h2 {
+  font-size: 1.75rem;
+}
+
+.prose-terminal h3 {
+  font-size: 1.3rem;
+}
+
+.prose-terminal a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-terminal strong {
+  color: var(--color-concrete-50);
+  font-weight: 700;
+}
+
+.prose-terminal ul,
+.prose-terminal ol {
+  padding-left: 1.5rem;
+}
+
+.prose-terminal ul {
+  list-style: none;
+}
+
+.prose-terminal ul > li {
+  position: relative;
+}
+
+.prose-terminal ul > li::before {
+  content: "▸";
+  position: absolute;
+  left: -1.25rem;
+  color: var(--color-accent);
+}
+
+.prose-terminal ol {
+  list-style: decimal;
+}
+
+.prose-terminal li + li {
+  margin-top: 0.5rem;
+}
+
+.prose-terminal blockquote {
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1rem;
+  color: var(--color-concrete-300);
+  font-style: italic;
+}
+
+/* Inline code + fenced blocks: mono on a raised concrete surface. */
+.prose-terminal code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-concrete-900);
+  border: 1px solid var(--color-concrete-700);
+  padding: 0.1rem 0.35rem;
+}
+
+.prose-terminal pre {
+  background: var(--color-concrete-900);
+  border: 1px solid var(--color-concrete-700);
+  padding: 1.25rem;
+  overflow-x: auto;
+}
+
+.prose-terminal pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
