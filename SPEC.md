@@ -11,16 +11,18 @@ that stays true to the Concrete Terminal identity and the `output: 'static'` con
 ## Design Decision
 
 Add a **`blog` content collection** (`src/content/blog/*.md`, Markdown bodies — unlike `projects`,
-whose bodies are unused) and surface it two ways:
+whose bodies are unused) and surface it as a **dedicated, separate area of the site** (NOT a
+section of the one-page landing):
 
-1. **A "Writing" landing section** (`07 / WRITING`, between Experience and Contact) that lists the
-   most recent posts as cards (title, date, reading time, description, tags), each linking to its
-   own page, plus a link to the full index. Contact renumbers to `08 / CONTACT`.
-2. **Statically generated post pages** at `/blog/<slug>/` and an index at `/blog/` — one HTML file
-   per post, emitted at build time via `getStaticPaths` (no SSR). Post pages reuse the shared
-   `Layout` (head/SEO/CRT/glow) with a lightweight, subpage-safe header (a `/`-home link, not the
-   landing's hash Nav) and render the Markdown body through a scoped **`.prose-terminal`** typographic
-   layer.
+1. **A `/blog/` index page** listing the non-draft posts (newest first) as cards (title, date,
+   reading time, description, tags), each linking to its own page. The blog is reached from a
+   **`Blog` nav link placed after the `Resume` button** — a separate part of the portfolio — so the
+   landing page is unchanged and Contact keeps `07 / CONTACT`.
+2. **Statically generated post pages** at `/blog/<slug>/` — one HTML file per post, emitted at build
+   time via `getStaticPaths` (no SSR). The `/blog/` index and the post pages reuse the shared
+   `Layout` (head/SEO/CRT/glow) with a lightweight, subpage-safe header (a `/`-home link + a `Blog`
+   link, not the landing's hash Nav) and render the Markdown body through a scoped
+   **`.prose-terminal`** typographic layer.
 
 - **Content is decoupled** (per CLAUDE.md): copy lives in `src/content/blog/*.md`; the schema is
   declared in `src/content.config.ts`. Components render frontmatter + body, never hard-coded copy.
@@ -65,20 +67,20 @@ This introduces no new runtime dependency; it reuses Astro content collections (
   - `src/content/blog/*.md`: two seed posts with realistic frontmatter + Markdown bodies.
   - `src/components/ui/PostCard.astro`: a post summary card (date, reading time, title, description,
     tags) linking to `/blog/<slug>/`.
-  - `src/components/sections/Blog.astro`: the `07 / WRITING` section listing recent (non-draft)
-    posts, newest first, with a link to `/blog/`; reuses the section shell + entrance-motion pattern.
+  - `src/pages/blog/index.astro`: the `/blog/` index page listing the non-draft posts (newest
+    first) via `PostCard`, with the subpage-safe header.
   - `src/pages/blog/[...slug].astro`: `getStaticPaths` over non-draft posts → one page per post
-    (title, date, reading time, tags, rendered body via `.prose-terminal`, a `/`-home header).
-  - `src/pages/blog/index.astro`: the full listing of non-draft posts.
-  - `src/components/layout/Nav.astro`: add a `Writing` (`#writing`) link (desktop + mobile).
-  - `src/components/sections/Contact.astro`: renumber the label `07 / CONTACT` → `08 / CONTACT`.
-  - `src/pages/index.astro`: import + render `<Blog />` between `<Experience />` and `<Contact />`.
+    (title, date, reading time, tags, rendered body via `.prose-terminal`, a subpage-safe header).
+  - `src/components/layout/SubpageHeader.astro`: a `/`-home + `Blog` header for the `/blog/*` routes.
+  - `src/components/layout/Nav.astro`: add a `Blog` link to `/blog/` placed AFTER the `Resume`
+    button (desktop + mobile) — the blog is a separate area, not a landing section.
   - `src/layouts/Layout.astro`: add an optional `tabTitle` prop (default `site.tabTitle`).
   - `src/styles/global.css`: add a scoped `.prose-terminal` typographic layer for post bodies.
   - `docs/adr/0011-...md` + a README Engineering Decisions row.
 - Does NOT include:
   - SSR/edge rendering, comments, pagination, tag-filter pages, RSS, or search.
-  - Any change to other sections' copy beyond the Contact label renumber.
+  - A blog section on the landing page; any change to the landing's sections or numbering
+    (Contact stays `07 / CONTACT`).
   - A new runtime dependency or design system; changing the `projects` collection.
 
 ## Acceptance Criteria
@@ -89,10 +91,10 @@ per `docs/adr/0001-presentation-only-verification-policy.md`).
 - `build_succeeds` / `typecheck_clean`: `npm run build` exit 0; `npm run check` 0 errors.
 - `collection_defined` + `content_decoupled`: a `blog` collection exists in `src/content.config.ts`;
   all post copy lives in `src/content/blog/*.md` (no post prose hard-coded in `.astro`).
-- `section_renders`: `#writing` renders as `07 / WRITING` between Experience and Contact, listing
-  the non-draft posts newest-first with per-post links and a link to `/blog/`.
+- `blog_is_dedicated`: the blog is NOT a landing section — `src/pages/index.astro` renders no blog
+  block, the Nav has a `Blog` link to `/blog/` after `Resume`, and Contact stays `07 / CONTACT`.
 - `post_pages_static`: `/blog/<slug>/index.html` is emitted for each non-draft post and `/blog/`
-  lists them; a `draft: true` post is absent from the section, the index, and `dist/`.
+  lists them; a `draft: true` post is absent from the index and `dist/`.
 - `reading_time_derived`: each card/post shows a "N min read" derived from the body (no
   reading-time frontmatter field).
 - `nav_updated` + `contact_renumbered`: the Nav (desktop + mobile) has a `Writing` → `#writing`

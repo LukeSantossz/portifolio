@@ -30,6 +30,30 @@
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
 }
 
+/* ----------------------------------------------------------------------------
+   Light theme — auto, following the visitor's OS/browser preference
+   (`prefers-color-scheme: light`). Same Concrete Terminal palette, inverted:
+   the concrete ramp is re-mapped (950 = lightest surface … 50 = darkest ink)
+   so every existing utility (bg-concrete-950, text-concrete-50, border-*, …)
+   flips role automatically — no per-component changes. The accent green is
+   deepened for AA contrast of small mono labels on the light surface. The dark
+   theme above stays the default (used when no preference / prefers dark).
+---------------------------------------------------------------------------- */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-canvas: #ece9e2; /* warm off-white page background */
+    --color-ink: #1c1a17; /* near-black body / selection text */
+    --color-accent: #176b33; /* deepened grass green — ~5.3:1 on the light surface */
+
+    --color-concrete-950: #ece9e2; /* lightest surface — page background */
+    --color-concrete-900: #dedad1; /* raised concrete surface (cards) */
+    --color-concrete-700: #c3beb2; /* hard rule / divider on light */
+    --color-concrete-500: #8a857b; /* mid hairline rule on light */
+    --color-concrete-300: #57534b; /* muted secondary text — ~6:1 on the surface */
+    --color-concrete-50: #1c1a17; /* darkest ink — primary text on light */
+  }
+}
+
 html {
   scroll-behavior: smooth;
   /* offset for the fixed navbar when jumping to anchors */
@@ -329,9 +353,33 @@ html.hero-intro [data-hero-anim] {
   display: none; /* WebKit */
 }
 
+/* Deck effect (mobile carousel only; the class is added by the script). The
+   centered card is in focus and its neighbours recede a little, so swiping
+   reads like dealing through a stack of cards — while every card's content
+   stays fully legible (a gentle scale + fade, no rotation, no clipping). */
+@media (max-width: 767.98px) {
+  .projects-carousel.is-carousel [data-project-panel] {
+    transition:
+      transform 0.35s ease,
+      opacity 0.35s ease;
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+
+  .projects-carousel.is-carousel [data-project-panel].is-active {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .projects-carousel {
     scroll-behavior: auto;
+  }
+
+  /* Keep the focus/recede states, drop the animated transition. */
+  .projects-carousel.is-carousel [data-project-panel] {
+    transition: none;
   }
 }
 
