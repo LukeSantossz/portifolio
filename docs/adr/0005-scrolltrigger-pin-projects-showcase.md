@@ -11,7 +11,8 @@ that fully reverts on cleanup.
 
 ## Status
 
-Accepted.
+Superseded by [ADR-0009](0009-projects-swipe-carousel.md) — the pinned scroll showcase was
+replaced by a swipe carousel that works on mobile and does not hijack scroll.
 
 ## Considered Options
 
