@@ -1,0 +1,52 @@
+---
+import { formatDate } from '../../data/blog.ts';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags?: string[];
+  minutes: number;
+}
+
+const { slug, title, description, pubDate, tags = [], minutes } = Astro.props;
+const href = `/blog/${slug}/`;
+---
+
+<article
+  class="group relative flex h-full flex-col border-2 border-concrete-50 bg-concrete-950 p-6 text-concrete-50 transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 md:p-8"
+>
+  <!-- Meta line: date · reading time -->
+  <p class="flex flex-wrap items-center gap-x-3 font-mono text-label uppercase tracking-[0.2em] text-concrete-300">
+    <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+    <span aria-hidden="true" class="text-concrete-700">//</span>
+    <span class="text-accent">{minutes} min read</span>
+  </p>
+
+  <!-- Title (the card's primary link) -->
+  <h3 class="mt-4 font-sans text-2xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-3xl">
+    <a
+      href={href}
+      class="transition-colors after:absolute after:inset-0 group-hover:text-accent"
+    >
+      {title}
+    </a>
+  </h3>
+
+  <p class="mt-3 max-w-prose font-sans text-sm leading-relaxed text-concrete-300 md:text-base">
+    {description}
+  </p>
+
+  {
+    tags.length > 0 && (
+      <ul class="mt-auto flex flex-wrap gap-2 pt-6">
+        {tags.map((tag) => (
+          <li class="border border-concrete-700 px-2.5 py-1 font-mono text-xs text-concrete-300">
+            {tag}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>
