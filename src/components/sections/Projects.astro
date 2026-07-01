@@ -29,7 +29,7 @@ const projects = entries.sort((a, b) => {
           Case studies
         </h2>
         <p class="mt-5 font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
-          Not a gallery of screenshots. Swipe through each one — the problem, the
+          Not a gallery of screenshots. Each one walks through the problem, the
           constraints, the call I made, and what I would revisit.
         </p>
       </div>
@@ -44,26 +44,21 @@ const projects = entries.sort((a, b) => {
     </div>
   </div>
 
-  <!-- Swipe carousel: a horizontal scroll-snap track. Swipe/drag on touch, use
-       the prev/next controls or arrow keys on desktop. With no JS the track is
-       still a native horizontally-scrollable list, so every card stays reachable. -->
+  <!-- Case-file track. Mobile (< md): a horizontal swipe scroll-snap carousel
+       (touch swipe / the controls / arrow keys). Desktop (>= md): the default
+       accessible vertical stack. The carousel semantics + controls are applied
+       by the script ONLY on mobile; with no JS the track is still reachable
+       (a native horizontal scroll on mobile, a plain stack on desktop). -->
   <div class="relative z-10 pb-16 md:pb-28">
     <div
-      class="projects-carousel no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 md:gap-8"
+      class="projects-carousel no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 md:mx-auto md:max-w-6xl md:flex-col md:gap-8 md:snap-none md:overflow-visible"
       data-projects-track
-      tabindex="0"
-      role="region"
-      aria-roledescription="carousel"
-      aria-label="Case studies carousel"
     >
       {
         projects.map((project, i) => (
           <div
-            class="w-[86vw] max-w-2xl shrink-0 snap-center"
+            class="w-[86vw] max-w-2xl shrink-0 snap-center md:w-full md:max-w-none"
             data-project-panel
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${projects.length}`}
           >
             <ProjectCard {...project.data} index={i} />
           </div>
@@ -71,8 +66,7 @@ const projects = entries.sort((a, b) => {
       }
     </div>
 
-    <!-- Controls: prev / next + a position readout. Hidden from the flow when
-         there is a single card. Progressive — revealed by the script. -->
+    <!-- Prev / next + a position readout — revealed by the script on mobile only. -->
     <div
       class="mx-auto mt-8 hidden max-w-6xl items-center justify-center gap-4 px-6"
       data-projects-controls
@@ -130,9 +124,11 @@ const projects = entries.sort((a, b) => {
     };
   });
 
-  // Swipe carousel controls. The track scrolls & snaps natively (touch/trackpad);
-  // this wires the prev/next buttons, the position readout, and arrow keys, and
-  // keeps them in sync as the visitor swipes. No-JS keeps the native scroll list.
+  // Swipe carousel — MOBILE ONLY. Below `md` the track is a horizontal scroll-snap
+  // carousel; this wires the prev/next buttons, the readout, and arrow keys, and
+  // adds the carousel ARIA. At >= md the section is the default vertical stack, so
+  // the controls + carousel semantics are removed. The layout itself is switched
+  // by the responsive classes; this only toggles the enhancement.
   const track = document.querySelector<HTMLElement>('#projects [data-projects-track]');
   const controls = document.querySelector<HTMLElement>('#projects [data-projects-controls]');
   const prev = document.querySelector<HTMLButtonElement>('#projects [data-projects-prev]');
@@ -145,11 +141,10 @@ const projects = entries.sort((a, b) => {
     );
 
     if (panels.length > 1) {
-      controls.classList.remove('hidden');
-      controls.classList.add('flex');
-
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const behavior: ScrollBehavior = prefersReduced ? 'auto' : 'smooth';
+      // `md` breakpoint is min-width:768px, so "mobile" is everything below it.
+      const mobile = window.matchMedia('(max-width: 767.98px)');
 
       // The panel whose center is closest to the track's viewport center.
       const currentIndex = () => {
@@ -177,8 +172,13 @@ const projects = entries.sort((a, b) => {
         status.textContent = `${String(i + 1).padStart(2, '0')} / ${String(panels.length).padStart(2, '0')}`;
         prev.disabled = i <= 0;
         next.disabled = i >= panels.length - 1;
+        // Deck effect: the centered card sits in focus, its neighbours recede,
+        // so swiping reads like dealing through a stack of cards.
+        panels.forEach((panel, idx) => panel.classList.toggle('is-active', idx === i));
       };
 
+      // Listeners are wired once; they are inert on desktop (controls hidden, the
+      // track does not scroll horizontally, and the track is not focusable there).
       prev.addEventListener('click', () => goTo(currentIndex() - 1));
       next.addEventListener('click', () => goTo(currentIndex() + 1));
 
@@ -195,7 +195,6 @@ const projects = entries.sort((a, b) => {
         }
       });
 
-      // Keep the readout/buttons in sync while swiping (throttled to a frame).
       let ticking = false;
       track.addEventListener(
         'scroll',
@@ -211,10 +210,48 @@ const projects = entries.sort((a, b) => {
         { passive: true },
       );
 
-      // Recompute after layout changes (orientation/resize) without a scroll.
-      window.addEventListener('resize', sync, { passive: true });
+      window.addEventListener(
+        'resize',
+        () => {
+          if (mobile.matches) sync();
+        },
+        { passive: true },
+      );
 
-      sync();
+      // Enable the carousel enhancement on mobile; strip it on desktop.
+      const applyMode = () => {
+        if (mobile.matches) {
+          track.classList.add('is-carousel');
+          track.setAttribute('role', 'region');
+          track.setAttribute('aria-roledescription', 'carousel');
+          track.setAttribute('aria-label', 'Case studies carousel');
+          track.setAttribute('tabindex', '0');
+          panels.forEach((panel, i) => {
+            panel.setAttribute('role', 'group');
+            panel.setAttribute('aria-roledescription', 'slide');
+            panel.setAttribute('aria-label', `${i + 1} of ${panels.length}`);
+          });
+          controls.classList.remove('hidden');
+          controls.classList.add('flex');
+          sync();
+        } else {
+          track.classList.remove('is-carousel');
+          for (const attr of ['role', 'aria-roledescription', 'aria-label', 'tabindex']) {
+            track.removeAttribute(attr);
+          }
+          panels.forEach((panel) => {
+            panel.classList.remove('is-active');
+            panel.removeAttribute('role');
+            panel.removeAttribute('aria-roledescription');
+            panel.removeAttribute('aria-label');
+          });
+          controls.classList.add('hidden');
+          controls.classList.remove('flex');
+        }
+      };
+
+      applyMode();
+      mobile.addEventListener('change', applyMode);
     }
   }
 </script>
