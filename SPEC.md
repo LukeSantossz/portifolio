@@ -1,138 +1,106 @@
-# SPEC: feat(blog): a personal "Writing" section backed by a static blog content collection
+# SPEC: feat(ui): evidence-based engagement refinements for the recruiter skim
 
 ## Problem
 
-The portfolio proves *what* was built (Case studies) and *where* the author has been (Experience),
-but never shows *how they think in prose* — the writing that recruiters and peers use to gauge
-communication and depth. There is no place to publish short technical notes, and the single-page
-layout has no route surface for long-form content. The site needs a first-class **personal blog**
-that stays true to the Concrete Terminal identity and the `output: 'static'` constraint.
+Recruiters form a near-instant visual judgment (17-50 ms) that halos onto perceived competence and
+trust, and they skim rather than read. A deep-research pass (NN/g eye-tracking; Lindgaard 2006;
+Tuch & Bargas-Avila 2012; Reinecke 2013; and corrective meta-analyses on Zeigarnik/choice-overload)
+identified where this portfolio can raise engagement **ethically** without adding visual noise. This
+change applies the highest-confidence, lowest-risk levers and one honest "closing" trigger.
 
 ## Design Decision
 
-Add a **`blog` content collection** (`src/content/blog/*.md`, Markdown bodies — unlike `projects`,
-whose bodies are unused) and surface it as a **dedicated, separate area of the site** (NOT a
-section of the one-page landing):
+Apply five research-backed refinements, preferring **reducing** complexity over adding elements
+(the strongest finding is that low visual complexity maximizes appeal and the halo effect):
 
-1. **A `/blog/` index page** listing the non-draft posts (newest first) as cards (title, date,
-   reading time, description, tags), each linking to its own page. The blog is reached from a
-   **`Blog` nav link placed after the `Resume` button** — a separate part of the portfolio — so the
-   landing page is unchanged and Contact keeps `07 / CONTACT`.
-2. **Statically generated post pages** at `/blog/<slug>/` — one HTML file per post, emitted at build
-   time via `getStaticPaths` (no SSR). The `/blog/` index and the post pages reuse the shared
-   `Layout` (head/SEO/CRT/glow) with a lightweight, subpage-safe header (a `/`-home link + a `Blog`
-   link, not the landing's hash Nav) and render the Markdown body through a scoped
-   **`.prose-terminal`** typographic layer.
+1. **(A) Calm the hero / above-the-fold visuals** — the single highest-leverage lever (first
+   impression + aesthetic-usability halo + cognitive fluency). Temper the decorative load site-wide
+   but felt most in the dense hero: lower the analog-grain opacity and soften the cursor-glow
+   (smaller radius + lower alpha). The Concrete Terminal identity (ADR-0002) and the CRT overlay
+   (ADR-0006) are **kept** — only their intensity is dialed down. Recorded in **ADR-0013**.
+2. **(G) Front-load Experience highlights** — lead each work bullet with its outcome/number
+   (F-pattern / "first 2 words" / layer-cake scanning). Pure reordering + tightening of the
+   existing copy in `src/data/experience.ts` — **no new or altered factual claims**.
+3. **(I) Peak-end close on Contact** — end the page with a short, confident closing line that
+   restates the honest availability (`site.availability`) and points to one primary action, so the
+   last thing a recruiter sees reinforces "reachable + open" (peak-end; honest availability, not a
+   fake-scarcity dark pattern).
+4. **(J) Single clear primary action in Contact** — frame the email link as the explicit secondary
+   ("prefer email?") so the form reads as the one primary path (friction/clarity; justified by
+   fluency, not by an over-claimed "choice overload law").
+5. **(B) Hero headline & (E) case-study metric lead** — audited as **already satisfied** by the
+   current design (the hero positioning line leads with the AI/ML specialty; `ProjectCard` already
+   renders the metric as the visual hero above the title). No change beyond confirming this; noted
+   so the acceptance criteria cover them.
 
-- **Content is decoupled** (per CLAUDE.md): copy lives in `src/content/blog/*.md`; the schema is
-  declared in `src/content.config.ts`. Components render frontmatter + body, never hard-coded copy.
-- **Static-site-safe:** the site stays `output: 'static'`; pages come from `getStaticPaths` +
-  `astro:content` `render()`. No SSR adapter, no runtime data fetching.
-- **Reading time** is derived at build time from the raw body word count (~200 wpm), so it needs no
-  extra frontmatter and cannot drift from the content.
-- **Drafts:** a `draft: true` post is excluded from the listing, the index, and the generated
-  routes (never emitted), so work-in-progress can live on the branch without shipping.
-- **A11y + motion:** the section reuses the existing section shell (`bt-grain`, concrete ramp,
-  accent label) and the `data-*-anim` GSAP entrance pattern (opacity-only, fail-safe, gated by
-  `prefers-reduced-motion`); post pages are plain document flow (no motion dependency to read them).
-- **SEO:** each post page passes its own `title`/`description` to `Layout`; `Layout` gains an
-  optional `tabTitle` prop (defaulting to `site.tabTitle`) so post tabs read `<Post> · <name>` while
-  the landing tab is unchanged. Canonical/OG URLs already derive from `Astro.url` per page, and the
-  existing `@astrojs/sitemap` integration picks up the new routes automatically.
-
-This introduces no new runtime dependency; it reuses Astro content collections (already used by
-`projects`), the Concrete Terminal tokens, and the sitemap integration. The durable choice
-(Markdown collection + build-time per-post pages for a static blog) is recorded in **ADR-0011**.
+Explicitly **out of scope / not applied now** (evidence weak or "open" in the research, and each
+would add complexity): open-loop/curiosity-gap recall (debunked for memory), extra social-proof
+widgets, added micro-interactions/motion, storytelling rewrites. These can be A/B-tested later,
+one at a time.
 
 ## Alternatives Considered
 
-- **A landing-only section with no post pages** — rejected: a blog with no readable posts is a
-  teaser, not a blog; the collection would carry content nothing renders.
-- **Linking out to an external platform (Medium/Dev.to)** — rejected: sends visitors off-site,
-  cedes the Concrete Terminal identity and SEO, and adds a third-party dependency for core content.
-- **SSR / an edge adapter for posts** — rejected: breaks `output: 'static'`; per-post pages are
-  fully knowable at build time via `getStaticPaths`.
-- **Reusing the landing hash `Nav` on post pages** — rejected: its `#about`-style anchors resolve
-  against the current path and would 404-scroll from `/blog/*`; post pages use a `/`-home header.
-- **Reusing `ProjectCard` for posts** — rejected: it is a dense case-study card (metric hero, case
-  moves); posts need a lighter title/date/excerpt card, so a dedicated `PostCard` is clearer.
-- **A `readingTime`/`wordCount` frontmatter field** — rejected: derivable from the body, so storing
-  it invites drift.
+- **Stripping the CRT overlay / grain entirely** — rejected: over-corrects; the identity is an
+  asset. Dialing intensity down preserves brand while reducing complexity.
+- **Rewriting the hero headline / case taglines** — rejected: they already front-load; rewriting
+  would touch the author's voice/claims for no evidenced gain.
+- **Adding testimonials / logos / a fake "limited slots" banner** — rejected: solo portfolio has no
+  honest logos to show, and fake scarcity is a dark pattern (explicitly excluded).
+- **A reading-progress / open-loop teaser to boost dwell** — rejected: the 2025 meta-analysis found
+  no memory advantage; not worth the added complexity.
 
 ## Scope
 
 - Includes:
-  - `src/content.config.ts`: add a `blog` collection (glob `**/*.md` under `src/content/blog`) with
-    schema `{ title, description, pubDate (coerced date), tags[]?, draft (default false) }`.
-  - `src/content/blog/*.md`: two seed posts with realistic frontmatter + Markdown bodies.
-  - `src/components/ui/PostCard.astro`: a post summary card (date, reading time, title, description,
-    tags) linking to `/blog/<slug>/`.
-  - `src/pages/blog/index.astro`: the `/blog/` index page listing the non-draft posts (newest
-    first) via `PostCard`, with the subpage-safe header.
-  - `src/pages/blog/[...slug].astro`: `getStaticPaths` over non-draft posts → one page per post
-    (title, date, reading time, tags, rendered body via `.prose-terminal`, a subpage-safe header).
-  - `src/components/layout/SubpageHeader.astro`: a `/`-home + `Blog` header for the `/blog/*` routes.
-  - `src/components/layout/Nav.astro`: add a `Blog` link to `/blog/` placed AFTER the `Resume`
-    button (desktop + mobile) — the blog is a separate area, not a landing section.
-  - `src/layouts/Layout.astro`: add an optional `tabTitle` prop (default `site.tabTitle`).
-  - `src/styles/global.css`: add a scoped `.prose-terminal` typographic layer for post bodies.
-  - `docs/adr/0011-...md` + a README Engineering Decisions row.
+  - `src/styles/global.css`: lower `.bt-grain` opacity (0.06 → 0.04). (A)
+  - `src/layouts/Layout.astro`: soften `#cursor-glow` (radius 520 → 420px, alpha 13% → 9%). (A)
+  - `src/data/experience.ts`: reorder/tighten the work `highlights` to lead with the
+    outcome/number; no claim added or changed. (G)
+  - `src/components/sections/Contact.astro`: add a peak-end closing line using `site.availability`
+    (I); frame the email link as the explicit secondary path (J).
+  - `docs/adr/0013-...md` + a README Engineering Decisions row.
 - Does NOT include:
-  - SSR/edge rendering, comments, pagination, tag-filter pages, RSS, or search.
-  - A blog section on the landing page; any change to the landing's sections or numbering
-    (Contact stays `07 / CONTACT`).
-  - A new runtime dependency or design system; changing the `projects` collection.
+  - Any change to factual claims, metrics, or the design system/palette.
+  - New dependencies, new sections, social-proof widgets, added motion, or copy rewrites of the
+    hero/case studies (B/E already satisfied).
+  - Removing the CRT overlay or grain (only intensity is reduced).
 
 ## Acceptance Criteria
 
-Verified by build, type-check, the Lighthouse budget, and named manual checks (no unit harness,
-per `docs/adr/0001-presentation-only-verification-policy.md`).
+Verified by build, type-check, the Lighthouse budget, and named manual checks (no unit harness, per
+`docs/adr/0001-presentation-only-verification-policy.md`).
 
 - `build_succeeds` / `typecheck_clean`: `npm run build` exit 0; `npm run check` 0 errors.
-- `collection_defined` + `content_decoupled`: a `blog` collection exists in `src/content.config.ts`;
-  all post copy lives in `src/content/blog/*.md` (no post prose hard-coded in `.astro`).
-- `blog_is_dedicated`: the blog is NOT a landing section — `src/pages/index.astro` renders no blog
-  block, the Nav has a `Blog` link to `/blog/` after `Resume`, and Contact stays `07 / CONTACT`.
-- `post_pages_static`: `/blog/<slug>/index.html` is emitted for each non-draft post and `/blog/`
-  lists them; a `draft: true` post is absent from the index and `dist/`.
-- `reading_time_derived`: each card/post shows a "N min read" derived from the body (no
-  reading-time frontmatter field).
-- `nav_updated` + `contact_renumbered`: the Nav (desktop + mobile) has a `Writing` → `#writing`
-  link; the Contact label reads `08 / CONTACT` and no `07 / CONTACT` remains.
-- `subpage_nav_safe`: post/index pages do not render the landing hash `Nav`; their header links to
-  `/` (no `#about`-style anchors that would break off the landing).
-- `seo_per_post`: each post page passes its own `title`/`description` to `Layout`; the tab title
-  differs from the landing default; canonical/OG derive from the page URL; the sitemap includes the
-  new routes.
-- `static_preserved`: `output: 'static'` unchanged; no SSR adapter or new runtime dependency in
-  `package.json` `dependencies`.
-- `a11y_motion`: the section is keyboard-reachable, the entrance motion is opacity-only and gated by
-  `prefers-reduced-motion`, and post bodies are readable with JS/motion off.
-- `adr_recorded`: ADR-0011 exists and is linked from the README.
-- `lighthouse_budget_met`: the Lighthouse CI budget (`lighthouserc.json`) still passes on `/`
-  (accessibility ≥0.95, CLS ≤0.1, performance not regressed).
+- `hero_calmer` (A): `.bt-grain` opacity is reduced and the cursor-glow radius/alpha are lowered;
+  the CRT overlay + grain still render (identity preserved), just fainter.
+- `experience_frontloaded` (G): each work highlight leads with its outcome/number; the set of facts
+  is unchanged from the prior copy (reorder/tighten only).
+- `contact_peak_end` (I): the Contact section ends with a closing line that restates
+  `site.availability` and points to one primary action.
+- `contact_single_primary` (J): the form is the visual primary; the email link is explicitly framed
+  as the secondary ("prefer email?").
+- `already_satisfied` (B/E): the hero positioning line leads with the specialty and `ProjectCard`
+  shows the metric above the title — confirmed, unchanged.
+- `no_dark_pattern`: no fake scarcity/urgency, no manufactured social proof; availability language
+  is the real `site.availability`.
+- `content_decoupled`: copy changes live in `src/data/*.ts` / the section component per CLAUDE.md.
+- `adr_recorded`: ADR-0013 exists and is linked from the README.
+- `lighthouse_budget_met`: `lighthouserc.json` still passes (a11y ≥0.95, CLS ≤0.1, perf not
+  regressed).
 
 ## Reproducibility
 
-- Install: `npm install` (no new deps). Build: `npm run build`; type-check: `npm run check`.
-- Post pages: after `npm run build`, `dist/blog/<slug>/index.html` exists for each non-draft post
-  and `dist/blog/index.html` lists them; a `draft: true` post produces no file.
-- Add a post: drop a `.md` in `src/content/blog/` with the frontmatter fields; it appears in the
-  section (if among the most recent) and the index, and gets its own page.
-- Static/fallback: load a post page with JS off → the article body reads normally; the landing
-  section content is server-rendered and visible without motion.
-- Reduced motion: emulate `prefers-reduced-motion: reduce` → the section entrance does not animate.
-- Versions: Astro `^6.3.7`, Tailwind v4, TypeScript `^6.0.3`, Node 22.
+- Build: `npm run build`; type-check: `npm run check`. No new deps.
+- Visual: load `/` — the hero reads calmer (fainter grain/glow) while keeping the CRT/brutalist
+  look; Experience bullets lead with numbers; the Contact section ends on the availability close.
+- Reduced motion / light theme: unaffected (only opacity/copy changed).
 
 ## Risks and Assumptions
 
-- Risk: hash `Nav` links break on `/blog/*`. Mitigation: post/index pages use a `/`-home header, not
-  the landing Nav (`subpage_nav_safe`).
-- Risk: an empty collection (all drafts / none) makes the section look broken. Mitigation: the
-  section renders an "in progress" empty state and the seed posts ship non-draft.
-- Risk: reading-time heuristic is approximate. Accepted: it is a soft signal (~200 wpm), derived so
-  it never drifts from the body; exactness is not a requirement.
-- Risk: the new routes add page weight / could regress Lighthouse. Mitigation: static HTML + the
-  existing CSS layer, no new JS on post pages; budget re-checked on `/`.
-- Invalidation: introducing SSR, an external content host, or hard-coding post copy in components
-  invalidates this spec.
+- Risk: "calmer" is subjective — the grain/glow values are single-line tunables; the user confirms
+  in the browser and we adjust. Reverting is trivial.
+- Risk: front-loading edits could subtly shift emphasis — mitigated by preserving every fact and
+  only reordering; shown in the PR diff for review.
+- Assumption: aesthetic-first-impression findings (lab aesthetic ratings) transfer to recruiter
+  skimming as a reasonable design inference, not a directly tested outcome (per the research
+  caveats).
