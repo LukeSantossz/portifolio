@@ -33,7 +33,7 @@ const durations = ['52s', '66s', '59s'];
 
 <section
   id="skills"
-  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 py-24 text-concrete-50 md:py-28"
+  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 py-16 text-concrete-50 md:py-28"
 >
   <!-- Decorative analog grain (no semantics, not focusable). -->
   <div class="bt-grain" aria-hidden="true"></div>
@@ -50,14 +50,14 @@ const durations = ['52s', '66s', '59s'];
       </h2>
       <p class="mt-5 max-w-2xl font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
         Every tool here earns its place in one of the case studies below, not on a
-        logo wall. Hover any tag to surface its cluster: related tools light up and
-        the rest fade back.
+        logo wall.<span class="hidden md:inline"> Hover any tag to surface its cluster: related tools light up
+        and the rest fade back.</span>
       </p>
     </div>
   </div>
 
   <!-- Full-bleed: the marquee spans the whole viewport, not the centered column. -->
-  <div data-skills-anim class="skills-marquee relative z-10 space-y-3">
+  <div data-skills-anim class="skills-marquee relative z-10 hidden space-y-3 md:block">
     {
       rows.map((row, r) => {
         const set = buildSet(row);
@@ -83,7 +83,7 @@ const durations = ['52s', '66s', '59s'];
     }
   </div>
 
-  <div class="relative z-10 mx-auto mt-8 max-w-6xl px-6">
+  <div class="relative z-10 mx-auto mt-8 hidden max-w-6xl px-6 md:block">
     <ul data-skills-anim class="flex flex-wrap gap-x-5 gap-y-2">
       {
         skillGroups.map((group) => (
@@ -100,6 +100,26 @@ const durations = ['52s', '66s', '59s'];
         ))
       }
     </ul>
+  </div>
+
+  <!-- Mobile: static grouped skills — instantly scannable, no hover/motion dependency. -->
+  <div data-skills-anim class="relative z-10 mx-auto mt-2 max-w-6xl space-y-6 px-6 md:hidden">
+    {
+      skillGroups.map((group) => (
+        <div>
+          <p class="font-mono text-label uppercase tracking-[0.2em] text-accent">
+            {group.category}
+          </p>
+          <ul class="mt-2 flex flex-wrap gap-2">
+            {group.items.map((item) => (
+              <li class="border border-concrete-700 px-3 py-1.5 font-mono text-xs text-concrete-50">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
 </section>
 
