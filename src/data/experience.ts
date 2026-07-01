@@ -19,10 +19,10 @@ export const timeline: TimelineItem[] = [
     description:
       'Jacto is a Brazilian manufacturer of agricultural machinery that sells in more than 100 countries and employs over 3,000 people, with after-sales operations at industrial scale. I work where the business side meets engineering.',
     highlights: [
-      'Automated a data migration that used to be manual: Russian dealership address records, stored in the Russian government address-classification system (KLADR), were extracted, converted from the Cyrillic to the Latin alphabet, cleaned up by region, and loaded into Salesforce, the customer-records platform the company runs on.',
-      'Designed a computer-vision system (now in internal review) to audit discarded parts: it checks that photos meet a standard, reads the printed slip and cross-checks it against the system record, and recognizes the part, paired with an in-app camera that locks file names and stamps each photo with time and location so the evidence holds up.',
-      'Acted as the bridge between the business and the developers on an internal parts-return tool, finding more than 10 usability problems and validating rule changes across testing rounds, which moved the workflow from manual entry to mostly review.',
-      'Audited and reconciled the field-parts return flow across more than 150 main dealerships at home and abroad, tracking millions of reais in parts movement and processing write-offs through audits done both on site and remotely.',
+      'Automated a previously manual data migration: extracted Russian dealership address records from the government address-classification system (KLADR), transliterated them Cyrillic-to-Latin, cleaned them by region, and loaded them into Salesforce, the platform the company runs its customer records on.',
+      'Designed a computer-vision system (now in internal review) that audits discarded parts end to end: it checks each photo meets the standard, reads the printed slip and cross-checks it against the system record, and recognizes the part — paired with an in-app camera that locks file names and stamps time and location so the evidence holds up.',
+      'Found 10+ usability problems as the business-to-developer bridge on an internal parts-return tool, validating rule changes across testing rounds — moving the workflow from manual entry to mostly review.',
+      'Audited 150+ main dealerships at home and abroad, reconciling the field-parts return flow and tracking millions of reais in parts movement, and processed write-offs through audits done both on site and remotely.',
     ],
   },
   {
