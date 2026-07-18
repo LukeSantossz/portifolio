@@ -56,8 +56,12 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
     inside the Services list items, and the `PROJECT 01` prefix on project cards, which keeps
     its domain and period.
   - **Label agreement:** the Services heading and its nav link use the same words.
-  - **Prohibited punctuation removed** (`AGENTS.md` bans em and en dashes) from
-    `blog/index.astro`, both files in `src/content/blog/`, and `Contact.astro`.
+  - **Prohibited punctuation removed from public copy.** `AGENTS.md` scopes its em and en
+    dash ban to public copy, so code comments are deliberately left alone. Seventeen
+    occurrences across six files: `Contact.astro:82` and `:180` (as `&mdash;` entities),
+    `blog/index.astro:29`, `ProjectCard.astro:117` and `:131` (inside `aria-label`, which
+    assistive technology reads aloud), `data/experience.ts:23` and `:24`, and both articles
+    in `src/content/blog/` (seven and four occurrences).
   - **Shared card surface** extracted from the duplicated
     `flex h-full flex-col border-2 border-concrete-50 bg-concrete-950 p-6 text-concrete-50 md:p-8`
     in `ProjectCard.astro` and `PostCard.astro`.
@@ -86,6 +90,7 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
   - Any change to the grain, CRT overlay, or cursor glow, including their opacity and timing.
   - The palette, the accent color, or the light-theme token values.
   - Section copy beyond punctuation and the two label corrections named above.
+  - Em and en dashes inside code comments, which `AGENTS.md` does not cover.
   - Any change to the geo map, the projects carousel, the hero intro, or the count-up.
   - New dependencies, new ADRs, or a move away from `output: 'static'`.
   - Retiring or deleting any existing ADR.
@@ -111,8 +116,10 @@ ADR-0001 (no unit harness for presentation-only work).
   prefix appears on a project card; the `01 / HELLO` through `07 / CONTACT` section labels
   are unchanged.
 - `services_label_agrees_with_nav`: the Services heading text and its nav link text match.
-- `no_prohibited_dashes`: no em dash or en dash appears in `src/content/blog/`,
-  `blog/index.astro`, or `Contact.astro`.
+- `no_prohibited_dashes_in_public_copy`: neither the literal characters nor the `&mdash;` and
+  `&ndash;` entities appear in `src/content/blog/`, `blog/index.astro`, `Contact.astro`,
+  `ProjectCard.astro`, or `src/data/experience.ts`. Code comments are out of scope and are
+  expected to still contain them.
 - `card_surface_shared`: the duplicated card surface string appears once in `src/`.
 - `translate_pairs_with_shadow`: all eight `hover:-translate-` occurrences in `src/` sit on an
   element that also carries `shadow-hard`. Four already comply (`Hero.astro:74`, `:82`,
