@@ -67,10 +67,12 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
     in `ProjectCard.astro` and `PostCard.astro`.
   - **Interaction rule:** `hover:-translate-x-0.5 hover:-translate-y-0.5` always pairs with
     `shadow-hard`, fixing `PostCard.astro` and the two link buttons in `ProjectCard.astro`.
-  - **Token naming:** `text-label` is the single name for the 0.75rem mono label size,
-    replacing `text-xs` where it labels metadata; eyebrow tracking is `0.2em` everywhere;
-    the single `border-dashed` occurrence in `blog/index.astro` is replaced by the solid
-    border vocabulary.
+  - **Token naming documented, not mass-renamed.** `text-label` and `text-xs` both resolve to
+    0.75rem, so swapping them changes no pixel and risks churn for no gain. `design.md`
+    records the convention in use instead: `text-label` for eyebrow and metadata labels,
+    `text-xs` for interactive chrome.
+  - **The single `border-dashed` occurrence** in `blog/index.astro:51` is replaced by the
+    solid border vocabulary used everywhere else.
   - **Weights on the ramp:** `.prose-terminal h2/h3` moves from `font-weight: 800` to `900`,
     matching `font-black`, and the `h3` in `Experience.astro` moves from `font-semibold` to
     `font-bold`, matching the other card headings.
@@ -91,6 +93,10 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
   - The palette, the accent color, or the light-theme token values.
   - Section copy beyond punctuation and the two label corrections named above.
   - Em and en dashes inside code comments, which `AGENTS.md` does not cover.
+  - Eyebrow letter-spacing. `tracking-[0.25em]` is the established convention for the section
+    and page eyebrow, used consistently in nine places including `blog/index.astro:20`. An
+    earlier reading called it drift by comparing only within the blog subtree; it is not.
+  - Renaming `text-xs` to `text-label` or the reverse. Both are 0.75rem.
   - Any change to the geo map, the projects carousel, the hero intro, or the count-up.
   - New dependencies, new ADRs, or a move away from `output: 'static'`.
   - Retiring or deleting any existing ADR.
