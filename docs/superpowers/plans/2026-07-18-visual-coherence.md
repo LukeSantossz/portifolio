@@ -35,10 +35,12 @@ Replaces every `max-w-5xl` with `max-w-6xl` and widens the blog's `SubpageHeader
 - Modify: `src/components/sections/Experience.astro:12`
 - Modify: `src/components/sections/Contact.astro:65`
 - Modify: `src/pages/blog/index.astro:18`
+- Modify: `src/pages/blog/[...slug].astro` (pass the reading rail to the header)
 
 **Interfaces:**
 - Consumes: nothing from earlier tasks.
-- Produces: the two-rail invariant that Task 2 and Task 9 rely on. After this task `max-w-5xl` does not appear in `src/`, and `max-w-3xl` appears exactly once, in `src/pages/blog/[...slug].astro:24`.
+- Produces: the two-rail invariant that Task 2 and Task 9 rely on. After this task `max-w-5xl` does not appear in `src/`, and `max-w-3xl` appears exactly twice: the `railClass` ternary in `SubpageHeader.astro` and the article rail in `src/pages/blog/[...slug].astro:24`.
+- Produces: the `rail` prop on `SubpageHeader`, values `'wide' | 'reading'`, default `'wide'`. Task 2 relies on that default when the 404 renders the header bare.
 
 - [ ] **Step 1: Confirm the starting inventory**
 
