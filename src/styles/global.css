@@ -1,4 +1,12 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+/* Tailwind v4 auto-detects sources from the project root, which sweeps `docs/`
+   and `.superpowers/`. A class name merely quoted in a plan or spec was being
+   compiled into the shipped stylesheet (`.max-w-5xl`, `.border-dashed`, and
+   `.font-semibold` all reached `dist/` that way, used by nothing). `source(none)`
+   disables the automatic scan; the directive below restricts it to the only tree
+   that renders markup. Paths are relative to this file. */
+@source "../../src";
 
 /* ----------------------------------------------------------------------------
    Design tokens (dark tech / minimalist)
