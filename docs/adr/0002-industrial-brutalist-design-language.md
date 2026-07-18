@@ -13,6 +13,14 @@ in later, separate SPECs.
 
 Accepted.
 
+Amended, not revoked. The Hero-only `.bt-scanline` described above was superseded by the
+global CRT ambient overlay in ADR-0006, which replaced it with one page-wide scanline and
+scan-beam layer; the per-section `.bt-grain` stayed. ADR-0013 later tempered the grain
+opacity and the cursor-glow values without revoking ADR-0002 or ADR-0006. Everything else
+here (the concrete ramp, the single green signal, the mono-forward type contrast, the hard
+borders and hard-offset shadow) remains the shipped language. This record keeps its number
+and file per the durable-records rule in `.standards/docs/standards/spec_method.md`.
+
 ## Considered Options
 
 - **"Concrete Terminal" phased (chosen)**: ship the design system + Hero pilot first,

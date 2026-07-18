@@ -32,6 +32,7 @@
 - Make each component earn its visual weight. Avoid generic SaaS card grids, decorative metric inflation, and duplicated section rhythms.
 - Use existing local SVG icons via `Icon.astro`; do not mix icon libraries. Add an icon only when it disambiguates an action, and retain its text label when the action is not universally obvious.
 - Use semantic landmarks and heading order. Every interactive control needs a visible keyboard focus state and a minimum practical touch target.
+- Public copy uses plain punctuation: no em or en dashes and no `&mdash;` / `&ndash;` entities. Use a comma, a colon, parentheses, or a new sentence instead. Code comments are out of scope. Numbered section eyebrows (`01 / HELLO` through `07 / CONTACT`) are the one sanctioned numbering in public copy, per ADR-0011; no other ordinal prefix belongs there.
 
 ## Responsive and motion rules
 
