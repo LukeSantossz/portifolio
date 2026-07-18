@@ -993,7 +993,7 @@ Run the Lighthouse CI against the built output using `lighthouserc.json`. Expect
 
 - [ ] **Step 4: Browser pass, four routes, three widths**
 
-Inspect the landing, `/blog`, one article, and `/404` at 390px, 768px, and 1440px. At each, confirm: no horizontal overflow, the blog header aligns with its content, the mobile action bar is present on all four routes below 768px without covering the footer, keyboard focus rings are visible on every interactive control, and the console is free of errors.
+Inspect the landing, `/blog`, one article, and `/404` at 390px, 768px, and 1440px. At each, confirm: no horizontal overflow, the blog header aligns with its content, keyboard focus rings are visible on every interactive control, and the console is free of errors. For the mobile action bar, below 768px confirm it is present without covering the footer on the landing page, `/blog`, and the article, and confirm it is absent on `/404`, which does not render `MobileActionBar` by design.
 
 - [ ] **Step 5: Reduced motion and no JavaScript**
 

@@ -37,8 +37,10 @@
 ## Responsive and motion rules
 
 - Validate at roughly 320px, 390px, 768px, 1440px, and 1600px wide.
-- Mobile is the baseline: preserve linear reading order and never require hover or horizontal pinned scrolling to reach content.
-- Motion must orient, confirm, or reveal hierarchy. No continuous animation unless it conveys useful state.
+- Mobile is the baseline: preserve linear reading order and never require hover to reach content.
+- Do not pin a section and hijack vertical scroll to drive horizontal movement. That is the pattern ADR-0009 rejected when it superseded ADR-0005. A self-contained horizontal scroll-snap carousel is not that pattern and is allowed where swiping is the natural gesture: the mobile Case studies carousel is exactly this, keeps every card reachable without JavaScript, and falls back to a vertical stack at `md` and up.
+- Content motion (the hero entrance, in-view section reveals) must orient, confirm, or reveal hierarchy.
+- Ambient motion is a separate, sanctioned category, not a violation to clean up. The CRT overlay and scan-beam (ADR-0006), the global cursor glow, and the Skills marquee loop continuously by design; ADR-0013 tempered their intensity and explicitly rejected removing them. Removing one reverses an accepted ADR and needs its own ADR. See the Motion policy in `design.md`.
 - Respect `prefers-reduced-motion`; content must remain fully visible and operable without JavaScript.
 
 ## Verification and completion

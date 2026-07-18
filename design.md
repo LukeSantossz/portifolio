@@ -1,4 +1,4 @@
-# Visual system — Lucas Gonçalves portfolio
+# Visual system: Lucas Gonçalves portfolio
 
 ## Intent
 
@@ -9,7 +9,7 @@ An **industrial editorial** portfolio for applied AI/ML work: precise, evidence-
 1. Put the claim, evidence, and next action in that order.
 2. Let typography and measured whitespace create distinction; reserve effects for genuine orientation.
 3. Use lime as a signal, not decoration: primary action, active location, or a substantiated outcome.
-4. A project is a case file with context, decision, constraint, and result—not a portfolio thumbnail.
+4. A project is a case file with context, decision, constraint, and result, not a portfolio thumbnail.
 5. Preserve a linear, readable page with JavaScript disabled or reduced motion enabled.
 
 ## Tokens
@@ -50,16 +50,22 @@ inner measure cap, not a rail.
 
 - `max-w-6xl` is the wide rail. It carries all chrome (`Nav`, `SubpageHeader`, `Footer`)
   and all wide content: every landing section, the blog index, and the 404 page.
-- `max-w-3xl` is the reading rail. It is used by exactly one element, the rendered post
-  body in `src/pages/blog/[...slug].astro`, where the reading measure is the point.
+- `max-w-3xl` is the reading rail. It carries the rendered post body in
+  `src/pages/blog/[...slug].astro`, where the reading measure is the point, and it is the
+  `'reading'` arm of the `railClass` ternary in `SubpageHeader.astro` so that page's header
+  spans the same rail. Those two are its only occurrences in `src/`.
 
 `SubpageHeader.astro` takes a `rail` prop (`'wide' | 'reading'`, default `'wide'`) so the
 header always spans the same rail as the content beneath it. A post page passes
 `rail="reading"`; everything else takes the default.
 
-`max-w-2xl` and `max-w-4xl` still appear inside sections. They cap a paragraph measure or
-a stat grid within a rail and are never the page container. Do not introduce a new rail
-value; pick one of the two.
+Smaller `max-w-*` values still appear inside sections. They cap a paragraph measure, a stat
+grid, or a carousel card within a rail and are never the page container. Do not introduce a
+new rail value; pick one of the two.
+
+Confirm the rails and their inner caps with
+`grep -rno "max-w-[a-z0-9]*" src/ | awk -F: '{print $3}' | sort | uniq -c` rather than
+trusting a list in prose, which goes stale on the next edit.
 
 ## Light theme
 
@@ -100,19 +106,46 @@ change.
 
 ## Typography and layout
 
-- **Inter Variable:** display and body; use black only for short headlines.
-- **JetBrains Mono:** labels, dates, metrics, and controls.
-- Headlines have a measure of roughly 10–14 words; body copy is capped near 65 characters per line where feasible.
-- Page padding: 1.25rem small screens, 1.5rem from tablet, fluid larger gutters on desktop.
-- Section spacing is deliberately varied: strong transition into case studies, calmer spacing around supporting profile content.
+- **Inter Variable** (`--font-sans`) carries display and body copy. `font-black` is the
+  display weight. Eleven of its twelve occurrences in `src/` sit on an `h1`, `h2`, or `h3`,
+  and `.prose-terminal h2, h3` sets `font-weight: 900` in CSS for the same effect inside a
+  rendered post. The twelfth is `ProjectCard.astro`, on a display-scale `<p>` carrying the
+  card's outcome figure. That one is deliberate: it is a headline in role, so it takes the
+  headline weight. Body copy never takes it.
+- **JetBrains Mono** (`--font-mono`) carries eyebrows, dates, stack chips, buttons, and form
+  labels. Both faces are set uppercase, so uppercase alone does not tell them apart. The
+  reliable tell is the sign of the tracking: headings are `font-sans` with negative tracking
+  (`tracking-[-0.02em]`, `-0.03em` in the hero) to tighten a heavy display line, while mono
+  labels take positive tracking (`tracking-[0.2em]`, `[0.25em]` on eyebrows). Positive
+  letter-spacing means mono.
+- **Page padding is flat.** Every page container in `src/` uses `px-6` (1.5rem) at every
+  width. There is no responsive padding ramp: `grep -rn "max-w-6xl\|max-w-3xl" src/` shows
+  `px-6` and no `sm:px-*` or `md:px-*` beside it. If a future change wants wider desktop
+  gutters, that is a new decision, not an existing one.
+- **Vertical rhythm is uniform, not varied.** Landing sections use `py-16 md:py-28`;
+  the subpages (`/blog`, an article, `/404`) use `py-20 md:py-28`. `Projects.astro` is the
+  single exception, `pt-16 md:pt-28`, because its carousel track supplies its own bottom
+  space. Distinction comes from type scale and borders, not from spacing variation.
+- **Measure is capped inside a rail, never by it.** Body copy in `ProjectCard.astro` and
+  `PostCard.astro` uses `max-w-prose` (Tailwind's 65ch). Section intros mostly use
+  `max-w-2xl`. The hero stat grid uses `max-w-4xl`.
 
 ## Components
 
-- **Primary CTA:** lime fill, dark text, one clear verb. It receives the strongest contrast.
-- **Secondary CTA:** quiet outlined treatment; never competes with the primary action.
-- **Case study:** a bordered editorial panel with a single outcome, concise context, stack as metadata, and visible source/demo links.
-- **Navigation:** compact text links; no decorative interaction competes with content.
-- **Form:** persistent labels, high contrast, explicit status, and visible focus.
+- **Primary CTA:** `border-2 border-accent bg-accent text-concrete-950`, plus `shadow-hard`
+  and the paired hover lift, with one clear verb. Describe it as accent fill with inverted
+  ink, not as "lime fill, dark text": `--color-concrete-950` inverts with the ramp, so the
+  same classes render dark ink on lime in the dark theme and light ink on deep green in the
+  light theme. Both directions are intentional. It ships in `Hero.astro`, `Contact.astro`
+  (submit and the follow-up action), and `404.astro`.
+- **Secondary CTA:** the same geometry, weight, and `shadow-hard`, but outlined:
+  `border-2 border-concrete-50 bg-transparent text-concrete-50`. It reads as an alternative
+  rather than a quieter one; only the fill separates it from the primary action.
+- **Case study:** a bordered editorial panel (`.surface-card`) with a single outcome,
+  concise context, stack as metadata, and visible source and demo links.
+- **Navigation:** compact mono text links; no decorative interaction competes with content.
+- **Form:** persistent labels above each field, a `role="status"` `aria-live="polite"`
+  region for submission state, and the site-wide focus ring.
 
 ## Surface and interaction rules
 
@@ -125,12 +158,24 @@ change.
   (flex column, full height, `border-2` in primary ink, `--color-concrete-950` fill,
   1.5rem padding rising to 2rem from 768px). Use the class. Do not re-inline its class
   string on a new card; a third copy is how the first two drifted apart.
-- **Label size is chosen by role, not by size.** `text-label` and `text-xs` both resolve
-  to 0.75rem. `text-label` marks eyebrow and metadata labels, the copy that names a
-  section or annotates content. `text-xs` marks interactive chrome and small utility
-  copy: footer links, form labels, buttons, chips, counters, and the desktop nav links;
-  the mobile menu's nav links render one step up, at `text-sm`. Keeping the split means a
-  change to the label scale moves labels without moving chrome.
+- **`text-label` and `text-xs` do not currently split by role.** Both resolve to 0.75rem,
+  so the difference is invisible on screen and the codebase has drifted. `text-label` has
+  sixteen uses in `src/` beyond its declaration, and they are coherent: thirteen are section
+  or page eyebrows, and three are the card and article meta lines in `ProjectCard.astro`,
+  `PostCard.astro`, and `blog/[...slug].astro`. `text-xs` covers genuine interactive chrome
+  (footer links, the nav CTA, form labels, the carousel controls) but also a large amount of
+  non-interactive annotation: the metric label, the `Result` marker, the stack chips, and
+  the decision-list terms in `ProjectCard.astro`, the tag chips in `PostCard.astro` and
+  `blog/[...slug].astro`, and the role and period meta line in `Experience.astro`, which is
+  the same kind of meta line the two blog surfaces render at `text-label`.
+
+  This is unresolved drift, the same status as the `tracking-wide` outliers below, not a
+  sanctioned convention. It was left in place deliberately because both tokens resolve to
+  the same 0.75rem and renaming them would be a large no-op diff; that decision stands, but
+  it does not make a rule exist. Do not cite this document as authority for choosing one
+  over the other. When adding a label, match the nearest sibling in the same component and
+  do not widen the split. Get the current shape with `grep -rn "text-label" src/` and
+  `grep -rn "text-xs" src/` rather than trusting a description in prose.
 - **Eyebrow tracking is the wider one.** Section and page eyebrows use
   `font-mono text-label uppercase tracking-[0.25em] text-concrete-300`. Most other mono
   labels use `tracking-[0.2em]`; both values are deliberate and current, do not normalize
@@ -147,20 +192,86 @@ change.
 
 ## Interaction and accessibility
 
-- Hover may change color or underline; avoid layout-shifting scale effects.
-- All visible animations are optional under `prefers-reduced-motion`.
-- Maintain visible focus with the lime outline, 3px offset.
+- Hover may change color, underline, or apply the paired translate-and-shadow lift above.
+  No element in `src/` uses `hover:scale-*`; do not introduce one, because a scale on a
+  hard-shadowed panel breaks the offset the shadow depends on.
+- Focus is one site-wide rule in `global.css`, not a per-component class: `a`, `button`,
+  `input`, `textarea`, and `[tabindex]` take `outline: 3px solid var(--color-accent)` at
+  `outline-offset: 3px`. The outline follows the accent token, so it deepens in the light
+  theme along with everything else. Do not override it locally.
 - Do not rely on color alone for state; pair the signal with text, position, or structure.
-- Minimum contrast target: WCAG AA for text and controls.
+- Minimum contrast target: WCAG AA for text and controls. This is what drove the accent to
+  a deeper green in the light theme.
+- Reduced motion is handled globally; see Motion policy.
 
 ## Responsive behavior
 
-- 320–390px: one column, content-first, no hidden critical text.
-- 768px: retain linear content with enhanced spacing and two-column profile where useful.
-- 1024px and above: allow denser navigation and wider project composition, but do not replace vertical reading with pinned horizontal navigation.
+`md` (768px) is the one breakpoint that carries structure. It is where the layout changes
+character, and almost every responsive class in `src/` is an `md:` class.
+
+- **Below 768px:** one column, content first, no hidden critical text. The nav collapses to
+  a toggle-driven `#mobile-menu`, the Case studies section becomes the horizontal swipe
+  carousel of ADR-0009, and the mobile action bar renders on the landing page and both blog
+  routes. Section padding is `py-16`, subpage padding `py-20`.
+- **From 768px:** the desktop nav link list appears (`hidden ... md:flex`) and the mobile
+  menu and its toggle are hidden; the Case studies carousel falls back to the plain vertical
+  stack; the About section goes two-column (`md:grid-cols-[1.6fr_1fr]`); section padding
+  opens to `md:py-28` and headings step up a size.
+- **From 1024px:** exactly one thing changes. `lg:` appears once in all of `src/`, on the
+  About contact-facts grid going to four columns. Navigation does not get denser at 1024px;
+  it already switched at 768px. Verify with `grep -rn "lg:" src/`.
+
+Horizontal gutters do not change at any breakpoint; see Typography and layout.
 
 ## Motion policy
 
-- Allow one short hero entrance and discreet in-view reveals for major section introductions.
-- Do not loop text, animate the full page background, or attach a cursor glow globally.
-- Use CSS transitions for simple hover/focus feedback; use GSAP only for the hero entrance and content-revealing scroll interactions that have a clear cleanup path.
+Motion here splits into two kinds, and the rules differ.
+
+**Content motion** is the hero entrance and the discreet in-view reveals on major section
+introductions. These are GSAP, one per section, each with an explicit cleanup path, and each
+written so the content is visible if the trigger never fires. Use CSS transitions for simple
+hover and focus feedback; reach for GSAP only for the hero entrance and content-revealing
+scroll interactions. Do not add a second reveal to a section that already has one.
+
+**Ambient motion is sanctioned, deliberate, and load-bearing to the identity.** Three
+continuous ambient layers ship on every route today, and they are protected by accepted
+ADRs. Do not remove them as cleanup:
+
+- **The CRT overlay and scan-beam.** `.crt-overlay` and `.crt-beam` are rendered from
+  `Layout.astro`, so the faint scanline field and its 10s `crt-sweep` pass over the page
+  background on every route. This is ADR-0006, which chose the global above-content overlay
+  precisely so the terminal ambience would not reset per section, and it is `aria-hidden`
+  with `pointer-events: none`.
+- **The cursor glow.** `#cursor-glow` in `Layout.astro` is a fixed, full-viewport radial
+  gradient at `-z-10` that trails the pointer through a `requestAnimationFrame` lerp.
+  Global is the intended scope. ADR-0013 tuned its radius and alpha down rather than
+  scoping or removing it.
+- **The Skills marquee.** `.marquee-track` runs `marquee-scroll` on a `linear infinite`
+  loop, so the skills text loops continuously by design.
+
+ADR-0013 tempered the grain opacity and the glow radius and alpha after research on
+first-impression visual complexity, and it explicitly **rejected** removing the CRT overlay
+and grain as an over-correction, on the grounds that the evidence supports low complexity
+rather than zero. It tempers ADR-0002 and ADR-0006; it does not revoke them. SPEC-0004 puts
+all ambient effects under "Does NOT include" for the same reason. A future change that
+deletes looping text, the animated page background, or the global glow is reversing two
+accepted ADRs and needs its own ADR, not a tidy-up commit.
+
+**Every self-animating ambient layer is reduced-motion-gated**, which is what makes the
+above acceptable. The `@media (prefers-reduced-motion: reduce)` block in `global.css` clamps
+all animation and transition durations to 0.001ms and iteration counts to 1, then
+neutralizes the looping effects outright: `.marquee-track` gets `animation: none`,
+`.crt-beam` gets `display: none`, and `.signal-pulse` gets both `animation: none` and
+`opacity: 0` so the static geo-map dots remain. A second block drops the carousel to
+`scroll-behavior: auto` and its panel transition to `none`.
+
+The cursor glow is the one exception. It has no `prefers-reduced-motion` branch in either
+the CSS block or the `Layout.astro` script, so under reduced motion it still trails the
+pointer. It is pointer-driven rather than self-animating, so it produces no motion for a
+visitor who is not moving a pointer, which is presumably why it was never added to the
+block; no ADR records that reasoning, so treat it as observed behavior rather than a
+decision. Do not describe it as gated. Adding it to the block would be a defensible change
+and needs no ADR, but make it a deliberate one.
+
+Anything continuous you add must be neutralized in that same block, and the page must stay
+complete and readable once it is.
