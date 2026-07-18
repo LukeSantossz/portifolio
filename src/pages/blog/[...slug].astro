@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/layout/Footer.astro';
 import SubpageHeader from '../../components/layout/SubpageHeader.astro';
+import MobileActionBar from '../../components/layout/MobileActionBar.astro';
 import { site } from '../../data/site.ts';
 import { readingTime, formatDate } from '../../data/blog.ts';
 
@@ -59,4 +60,7 @@ const pageTitle = `${post.data.title} · ${site.name}`;
     </article>
   </main>
   <Footer />
+  <!-- Bottom clearance so the fixed mobile action bar never overlaps the footer. -->
+  <div aria-hidden="true" class="md:hidden" style="height: calc(4rem + env(safe-area-inset-bottom));"></div>
+  <MobileActionBar />
 </Layout>

@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/layout/Footer.astro';
 import SubpageHeader from '../../components/layout/SubpageHeader.astro';
 import PostCard from '../../components/ui/PostCard.astro';
+import MobileActionBar from '../../components/layout/MobileActionBar.astro';
 import { site } from '../../data/site.ts';
 import { getPosts, readingTime } from '../../data/blog.ts';
 
@@ -58,4 +59,7 @@ const pageDescription = `Technical notes by ${site.name} on retrieval, forecasti
     </div>
   </main>
   <Footer />
+  <!-- Bottom clearance so the fixed mobile action bar never overlaps the footer. -->
+  <div aria-hidden="true" class="md:hidden" style="height: calc(4rem + env(safe-area-inset-bottom));"></div>
+  <MobileActionBar />
 </Layout>
