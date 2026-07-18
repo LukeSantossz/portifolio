@@ -128,13 +128,18 @@ change.
 - **Label size is chosen by role, not by size.** `text-label` and `text-xs` both resolve
   to 0.75rem. `text-label` marks eyebrow and metadata labels, the copy that names a
   section or annotates content. `text-xs` marks interactive chrome and small utility
-  copy: nav links, footer links, form labels, buttons, chips, and counters. Keeping the
-  split means a change to the label scale moves labels without moving chrome.
+  copy: footer links, form labels, buttons, chips, counters, and the desktop nav links;
+  the mobile menu's nav links render one step up, at `text-sm`. Keeping the split means a
+  change to the label scale moves labels without moving chrome.
 - **Eyebrow tracking is the wider one.** Section and page eyebrows use
-  `font-mono text-label uppercase tracking-[0.25em] text-concrete-300`. Other mono labels
-  use `tracking-[0.2em]`. Both values are deliberate and current; do not normalize one
-  into the other. Buttons and CTAs use the Tailwind `tracking-wider` step, and the mobile
-  action bar uses `tracking-[0.15em]` at its own smaller size.
+  `font-mono text-label uppercase tracking-[0.25em] text-concrete-300`. Most other mono
+  labels use `tracking-[0.2em]`; both values are deliberate and current, do not normalize
+  one into the other. Buttons and CTAs use the Tailwind `tracking-wider` step, and the
+  mobile action bar uses `tracking-[0.15em]` at its own smaller size. In-card labels are
+  not yet consistent with this: the metric label, the Result label, the disclosure
+  toggle, and the move label in `ProjectCard.astro`, plus the skills legend in
+  `Skills.astro`, use the much tighter Tailwind `tracking-wide` step instead. That is
+  unresolved drift, not a fifth sanctioned category; do not copy it into new labels.
 - **Numbered section eyebrows are the sanctioned numbering.** The landing runs
   `01 / HELLO` through `07 / CONTACT`, kept by ADR-0011. No other ordinal prefix belongs
   in public copy.
