@@ -18,7 +18,6 @@ interface Props {
   repoUrl?: string;
   demoUrl?: string;
   period?: string;
-  index?: number;
 }
 
 const {
@@ -38,7 +37,6 @@ const {
   repoUrl,
   demoUrl,
   period,
-  index = 0,
 } = Astro.props;
 
 // Full narrative, read in the <details> disclosure below the impact view.
@@ -55,21 +53,12 @@ const caseMoves = [
 <article
   class="flex h-full flex-col border-2 border-concrete-50 bg-concrete-950 p-6 text-concrete-50 md:p-8"
 >
-  <!-- Classification header -->
+  <!-- Classification header: domain and period only; the section eyebrow carries
+       the page's single numbering system. -->
   <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-label uppercase tracking-[0.2em] text-concrete-300">
-    <span class="text-accent">PROJECT {String(index + 1).padStart(2, '0')}</span>
-    {domain && (
-      <>
-        <span aria-hidden="true" class="text-concrete-700">//</span>
-        <span>{domain}</span>
-      </>
-    )}
-    {period && (
-      <>
-        <span aria-hidden="true" class="text-concrete-700">//</span>
-        <span>{period}</span>
-      </>
-    )}
+    {domain && <span class="text-accent">{domain}</span>}
+    {domain && period && <span aria-hidden="true" class="text-concrete-700">//</span>}
+    {period && <span>{period}</span>}
   </p>
 
   <!-- Metric hero -->
