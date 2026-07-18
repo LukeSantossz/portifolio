@@ -198,14 +198,9 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
-   About-photo floating stack badges — looping decorative motion, neutralized
-   by the prefers-reduced-motion block below.
----------------------------------------------------------------------------- */
-
-
-/* ----------------------------------------------------------------------------
-   Concrete Terminal texture + interaction patterns (Hero scope).
-   Overlays are decorative (always aria-hidden + pointer-events:none in markup).
+   Concrete Terminal texture. The grain overlay is applied per section (seven
+   of them today). Overlays are decorative and are always aria-hidden plus
+   pointer-events:none in the markup.
 ---------------------------------------------------------------------------- */
 
 /* Cheap static film grain — one inline SVG noise tile, no animation. */
@@ -302,9 +297,10 @@ html.hero-intro [data-hero-anim] {
 
 /* ----------------------------------------------------------------------------
    Reduced motion — honor the OS/browser "reduce motion" setting.
-   All motion here is decorative (cursor glow, hero grid drift, skills marquee,
-   projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
-   to their final state and looping/animated effects stop. WCAG 2.3.3 / 2.2.2.
+   All motion here is decorative (cursor glow, CRT scan-beam, skills marquee,
+   projects carousel transitions, scroll reveals, the geo-map ping), so we
+   neutralize it: reveals snap to their final state and looping effects stop.
+   WCAG 2.3.3 / 2.2.2.
 ---------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
