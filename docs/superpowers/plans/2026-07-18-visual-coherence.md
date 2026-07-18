@@ -77,16 +77,63 @@ In each of the five files, change `max-w-5xl` to `max-w-6xl`. The surrounding cl
     <div class="mx-auto max-w-6xl px-6 py-20 md:py-28">
 ```
 
-- [ ] **Step 3: Widen the blog header rail**
+- [ ] **Step 3: Make the subpage header follow its page's rail**
 
-`src/components/layout/SubpageHeader.astro:12`
+`SubpageHeader` cannot simply be widened. It sits above `max-w-6xl` content on the blog index and the 404, but above `max-w-3xl` content on a post page, where it currently aligns because both happen to be `max-w-3xl`. Hardcoding it wide would fix the index and break the post, trading one visible step for another.
+
+Give it a rail prop. Replace `src/components/layout/SubpageHeader.astro` in full:
+
 ```astro
-  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+---
+import { site } from '../../data/site.ts';
+
+interface Props {
+  // Which content rail this header sits above. The header always spans the same
+  // width as the content beneath it, so the wordmark never steps away from the
+  // first heading. 'wide' for the blog index and the 404, 'reading' for a post.
+  rail?: 'wide' | 'reading';
+}
+
+const { rail = 'wide' } = Astro.props;
+const railClass = rail === 'reading' ? 'max-w-3xl' : 'max-w-6xl';
+
+// A minimal, subpage-safe header for routes off the single-page landing (e.g.
+// /blog/*). The landing Nav uses `#section` anchors that only resolve on `/`,
+// so subpages get this instead: a home link + a link to the blog index.
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-concrete-700 bg-concrete-950/80 backdrop-blur-md"
+>
+  <nav class={`mx-auto flex h-16 ${railClass} items-center justify-between px-6`}>
+    <a
+      href="/"
+      class="font-mono text-sm font-bold tracking-tight text-concrete-50"
+      aria-label={`${site.name}, home`}
+    >
+      <span class="text-accent">&gt;</span> {site.initials}
+    </a>
+    <a
+      href="/blog/"
+      class="font-mono text-xs uppercase tracking-[0.2em] text-concrete-300 transition-colors hover:text-accent"
+    >
+      Blog
+    </a>
+  </nav>
+</header>
 ```
 
-Leave `src/pages/blog/[...slug].astro:24` at `max-w-3xl`. That is the reading rail and is deliberate.
+- [ ] **Step 4: Pass the reading rail on the post page**
 
-- [ ] **Step 4: Assert the invariant**
+In `src/pages/blog/[...slug].astro`, the header call becomes:
+
+```astro
+  <SubpageHeader rail="reading" />
+```
+
+`src/pages/blog/index.astro` keeps the bare `<SubpageHeader />`, which defaults to wide. Leave `src/pages/blog/[...slug].astro:24` at `max-w-3xl`: that is the reading rail and is deliberate.
+
+- [ ] **Step 5: Assert the invariant**
 
 Run:
 ```bash
@@ -98,24 +145,26 @@ Run:
 ```bash
 grep -rn "max-w-3xl" src/
 ```
-Expected: exactly one line, `src/pages/blog/[...slug].astro:24`.
+Expected: exactly two lines: the `railClass` ternary in `SubpageHeader.astro` and the article rail in `src/pages/blog/[...slug].astro:24`.
 
-- [ ] **Step 5: Run the gates**
+- [ ] **Step 6: Run the gates**
 
 Run: `npm run check`
-Expected: 0 errors.
+Expected: 0 errors. This catches a typo in the new prop type.
 
 Run: `npm run build`
 Expected: exit 0.
 
-- [ ] **Step 6: Confirm the blog header alignment in a browser**
+- [ ] **Step 7: Confirm alignment on both blog routes in a browser**
 
-Start the dev server, open `/blog` at 1440px wide. The `> LG` wordmark in the header and the `BLOG` eyebrow below it must share the same left edge. Before this task they differ by roughly 110px.
+At 1440px wide:
+- `/blog`: the `> LG` wordmark and the `BLOG` eyebrow below it share the same left edge. Before this task they differed by roughly 110px.
+- A post route: the wordmark and the post title share the same left edge. This must still hold after the change, not only before it.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
-git add src/components/layout/Nav.astro src/components/layout/SubpageHeader.astro src/components/layout/Footer.astro src/components/sections/Experience.astro src/components/sections/Contact.astro src/pages/blog/index.astro
+git add src/components/layout/Nav.astro src/components/layout/SubpageHeader.astro src/components/layout/Footer.astro src/components/sections/Experience.astro src/components/sections/Contact.astro src/pages/blog/index.astro "src/pages/blog/[...slug].astro"
 git commit -m "refactor(ui): collapse the container ramp to two rails"
 ```
 

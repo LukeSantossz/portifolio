@@ -41,10 +41,12 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
 ## Scope
 
 - Includes:
-  - **Width ramp.** Two rails. `max-w-6xl` for chrome and wide content:
-    `Nav.astro`, `SubpageHeader.astro`, `Footer.astro`, `Experience.astro`, `Contact.astro`,
-    `blog/index.astro`, `404.astro`. `max-w-3xl` retained only for the post body in
-    `blog/[...slug].astro`. `max-w-5xl` no longer appears in `src/`.
+  - **Width ramp.** Two rails, with chrome following the rail of the content it sits above.
+    `max-w-6xl` is the wide rail: `Nav.astro`, `Footer.astro`, `Experience.astro`,
+    `Contact.astro`, `blog/index.astro`, `404.astro`. `max-w-3xl` is the reading rail, used
+    by the post body in `blog/[...slug].astro`. `SubpageHeader.astro` takes a rail prop and
+    renders wide on the blog index and the 404, reading-width on a post page, so it never
+    steps away from the content beneath it. `max-w-5xl` no longer appears in `src/`.
   - **`404.astro` adopts the language:** `bg-concrete-950` wrapper, heading on the display
     ramp (`font-sans font-black uppercase leading-[0.95] tracking-[-0.02em]`), CTA as
     `border-2 border-accent bg-accent ... font-bold ... text-concrete-950 shadow-hard` with no
@@ -111,8 +113,11 @@ ADR-0001 (no unit harness for presentation-only work).
 - `no_five_xl_rail_remains`: `grep -r "max-w-5xl" src/` returns no matches.
 - `post_body_keeps_reading_rail`: `blog/[...slug].astro` still constrains the post body to
   `max-w-3xl`.
-- `blog_header_aligns_with_content`: on `/blog` at 1440px the `SubpageHeader` wordmark and the
-  page heading share the same left edge.
+- `chrome_aligns_with_content_on_every_route`: at 1440px the header wordmark and the first
+  heading below it share the same left edge on `/blog`, on a post route, and on `/404`. The
+  post route is included deliberately: it aligns today by coincidence, because both header and
+  body happen to be `max-w-3xl`, and a rail change that ignored it would trade one visible
+  step for another.
 - `notfound_uses_language`: `404.astro` contains no `rounded-`, renders inside
   `bg-concrete-950`, uses the display heading ramp, and renders both `SubpageHeader` and
   `Footer`.
