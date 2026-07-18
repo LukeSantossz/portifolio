@@ -50,9 +50,7 @@ const caseMoves = [
 ].filter((move) => move.value);
 ---
 
-<article
-  class="flex h-full flex-col border-2 border-concrete-50 bg-concrete-950 p-6 text-concrete-50 md:p-8"
->
+<article class="surface-card">
   <!-- Classification header: domain and period only; the section eyebrow carries
        the page's single numbering system. -->
   <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-label uppercase tracking-[0.2em] text-concrete-300">
@@ -104,7 +102,7 @@ const caseMoves = [
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${title} — source on GitHub`}
-            class="inline-flex items-center gap-2 border-2 border-concrete-50 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-concrete-50 transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+            class="inline-flex items-center gap-2 border-2 border-concrete-50 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-concrete-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
           >
             <Icon name="github" size={16} />
             Repo
@@ -118,7 +116,7 @@ const caseMoves = [
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${title} — live demo`}
-            class="inline-flex items-center gap-2 border-2 border-concrete-50 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-concrete-50 transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+            class="inline-flex items-center gap-2 border-2 border-concrete-50 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-concrete-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
           >
             <Icon name="external" size={16} />
             Demo

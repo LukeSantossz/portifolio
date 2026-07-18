@@ -484,3 +484,24 @@ html.hero-intro [data-hero-anim] {
   padding: 0;
   font-size: 0.85rem;
 }
+
+/* ----------------------------------------------------------------------------
+   Shared card surface — the hard-bordered concrete panel behind both the
+   project case-study cards and the blog post cards. Extracted so the two
+   cannot drift apart: they were identical class strings maintained by hand.
+---------------------------------------------------------------------------- */
+.surface-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border: 2px solid var(--color-concrete-50);
+  background-color: var(--color-concrete-950);
+  color: var(--color-concrete-50);
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .surface-card {
+    padding: 2rem;
+  }
+}
