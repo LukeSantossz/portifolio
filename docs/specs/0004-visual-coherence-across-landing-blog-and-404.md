@@ -58,8 +58,8 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
     inside the Services list items, and the `PROJECT 01` prefix on project cards, which keeps
     its domain and period.
   - **Label agreement:** the Services heading and its nav link use the same words.
-  - **Prohibited punctuation removed from public copy.** `AGENTS.md` scopes its em and en
-    dash ban to public copy, so code comments are deliberately left alone. Seventeen
+  - **Prohibited punctuation removed from public copy.** The ban is scoped to public copy, so
+    code comments are deliberately left alone. Seventeen
     occurrences across six files: `Contact.astro:82` and `:180` (as `&mdash;` entities),
     `blog/index.astro:29`, `ProjectCard.astro:117` and `:131` (inside `aria-label`, which
     assistive technology reads aloud), `data/experience.ts:23` and `:24`, and both articles
@@ -83,8 +83,15 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
     sections, and the "hero grid drift" reference to a removed effect.
   - **`design.md` rewritten to describe the code:** real token values, the two width rails,
     the `shadow-hard` pairing rule, and the light theme from ADR-0012, which it never mentions.
-  - **`AGENTS.md` corrected** where it bans numbered section labels, which conflicts with the
-    accepted ADR-0011.
+  - **`AGENTS.md` gains the punctuation and numbering rule it never actually had.** This spec
+    originally said the file banned em dashes and numbered section labels, and that the ban on
+    numbering had to be corrected against ADR-0011. Checking the file during implementation
+    showed no such rule exists on this branch. The clause was added by commit `4aae673`, one of
+    the two redesign commits deliberately discarded when this branch was based on `origin/main`,
+    so it never came across. The rule is therefore written rather than corrected, and in a
+    better form than the discarded one: the dash ban is scoped to public copy with code comments
+    excluded, it covers the `&mdash;` and `&ndash;` entities, and instead of banning numbered
+    labels outright it names the section eyebrows as the one sanctioned numbering, per ADR-0011.
   - **Durable spec archive** at `docs/specs/`, with the three historical specs migrated in
     merge order and this spec authored as `0004`.
   - **ADR-0002 marked in place** with an amendment note recording that its Hero-only scanline
@@ -94,7 +101,8 @@ are discreet and are not the defect; ADR-0013 calibrated them deliberately and s
   - Any change to the grain, CRT overlay, or cursor glow, including their opacity and timing.
   - The palette, the accent color, or the light-theme token values.
   - Section copy beyond punctuation and the two label corrections named above.
-  - Em and en dashes inside code comments, which `AGENTS.md` does not cover.
+  - Em and en dashes inside code comments, and the build-time `console.warn` string in
+    `Contact.astro`, which no visitor or screen reader ever encounters.
   - Eyebrow letter-spacing. `tracking-[0.25em]` is the established convention for the section
     and page eyebrow, used consistently in nine places including `blog/index.astro:20`. An
     earlier reading called it drift by comparing only within the blog subtree; it is not.
@@ -138,7 +146,10 @@ ADR-0001 (no unit harness for presentation-only work).
   rebuilt `404.astro` CTA are the ones to fix.
 - `design_md_matches_code`: every token `design.md` documents exists in `global.css` with the
   stated value, and `design.md` documents the light theme and both width rails.
-- `agents_md_consistent_with_adr_0011`: `AGENTS.md` no longer bans numbered section labels.
+- `agents_md_states_the_rule_and_agrees_with_adr_0011`: `AGENTS.md` carries a public-copy
+  punctuation rule that bans em and en dashes and their HTML entities, excludes code comments,
+  and names the section eyebrows as the one sanctioned numbering rather than banning numbered
+  labels outright.
 - `spec_archive_contiguous`: `docs/specs/` contains `0001` through `0004` with no gap and no
   duplicate, no `SPEC.md` remains at the repository root, and `docs/superpowers/specs/` is
   gone.
