@@ -135,11 +135,12 @@ change.
   `font-mono text-label uppercase tracking-[0.25em] text-concrete-300`. Most other mono
   labels use `tracking-[0.2em]`; both values are deliberate and current, do not normalize
   one into the other. Buttons and CTAs use the Tailwind `tracking-wider` step, and the
-  mobile action bar uses `tracking-[0.15em]` at its own smaller size. In-card labels are
-  not yet consistent with this: the metric label, the Result label, the disclosure
-  toggle, and the move label in `ProjectCard.astro`, plus the skills legend in
-  `Skills.astro`, use the much tighter Tailwind `tracking-wide` step instead. That is
-  unresolved drift, not a fifth sanctioned category; do not copy it into new labels.
+  mobile action bar uses `tracking-[0.15em]` at its own smaller size. In-card labels and
+  headings are not yet consistent with this: seven of them, inside `ProjectCard.astro`,
+  `Services.astro`, and `Skills.astro`, use the much tighter Tailwind `tracking-wide` step
+  instead. That is unresolved drift, not a fifth sanctioned category; do not copy it into
+  new labels. Get the current count with `grep -rn "tracking-wide\b" src/` rather than
+  trusting this sentence, since a list of positions in prose goes stale on the next edit.
 - **Numbered section eyebrows are the sanctioned numbering.** The landing runs
   `01 / HELLO` through `07 / CONTACT`, kept by ADR-0011. No other ordinal prefix belongs
   in public copy.
