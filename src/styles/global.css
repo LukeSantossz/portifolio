@@ -401,7 +401,7 @@ html.hero-intro [data-hero-anim] {
 .prose-terminal h2,
 .prose-terminal h3 {
   color: var(--color-concrete-50);
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   line-height: 1.05;
