@@ -439,9 +439,11 @@ The map parameter drops `i` because nothing uses it now.
 
 Run:
 ```bash
-grep -rn "PROJECT {String\|padStart" src/components/; echo "exit=$?"
+grep -rn "padStart" src/components/sections/Services.astro src/components/ui/ProjectCard.astro; echo "exit=$?"
 ```
 Expected: no output, `exit=1`. Both ordinal generators used `padStart`, so this catches either surviving.
+
+Scope the grep to those two files. A repository-wide `padStart` search also hits `Projects.astro`, whose mobile carousel formats its position readout ("01 / 04") the same way. That one is legitimate, is not a section-numbering system, and is out of scope to touch.
 
 Run:
 ```bash
@@ -978,7 +980,7 @@ echo "--- no 5xl rail"; grep -rn "max-w-5xl" src/; echo "exit=$?"
 echo "--- 3xl only in post body"; grep -rn "max-w-3xl" src/
 echo "--- no pre-brutalist residue"; grep -rn "rounded-\|font-semibold\|border-dashed" src/ | grep -v "focus:rounded"; echo "exit=$?"
 echo "--- translate pairs with shadow"; grep -rn "hover:-translate" src/ | grep -v "shadow-hard"; echo "exit=$?"
-echo "--- no ordinal generators"; grep -rn "padStart" src/components/; echo "exit=$?"
+echo "--- no ordinal generators"; grep -rn "padStart" src/components/sections/Services.astro src/components/ui/ProjectCard.astro; echo "exit=$?"
 echo "--- section numbering intact"; grep -rn "0[1-7] / " src/components/sections/ | wc -l
 echo "--- public copy dash-free"; grep -rn $'—\|&mdash;' src/content/ src/data/experience.ts src/pages/; echo "exit=$?"
 echo "--- spec archive"; ls docs/specs/
