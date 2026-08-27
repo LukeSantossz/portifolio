@@ -6,11 +6,12 @@ This is a **static Astro 6 portfolio** (single page, `output: 'static'`, Tailwin
 v4 via PostCSS, TypeScript strict) that presents each project as a case study and
 deploys to Vercel.
 
-The binding development standards — Conventional Commits, the SPEC / Spec-Gate flow,
-code conventions, naming, review composition (R1/R2/R3), and the verification policy —
-live in the PONT STANDARDS framework, added as a git submodule. Start at its index:
-
-@.standards/docs/standards/INDEX.md
+Development conventions here are the repository's own, stated in Quick reference
+below. This project no longer vendors the PONT STANDARDS framework: the submodule
+was pinned five commits before that framework's first release, was never
+activated — no `.framework.toml`, no `.framework.lock`, no `core.hooksPath` — and
+the documents it pointed at have since been rewritten. A governance layer nothing
+reads and nothing enforces is worse than none, because it reads as one.
 
 Project-specific structural patterns (directory layout, the content/rendering
 decoupling rule, styling tokens, the accessibility baseline) are summarized in Quick
@@ -24,5 +25,6 @@ reference below and reflected in the code.
 - **Verify with the gates:** `npm run build` + `npm run check` + the Lighthouse budget
   + a manual checklist; no unit harness (presentation-only policy, see
   `docs/adr/0001-presentation-only-verification-policy.md`).
-- **Commits:** Conventional Commits per `.standards/docs/standards/github.md`; no
-  co-author trailers.
+- **Commits:** Conventional Commits — `type(scope): imperative subject`, types
+  `feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert`; no co-author or
+  AI-attribution trailers.
