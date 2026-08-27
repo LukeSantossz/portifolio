@@ -118,9 +118,7 @@ portifolio/
 │   └── styles/            # global.css (Tailwind v4 @theme)
 ├── public/                # static assets (résumé PDF, favicon, robots.txt)
 ├── docs/adr/              # architecture decision records
-├── .standards/            # PONT STANDARDS governance (git submodule)
-├── .githooks/             # local R2 cross-provider review pre-push hook
-├── CLAUDE.md              # project memory → .standards governance
+├── CLAUDE.md              # project memory and development conventions
 ├── astro.config.mjs       # Astro + sitemap config
 └── postcss.config.mjs     # Tailwind v4 via PostCSS
 ```
