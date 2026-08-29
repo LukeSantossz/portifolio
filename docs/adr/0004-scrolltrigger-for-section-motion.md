@@ -1,3 +1,5 @@
+> **Retired.** Retired in place by [ADR-0014](0014-editorial-index-restructure.md): ScrollTrigger left with GSAP. Section reveals are one shared IntersectionObserver.
+
 # Use GSAP ScrollTrigger for scroll-driven section entrances
 
 ADR-0003 adopted GSAP for the Hero's load-time intro. As the brutalist redesign extends

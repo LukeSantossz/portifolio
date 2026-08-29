@@ -1,3 +1,5 @@
+> **Retired.** Retired in place by [ADR-0014](0014-editorial-index-restructure.md): the CRT overlay and its scan-beam were removed. The static grain is the remaining analog texture.
+
 # Add a global CRT scan-beam ambient overlay
 
 The Concrete Terminal design leans on a CRT/terminal identity, but its only moving ambience
