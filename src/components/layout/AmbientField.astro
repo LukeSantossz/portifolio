@@ -252,10 +252,15 @@
     // After the page is idle: the field is ambience and must never compete with
     // the first paint or the first interaction.
     const schedule = () => {
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => void start(), { timeout: 2500 });
+      const run = () => void start();
+
+      // `typeof` rather than `'x' in window`: the DOM lib declares
+      // requestIdleCallback as always present, so the `in` form narrows window
+      // to never in the else branch and the fallback stops type-checking.
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(run, { timeout: 2500 });
       } else {
-        window.setTimeout(() => void start(), 900);
+        setTimeout(run, 900);
       }
     };
 
