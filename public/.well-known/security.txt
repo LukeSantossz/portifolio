@@ -1,4 +1,4 @@
-Contact: mailto:lucassg2015@gmail.com
+Contact: mailto:alex.morgan@example.com
 Expires: 2026-12-29T00:00:00.000Z
 Preferred-Languages: en, pt-BR
-Canonical: https://lukesz-portifolio.vercel.app/.well-known/security.txt
+Canonical: https://example.com/.well-known/security.txt

@@ -1,68 +1,82 @@
 /**
- * Central site configuration.
- * Edit here to change identity, contact and SEO across the whole site.
+ * Central site configuration: identity, contact, SEO.
+ *
+ * PLACEHOLDER IDENTITY. Every value in the Identity, Contact and Assets blocks
+ * below is fictional, used while the design is being built so no personal data
+ * lives in the working tree. Swapping in the real identity means editing this
+ * one file plus `src/data/about.ts`, `src/data/experience.ts`, the four
+ * `src/content/projects/*.md`, `public/robots.txt`, `public/.well-known/`
+ * and the `site` URL in `astro.config.mjs`.
  */
 export const site = {
-  // --- Identity -------------------------------------------------------------
-  // Author's approximate home location — the fixed point on the Signal map.
-  location: { lat: -22.21, lon: -49.95, label: 'Marília, BR' },
-  name: 'Lucas Gonçalves',
-  initials: 'LG',
-  role: 'AI / ML Engineer',
+  // --- Identity (placeholder) -----------------------------------------------
+  name: 'Alex Morgan',
+  initials: 'AM',
+  role: 'AI Engineer',
 
-  // Hero sub-headline: a short positioning line shown under the role.
-  headline: 'Applied machine learning, anchored in real-world agriculture.',
+  /** Hero positioning line. One sentence, states the work, claims nothing. */
+  headline:
+    'I build retrieval systems and the evaluation that says when they are wrong. Five years in software, the last two on ML.',
 
-  // Canonical availability line — the recruiter "smell test" (timezone + remote).
-  // Single source of truth; rendered as a chip at the top of the hero.
-  availability: 'Marília, Brazil (GMT-3) · Remote · Open to international',
+  /**
+   * The recruiter smell test, in one line: where, which timezone, how
+   * reachable, and the work-authorisation answer they would otherwise have to
+   * email to get.
+   */
+  availability: 'São Paulo, Brazil (GMT-3) · Remote · Eligible to work in the EU',
 
-  // Hero proof strip: three measurable, self-explanatory anchors, each one
-  // traceable to a case study below.
+  /**
+   * Hero proof strip. Three numbers, each defended by a record in the index or
+   * by a line in the timeline. Measured outcomes only: no test counts, no
+   * coverage, nothing that is an activity rather than a result.
+   */
   heroStats: [
-    { value: '3rd of 1,300+', label: 'A soil-reading app I built placed 3rd at FETEPS 2025, a state science fair; its paper was accepted at the ICPA 2026 precision-agriculture conference.' },
-    { value: '0.19°C', label: 'Average error of a temperature-forecasting pipeline across 211 countries, about 75% lower than the standard Prophet baseline.' },
-    { value: '205 tests', label: 'Coverage around 83% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
+    {
+      value: '~50%',
+      label:
+        'Less answer review time after shipping a confidence score with every retrieval answer, so reviewers read the uncertain ones first.',
+    },
+    {
+      value: '0.81',
+      label:
+        'AUROC of that confidence score separating correct answers from incorrect ones, over 220 hand-checked questions.',
+    },
+    {
+      value: '4h to 20min',
+      label: 'A nightly pipeline, after replacing row-wise work with columnar processing.',
+    },
   ],
 
-  // Core-stack chips shown as a static inline strip in the hero — the headline
-  // of the stack, drawn from skills.ts. Kept short: a title + a few tools.
-  heroBadges: [
-    { title: 'RAG · LLM', sub: 'Qdrant · Ollama · FastAPI' },
-    { title: 'PyTorch', sub: 'TensorFlow · scikit-learn' },
-    { title: 'Python · Rust', sub: 'Polars · Docker · pytest' },
-  ],
+  // --- Contact & social (placeholder) ---------------------------------------
+  email: 'alex.morgan@example.com',
+  github: 'https://github.com/example',
+  linkedin: 'https://linkedin.com/in/example',
 
-  // --- Contact & social -----------------------------------------------------
-  email: 'lucassg2015@gmail.com',
-  github: 'https://github.com/LukeSantossz',
-  linkedin: 'https://www.linkedin.com/in/lucas-gonçalvessz/',
+  // --- Assets (placeholder) -------------------------------------------------
+  cvPath: '/alex-morgan-resume.pdf',
+  ogImage: '/og-image.png',
 
-  // --- Assets ---------------------------------------------------------------
-  cvPath: '/my_resume.pdf', // résumé served from public/my_resume.pdf
-  ogImage: '/og-image.png', // social share image at public/og-image.png
-
-  // Browser tab label (the <title>). Kept short and branded; the descriptive,
-  // specialty-bearing title still goes to og:title / twitter:title for sharing.
-  tabTitle: 'LukeSz Portfolio',
+  /** Browser tab label. Short; the descriptive title goes to og:title. */
+  tabTitle: 'Alex Morgan',
 
   // --- Integrations ---------------------------------------------------------
-  // Free access key from https://web3forms.com (used by the contact form). This
-  // key is public by design — it ships in the form HTML and is submitted from
-  // the browser — so it is safe to commit. Override it per environment by
-  // setting PUBLIC_WEB3FORMS_KEY; if that is ever set to an empty string the
-  // form degrades to an email-only CTA instead of posting an invalid key
-  // (see Contact.astro).
-  web3formsKey:
-    import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'efb07a21-8678-4d14-aa17-27262fd76ad3',
+  /**
+   * Web3Forms access key for the contact form. Public by design (it ships in
+   * the form HTML and is submitted from the browser). Set
+   * PUBLIC_WEB3FORMS_KEY per environment; an empty value degrades the form to
+   * an email-only CTA rather than posting an invalid key (see Contact.astro).
+   */
+  web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '',
 
-  // Your hCaptcha sitekey (optional). When set, the contact form shows the hCaptcha
-  // widget; also add the matching hCaptcha secret to your Web3Forms dashboard so
-  // Web3Forms validates the token. Empty = no captcha. Public by design.
+  /**
+   * hCaptcha sitekey (optional). When set, the form renders the widget and
+   * loads the hCaptcha script; add the matching secret in the Web3Forms
+   * dashboard so the token is validated. Empty means no captcha.
+   */
   hcaptchaSitekey: import.meta.env.PUBLIC_HCAPTCHA_SITEKEY ?? '',
 
   // --- SEO ------------------------------------------------------------------
-  seoTitle: 'Lucas Gonçalves · AI/ML Engineer',
+  seoTitle: 'Alex Morgan · AI Engineer',
   seoDescription:
-    'AI/ML Engineer focused on applied intelligence for agriculture and production-grade AI systems: RAG, computer vision, and open source. Big Data student at Fatec, building toward remote/international ML roles.',
+    'AI Engineer working on retrieval systems, uncertainty estimation and the evaluation that decides whether either is working. Case studies with measured results, stated methodology and known limits.',
 } as const;

@@ -1,5 +1,8 @@
 /**
- * Career and education timeline. Most recent first.
+ * Career and education timeline, most recent first. PLACEHOLDER, see `site.ts`.
+ *
+ * Each highlight leads with its outcome or number: recruiters scan the first
+ * few words of a line and stop there.
  */
 export interface TimelineItem {
   kind: 'work' | 'education';
@@ -13,29 +16,41 @@ export interface TimelineItem {
 export const timeline: TimelineItem[] = [
   {
     kind: 'work',
-    role: 'After-Sales Intern',
-    org: 'Jacto',
-    period: 'Nov 2024 to Present',
+    role: 'AI Engineer',
+    org: 'Sundial Systems',
+    period: '2024 to present',
     description:
-      'Jacto is a Brazilian manufacturer of agricultural machinery that sells in more than 100 countries and employs over 3,000 people, with after-sales operations at industrial scale. I work where the business side meets engineering.',
+      'A forty-person company selling forecasting and document tooling to agricultural cooperatives. I own the retrieval and evaluation side.',
     highlights: [
-      'Automated a previously manual data migration: extracted Russian dealership address records from the government address-classification system (KLADR), transliterated them Cyrillic-to-Latin, cleaned them by region, and loaded them into Salesforce, the platform the company runs its customer records on.',
-      'Designed a computer-vision system (now in internal review) that audits discarded parts end to end: it checks each photo meets the standard, reads the printed slip and cross-checks it against the system record, and recognizes the part — paired with an in-app camera that locks file names and stamps time and location so the evidence holds up.',
-      'Found 10+ usability problems as the business-to-developer bridge on an internal parts-return tool, validating rule changes across testing rounds — moving the workflow from manual entry to mostly review.',
-      'Audited 150+ main dealerships at home and abroad, reconciling the field-parts return flow and tracking millions of reais in parts movement, and processed write-offs through audits done both on site and remotely.',
+      'Cut answer review time roughly in half by shipping a confidence score with every retrieval answer, so a reviewer reads the uncertain ones first instead of all of them.',
+      'Built the evaluation harness the team now gates releases on: a fixed question set, per-release scoring, and a regression check that blocks a merge when accuracy drops.',
+      'Moved inference off a paid API onto self-hosted open models, holding answer quality within the eval margin and removing a recurring per-request cost.',
+      'Wrote the incident notes for two retrieval failures in production, both traced to chunking rather than the model, and reworked the ingestion path accordingly.',
+    ],
+  },
+  {
+    kind: 'work',
+    role: 'Data Engineer',
+    org: 'Meridian Agro',
+    period: '2021 to 2024',
+    description:
+      'Field-data platform for a grower network. Batch pipelines, a lot of messy sensor data, and the first models I put in front of users.',
+    highlights: [
+      'Reduced a nightly pipeline from four hours to under twenty minutes by replacing row-wise pandas work with columnar processing.',
+      'Shipped the first on-device model in the product, which meant learning where a phone stops being a server.',
+      'Ran the migration of six years of readings into a schema that survived, which mostly meant deciding what to throw away.',
     ],
   },
   {
     kind: 'education',
-    role: 'B.Tech in Big Data for Agribusiness',
-    org: 'Fatec Shunji Nishimura, Pompeia, São Paulo',
-    period: '2024 to Dec 2026',
+    role: 'B.Tech in Data Science',
+    org: 'Instituto Politécnico, São Paulo',
+    period: '2018 to 2021',
     description:
-      'A public applied-technology degree. Coursework covers machine learning, artificial intelligence, data structures, databases (SQL and NoSQL), APIs and microservices, cloud architecture, and statistics.',
+      'Applied degree. Machine learning, statistics, databases, distributed systems.',
     highlights: [
-      'Co-authored a paper accepted at ICPA 2026 and the 17th ConBAP, an international precision-agriculture conference (abstract #14064).',
-      'Placed 3rd out of more than 1,300 entries at FETEPS 2025, a large state science and technology fair.',
-      'Languages: Portuguese (native) · English (B2, upper-intermediate).',
+      'Final project on ensemble forecasting became the basis for the Isobar record above.',
+      'Languages: Portuguese (native), English (professional working proficiency).',
     ],
   },
 ];
