@@ -9,7 +9,7 @@ export interface SkillGroup {
 export const skillGroups: SkillGroup[] = [
   {
     category: 'Languages',
-    items: ['Python', 'Rust', 'Dart', 'SQL'],
+    items: ['Python', 'Rust', 'TypeScript', 'Dart', 'SQL'],
   },
   {
     category: 'ML & Data',
@@ -29,11 +29,19 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     category: 'LLM & RAG',
-    items: ['Qdrant', 'Ollama', 'RAG pipelines', 'Semantic-entropy verification', 'FastAPI'],
+    items: [
+      'LangGraph',
+      'Qdrant',
+      'pgvector',
+      'Ollama',
+      'RAG pipelines',
+      'Semantic-entropy verification',
+      'FastAPI',
+    ],
   },
   {
     category: 'Mobile & Backend',
-    items: ['Flutter', 'Riverpod', 'Drift', 'GoRouter', 'Uvicorn', 'Gradio'],
+    items: ['Flutter', 'Riverpod', 'Drift', 'GoRouter', 'Next.js', 'Uvicorn', 'Gradio'],
   },
   {
     category: 'Cloud & Tooling',
