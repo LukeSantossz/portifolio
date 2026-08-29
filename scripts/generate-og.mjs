@@ -20,7 +20,7 @@ const esc = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const name = esc('Lucas Gonçalves');
-const role = esc('AI/ML Engineer');
+const role = esc('AI Engineer'); // mirrors `role` in src/data/site.ts
 const tagline = esc('LLM agents & RAG · Computer Vision · Production ML pipelines');
 const url = esc('lukesz-portifolio.vercel.app');
 
