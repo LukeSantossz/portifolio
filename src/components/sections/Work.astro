@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import Section from '../layout/Section.astro';
+import ProjectRecord from '../ui/ProjectRecord.astro';
+import { sections } from '../../data/sections.ts';
+
+/** Index order is editorial: the `order` field in each Markdown file. */
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Section
+  id="work"
+  label={sections.work.label}
+  title={sections.work.title}
+  intro={sections.work.intro}
+>
+  <ol class="column-rule mt-14 lg:pl-8" data-index>
+    {projects.map((project, position) => (
+      <ProjectRecord data={project.data} position={position + 1} />
+    ))}
+  </ol>
+</Section>
+
+<script>
+  const index = document.querySelector<HTMLElement>('[data-index]');
+
+  if (index) {
+    const records = Array.from(index.querySelectorAll<HTMLDetailsElement>('details[data-record]'));
+
+    /**
+     * One record open at a time. The native <details> toggle drives it, so the
+     * keyboard and no-JS paths are identical to the pointer one, and nothing
+     * here writes a style: the open/close transition is CSS on `[open]`.
+     */
+    for (const record of records) {
+      record.addEventListener('toggle', () => {
+        if (!record.open) return;
+
+        for (const other of records) {
+          if (other !== record) other.open = false;
+        }
+      });
+    }
+  }
+</script>

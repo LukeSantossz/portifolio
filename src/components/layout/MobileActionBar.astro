@@ -14,7 +14,7 @@ const actions = [
 
 <nav
   aria-label="Quick contact"
-  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t-2 border-concrete-50 bg-concrete-950 md:hidden"
+  class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-concrete-700 bg-concrete-950 md:hidden"
   style="padding-bottom: env(safe-area-inset-bottom);"
 >
   {
@@ -25,7 +25,7 @@ const actions = [
         target={action.external ? '_blank' : undefined}
         rel={action.external ? 'noopener noreferrer' : undefined}
         class={`flex min-h-[3.25rem] flex-col items-center justify-center gap-1 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.15em] text-concrete-50 transition-colors hover:text-accent ${
-          index > 0 ? 'border-l-2 border-concrete-50' : ''
+          index > 0 ? 'border-l border-concrete-700' : ''
         }`}
       >
         <Icon name={action.icon} size={20} />

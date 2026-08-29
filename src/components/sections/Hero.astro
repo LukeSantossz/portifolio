@@ -4,164 +4,75 @@ import SocialLinks from '../ui/SocialLinks.astro';
 import Icon from '../ui/Icon.astro';
 ---
 
-<section
-  id="top"
-  class="relative min-h-screen overflow-hidden bg-concrete-950 text-concrete-50"
->
-  <!-- Pre-paint: arm the intro only when motion is allowed and JS runs; a
-       failsafe reveals the content if the GSAP module never loads. -->
-  <script is:inline>
-    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-      document.documentElement.classList.add('hero-intro');
-      window.setTimeout(function () {
-        document.documentElement.classList.remove('hero-intro');
-      }, 2500);
-    }
-  </script>
-
-  <!-- Decorative analog texture (no semantics, not focusable). -->
+<section id="top" class="relative min-h-screen overflow-hidden">
   <div class="bt-grain" aria-hidden="true"></div>
 
   <div
-    class="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-start px-6 pb-16 pt-24 md:justify-center md:pt-36"
+    class="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 pb-24 pt-28 md:pt-32"
   >
-    <!-- Index + availability label (recruiter smell test). -->
-    <p
-      data-hero-anim
-      data-hero-label
-      class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-label uppercase tracking-[0.25em] text-concrete-300"
-    >
-      <span class="text-accent">01 / HELLO</span>
-      <span aria-hidden="true" class="text-concrete-700">//</span>
-      <span class="normal-case tracking-normal">{site.availability}</span>
-    </p>
-
-    <!-- Display headline: name, extreme scale. -->
-    <h1
-      data-hero-anim
-      data-hero-headline
-      class="mt-6 font-sans text-display font-black uppercase leading-[0.9] tracking-[-0.03em] text-concrete-50"
-    >
-      {site.name}
-    </h1>
-
-    <!-- Role, mono label. -->
-    <p
-      data-hero-anim
-      data-hero-role
-      class="mt-4 font-mono text-lg uppercase tracking-[0.2em] text-accent md:text-xl"
-    >
-      {site.role}
-    </p>
-
-    <!-- Positioning line, long-form body. -->
-    <p
-      data-hero-anim
-      data-hero-sub
-      class="mt-6 max-w-2xl font-sans text-base leading-relaxed text-concrete-300 md:text-lg"
-    >
-      {site.headline}
-    </p>
-
-    <!-- CTAs + social: hard-bordered blocks with hard-offset shadow. -->
-    <div
-      data-hero-anim
-      data-hero-cta
-      class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 md:mt-10"
-    >
-      <a
-        href="#projects"
-        class="inline-flex w-full items-center justify-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 sm:w-auto"
+    <div class="column-rule lg:pl-8">
+      <!-- Availability: where, which timezone, how reachable. -->
+      <p
+        class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300"
       >
-        View projects
-        <Icon name="arrow-right" size={18} />
-      </a>
-      <a
-        href={site.cvPath}
-        download
-        class="inline-flex w-full items-center justify-center gap-2 border-2 border-concrete-50 bg-transparent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-50 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 sm:w-auto"
+        {site.availability}
+      </p>
+
+      <h1
+        class="mt-7 font-sans text-display font-bold leading-[0.86] tracking-[-0.045em] text-concrete-50"
       >
-        <Icon name="download" size={18} />
-        Download CV
-      </a>
-      <div class="ml-1 hidden items-center gap-4 md:flex">
-        <SocialLinks />
+        {site.name}
+      </h1>
+
+      <p
+        class="mt-6 font-mono text-base uppercase tracking-[0.35em] text-concrete-50 md:text-lg"
+      >
+        {site.role}
+      </p>
+
+      <p
+        class="mt-6 max-w-[54ch] text-lede leading-relaxed text-concrete-300"
+      >
+        {site.headline}
+      </p>
+
+      <div
+        class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+      >
+        <a href="#work" class="btn btn-primary w-full sm:w-auto">
+          Read the work
+          <Icon name="arrow-right" size={16} />
+        </a>
+        <a href={site.cvPath} download class="btn btn-ghost w-full sm:w-auto">
+          <Icon name="download" size={16} />
+          Résumé
+        </a>
+        <div class="mt-1 flex items-center gap-4 sm:ml-1 sm:mt-0">
+          <SocialLinks labelled />
+        </div>
       </div>
     </div>
 
-    <!-- Proof strip: hard-bordered grid; the first stat is the green signal. -->
-    <dl class="mt-8 grid max-w-4xl grid-cols-1 border-2 border-concrete-50 sm:grid-cols-3 md:mt-14">
+    <!-- Proof strip: three numbers, each defended by a record in the index. -->
+    <dl class="column-rule mt-16 grid max-w-4xl grid-cols-1 gap-px sm:grid-cols-3 lg:pl-8">
       {
-        site.heroStats.map((stat, index) => (
-          <div
-            data-hero-anim
-            data-hero-stat
-            class={`border-concrete-50 p-5 ${
-              index > 0 ? 'border-t-2 sm:border-l-2 sm:border-t-0' : ''
-            }`}
-          >
-            <dt
-              class={`font-mono text-3xl font-bold ${
-                index === 0 ? 'text-accent' : 'text-concrete-50'
-              }`}
-              data-countup
-            >
+        site.heroStats.map((stat) => (
+          <div class="border-t border-concrete-700 pt-5 sm:pr-6">
+            <dt class="font-mono text-2xl text-concrete-50 md:text-[1.75rem]" data-countup>
               {stat.value}
             </dt>
-            <dd class="mt-2 font-mono text-xs leading-snug text-concrete-300">
-              {stat.label}
-            </dd>
+            <dd class="mt-2 max-w-[34ch] text-sm leading-snug text-concrete-300">{stat.label}</dd>
           </div>
         ))
       }
     </dl>
   </div>
 
-  <!-- Scroll cue. -->
   <a
-    href="#about"
-    aria-label="Scroll to content"
-    class="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 font-mono text-label uppercase tracking-[0.25em] text-concrete-300 transition-colors hover:text-accent md:block"
+    href="#work"
+    aria-label="Scroll to the work"
+    class="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 font-mono text-label uppercase tracking-[0.25em] text-concrete-500 transition-colors hover:text-accent md:block"
   >
-    Scroll ↓
+    Scroll
   </a>
 </section>
-
-<script>
-  import gsap from 'gsap';
-
-  const root = document.documentElement;
-  const reveal = () => root.classList.remove('hero-intro');
-
-  const mm = gsap.matchMedia();
-
-  // Motion allowed: play the staggered intro, then clear the pre-paint hide.
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    if (!root.classList.contains('hero-intro')) return;
-    gsap.set('[data-hero-anim]', { autoAlpha: 0, y: 24 });
-
-    const tl = gsap.timeline({
-      defaults: { ease: 'power3.out', duration: 0.7 },
-      onComplete: reveal,
-    });
-
-    tl.to('[data-hero-label]', { autoAlpha: 1, y: 0 })
-      .to('[data-hero-headline]', { autoAlpha: 1, y: 0 }, '-=0.45')
-      .to('[data-hero-role]', { autoAlpha: 1, y: 0 }, '-=0.5')
-      .to('[data-hero-sub]', { autoAlpha: 1, y: 0 }, '-=0.5')
-      .to('[data-hero-cta]', { autoAlpha: 1, y: 0 }, '-=0.5')
-      .to('[data-hero-stat]', { autoAlpha: 1, y: 0, stagger: 0.1 }, '-=0.4');
-
-    return () => {
-      tl.kill();
-      gsap.set('[data-hero-anim]', { clearProps: 'all' });
-      reveal();
-    };
-  });
-
-  // Reduced motion: never animate; ensure nothing stays hidden.
-  mm.add('(prefers-reduced-motion: reduce)', () => {
-    reveal();
-    return () => {};
-  });
-</script>

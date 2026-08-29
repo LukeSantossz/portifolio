@@ -1,68 +1,78 @@
 @import "tailwindcss";
 
 /* ----------------------------------------------------------------------------
-   Design tokens (dark tech / minimalist)
+   Design tokens — "Concrete Terminal", editorial variant.
    Change a value here and it propagates across the whole site.
    Tailwind v4 turns each token into utilities, e.g. --color-accent -> bg-accent.
 ---------------------------------------------------------------------------- */
 @theme {
-  --color-canvas: #0d100e; /* page background; renamed from `base` so `text-base`
-     stays the font-size utility (a color named `base` hijacks it to a color) */
-  --color-ink: #e9ece3; /* global body / ::selection text color */
-  --color-accent: #46c06a; /* grass green — the only chromatic signal */
-
-  /* --- Concrete Terminal (industrial-brutalist) design system ---------------
-     The monochrome concrete ramp + hard-surface + type-scale tokens the whole
-     (now fully migrated) site is built on, plus --color-accent. */
-  --color-concrete-950: #0e0e0e; /* concrete near-black — Hero background */
-  --color-concrete-900: #161616; /* raised concrete surface */
-  --color-concrete-700: #3a3a3a; /* hard rule / divider on dark */
-  --color-concrete-500: #6b675f; /* mid hairline rule on dark, ~3.4:1 */
+  /* Monochrome concrete ramp. Dark is the default; the light block below
+     re-maps the same names so every utility flips role with no markup change. */
+  --color-concrete-950: #0e0e0e; /* page background */
+  --color-concrete-900: #161616; /* raised surface */
+  --color-concrete-700: #3a3a3a; /* hard rule / divider */
+  --color-concrete-500: #8f8b82; /* mono label text, 5.7:1 on the page */
   --color-concrete-300: #b8b5ad; /* muted off-white — secondary text */
-  --color-concrete-50: #ece9e2; /* off-white ink — primary text on concrete */
+  --color-concrete-50: #ece9e2; /* off-white ink — primary text */
 
-  --shadow-hard: 6px 6px 0 0 var(--color-concrete-50); /* hard-offset, no blur */
+  /* The single chromatic signal. It marks state (focus, hover, the active index
+     row) and never fills a surface; the primary button stays off-white. Blue
+     rather than green: this is a systems portfolio, and the cool signal reads
+     as instrumentation instead of agriculture. 7.9:1 on the page background. */
+  --color-accent: #5aa9ff;
 
-  --text-display: clamp(3rem, 11vw, 8.5rem); /* extreme display scale */
-  --text-label: 0.75rem; /* mono label scale (paired with tracking/uppercase) */
+  /* The same hue at full saturation, for the WebGL point cloud only. Graphics,
+     not text, so it is not held to a text contrast ratio. */
+  --color-accent-vivid: #2f8fff;
 
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+  /* Status colors, kept inside the token system so nothing hard-codes a hex.
+     Both are measured against the surface they sit on in each theme. */
+  --color-alert: #ff8a75; /* form error text on dark, 7.4:1 on #0e0e0e */
+
+  --shadow-hard: 5px 5px 0 0 var(--color-concrete-50); /* hard offset, no blur */
+
+  /* Fluid type scale. One clamp per role instead of per-breakpoint sizes, so
+     every step is continuous between 375px and 1440px. */
+  --text-display: clamp(2.75rem, 9vw, 7rem); /* the name, once per page */
+  --text-headline: clamp(1.75rem, 4.5vw, 3rem); /* section headings */
+  --text-index: clamp(1.375rem, 3.2vw, 2.25rem); /* project index rows */
+  --text-lede: clamp(1.0625rem, 0.98rem + 0.4vw, 1.25rem); /* opening paragraph */
+  --text-label: 0.6875rem; /* mono label, paired with tracking + uppercase */
+
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
 }
 
 /* ----------------------------------------------------------------------------
-   Light theme — auto, following the visitor's OS/browser preference
-   (`prefers-color-scheme: light`). Same Concrete Terminal palette, inverted:
-   the concrete ramp is re-mapped (950 = lightest surface … 50 = darkest ink)
-   so every existing utility (bg-concrete-950, text-concrete-50, border-*, …)
-   flips role automatically — no per-component changes. The accent green is
-   deepened for AA contrast of small mono labels on the light surface. The dark
-   theme above stays the default (used when no preference / prefers dark).
+   Light theme — automatic, following the visitor's OS/browser preference.
+   Same palette, inverted: 950 becomes the lightest surface and 50 the darkest
+   ink, so `bg-concrete-950` / `text-concrete-50` keep meaning "page" / "ink".
+   The accent and the alert are re-derived for AA on the light surface.
 ---------------------------------------------------------------------------- */
 @media (prefers-color-scheme: light) {
   :root {
-    --color-canvas: #ece9e2; /* warm off-white page background */
-    --color-ink: #1c1a17; /* near-black body / selection text */
-    --color-accent: #176b33; /* deepened grass green — ~5.3:1 on the light surface */
+    --color-concrete-950: #ece9e2; /* warm off-white page background */
+    --color-concrete-900: #dedad1; /* raised surface */
+    --color-concrete-700: #c3beb2; /* hard rule / divider */
+    --color-concrete-500: #605c55; /* mono label text, 5.5:1 on the page */
+    --color-concrete-300: #57534b; /* muted secondary text, ~6:1 */
+    --color-concrete-50: #1c1a17; /* darkest ink */
 
-    --color-concrete-950: #ece9e2; /* lightest surface — page background */
-    --color-concrete-900: #dedad1; /* raised concrete surface (cards) */
-    --color-concrete-700: #c3beb2; /* hard rule / divider on light */
-    --color-concrete-500: #8a857b; /* mid hairline rule on light */
-    --color-concrete-300: #57534b; /* muted secondary text — ~6:1 on the surface */
-    --color-concrete-50: #1c1a17; /* darkest ink — primary text on light */
+    --color-accent: #0b5cad; /* deepened blue, 5.5:1 on the light surface */
+    --color-accent-vivid: #1268c4;
+    --color-alert: #a3231a; /* ~5.9:1 on #ece9e2 */
   }
 }
 
 html {
   scroll-behavior: smooth;
-  /* offset for the fixed navbar when jumping to anchors */
+  /* Offset for the fixed navbar when jumping to an anchor. */
   scroll-padding-top: 5rem;
 }
 
 body {
-  background-color: var(--color-canvas);
-  color: var(--color-ink);
+  background-color: var(--color-concrete-950);
+  color: var(--color-concrete-300);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -70,114 +80,179 @@ body {
 
 ::selection {
   background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
-  color: var(--color-ink);
-}
-
-/* Load-time reveal for above-the-fold content (hero), fires immediately. */
-@keyframes reveal-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* Fluid expand for the project "case study" disclosure. */
-details.reveal-details[open] > dl {
-  animation: reveal-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  color: var(--color-concrete-50);
 }
 
 /* ----------------------------------------------------------------------------
-   Skills carousel — a full-bleed, continuously looping marquee, color-clustered
-   and hover-to-reveal. Each row renders its set twice and translates -50% on a
-   linear loop, so the scroll is seamless and infinite at any resolution.
-   Alternating rows run in opposite directions for life.
+   The column rule — one hairline running down the left edge of the content
+   column, from the wide breakpoint up. It is the only structural ornament on
+   the page: the index numbers hang off it, so it reads as an alignment guide
+   rather than decoration. Hidden below `lg`, where the column IS the viewport.
 ---------------------------------------------------------------------------- */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.column-rule {
+  position: relative;
 }
 
-.marquee-row {
-  overflow-x: clip;
-  /* Vertical breathing room so an active chip's lift + glow isn't clipped. */
-  padding-block: 0.625rem;
+@media (min-width: 1024px) {
+  .column-rule::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 1px;
+    background: var(--color-concrete-700);
+  }
 }
 
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee-scroll var(--dur, 50s) linear infinite;
-}
-
-.marquee-track.reverse {
-  animation-direction: reverse;
-}
-
-/* Pause the whole carousel while the visitor is reading / exploring it. */
-.skills-marquee:hover .marquee-track,
-.skills-marquee:focus-within .marquee-track {
-  animation-play-state: paused;
-}
-
-.skill-chip {
-  margin-right: 0.625rem;
-  white-space: nowrap;
-  border: 1px solid var(--color-concrete-700);
-  background: transparent;
-  color: var(--color-concrete-50);
-  padding: 0.375rem 0.75rem;
+/* ----------------------------------------------------------------------------
+   Buttons — two patterns, no more. Primary is a solid off-white block (the
+   accent is reserved for state, so it never fills a surface); secondary is a
+   hairline outline. Both share the hard-offset shadow and the nudge on hover.
+---------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-width: 2px;
+  padding: 0.75rem 1.5rem;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  transition:
-    opacity 0.3s ease,
-    border-color 0.3s ease,
-    background-color 0.3s ease,
-    color 0.3s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: var(--shadow-hard);
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Same-cluster chips light up green; everything else fades back. */
-.skill-chip.is-active {
-  border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+.btn:hover {
+  transform: translate(-2px, -2px);
+}
+
+.btn-primary {
+  border-color: var(--color-concrete-50);
+  background: var(--color-concrete-50);
+  color: var(--color-concrete-950);
+}
+
+.btn-ghost {
+  border-color: var(--color-concrete-50);
+  background: transparent;
+  color: var(--color-concrete-50);
+}
+
+.btn-ghost:hover {
+  background: var(--color-concrete-50);
+  color: var(--color-concrete-950);
+}
+
+/* The primary block casts its shadow in the ink color, which is invisible
+   against itself; give it the mid rule instead so the offset still reads. */
+.btn-primary {
+  box-shadow: 5px 5px 0 0 var(--color-concrete-500);
+}
+
+/* ----------------------------------------------------------------------------
+   Project index — the numbered rows in the Work section and the record each
+   one opens. Built on <details>, so with no JS and no motion the native
+   disclosure still works; the script only adds the coordinated timeline.
+---------------------------------------------------------------------------- */
+.index-row {
+  border-top: 1px solid var(--color-concrete-700);
+  transition: background-color 0.25s ease;
+}
+
+.index-row:last-of-type {
+  border-bottom: 1px solid var(--color-concrete-700);
+}
+
+.index-row > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Remove the native disclosure triangle in every engine. */
+.index-row > summary::-webkit-details-marker {
+  display: none;
+}
+
+.index-row > summary::marker {
+  content: "";
+}
+
+.index-row:hover {
+  background: var(--color-concrete-900);
+}
+
+.index-row[open] {
+  background: var(--color-concrete-900);
+}
+
+/* The number turns accent while the row is open or being pointed at: the one
+   place the green does real work, marking which record is current. */
+.index-row:hover .index-number,
+.index-row[open] .index-number {
   color: var(--color-accent);
 }
 
-.skill-chip.is-dim {
-  opacity: 0.25;
+.index-number {
+  transition: color 0.25s ease;
 }
 
-.skill-legend {
-  cursor: default;
-  transition: color 0.3s ease;
+/* The title tracks slightly wider as the row opens, so the change of state is
+   legible without motion (it holds under prefers-reduced-motion too). */
+.index-row[open] .index-title {
+  letter-spacing: 0.01em;
 }
 
-.skill-legend.is-active {
-  color: var(--color-accent);
+.index-title {
+  transition: letter-spacing 0.25s ease;
 }
 
-.skill-legend.is-active .skill-legend-marker {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
+/* The open/close glyph rotates a quarter turn. Cheap, and it is the only
+   rotation on the site. */
+.index-row[open] .index-marker {
+  transform: rotate(45deg);
+}
+
+.index-marker {
+  transition: transform 0.25s ease;
+}
+
+@keyframes record-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.index-row[open] > div > div {
+  animation: record-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.index-row[open] > div > div:nth-child(2) {
+  animation-delay: 0.06s;
 }
 
 /* ----------------------------------------------------------------------------
    Navbar — scroll progress bar + active-section ("scroll-spy") link state.
-   The bar fills left-to-right as the page scrolls; the nav link of the section
-   currently in view lights up. Both are driven from the script in Nav.astro.
+   Both are driven from the script in Nav.astro.
 ---------------------------------------------------------------------------- */
 #scroll-progress {
   transform: scaleX(var(--p, 0));
   transform-origin: left center;
   transition: transform 0.1s linear;
-  background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 50%, white));
+  background: var(--color-accent);
 }
 
 .nav-link {
   position: relative;
 }
 
-/* Animated underline that grows from the link's left as it becomes current. */
+/* Underline that grows from the link's left edge as its section becomes
+   current. State, not decoration: it is the only thing marking position. */
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: -2px;
@@ -198,71 +273,24 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
-   About-photo floating stack badges — looping decorative motion, neutralized
-   by the prefers-reduced-motion block below.
+   Analog texture. One static grain tile, no animation, no second layer.
+   Decorative: the markup is always aria-hidden + pointer-events:none.
 ---------------------------------------------------------------------------- */
-
-
-/* ----------------------------------------------------------------------------
-   Concrete Terminal texture + interaction patterns (Hero scope).
-   Overlays are decorative (always aria-hidden + pointer-events:none in markup).
----------------------------------------------------------------------------- */
-
-/* Cheap static film grain — one inline SVG noise tile, no animation. */
 .bt-grain {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.035;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
 }
 
-/* ----------------------------------------------------------------------------
-   Global CRT ambient overlay — faint static scanlines + a slow scan-beam that
-   sweeps top->bottom across the whole page. Decorative (the markup is
-   aria-hidden + pointer-events:none). It sits above content but below the fixed
-   nav (z-40) and never blocks interaction; low opacity keeps text legible. The
-   beam is removed under reduced motion (see the media query below).
----------------------------------------------------------------------------- */
-.crt-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  pointer-events: none;
-  overflow: hidden;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0 2px,
-    color-mix(in srgb, #000 10%, transparent) 2px 3px
-  );
-}
-
-.crt-beam {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 28vh;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    color-mix(in srgb, var(--color-accent) 12%, transparent),
-    transparent
-  );
-  animation: crt-sweep 10s linear infinite;
-  will-change: transform;
-}
-
-@keyframes crt-sweep {
-  from { transform: translateY(-30vh); }
-  to { transform: translateY(130vh); }
-}
-
-/* High-contrast focus ring for all interactive elements, site-wide. */
+/* High-contrast focus ring for every interactive element, site-wide. */
 a:focus-visible,
 button:focus-visible,
+summary:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
@@ -271,40 +299,28 @@ textarea:focus-visible,
 }
 
 /* ----------------------------------------------------------------------------
-   Signal geo-map — neon points on a line world map. The map stroke uses
-   `currentColor` (set to a concrete tone on the <svg>); the points are accent
-   green with a glow + a slow ping ring that is removed under reduced motion.
+   Scroll reveal — the single motion implementation on the site.
+   The hidden state is one rule behind one class, so removing the class always
+   restores the page; the only inline style written is the stagger's
+   transition-delay, which hides nothing. An inline script in
+   Layout.astro arms the class before first paint and disarms it on a timer
+   unless src/scripts/reveal.ts has taken over, which means a module that never
+   loads cannot leave content hidden.
 ---------------------------------------------------------------------------- */
-.signal-point {
-  fill: var(--color-accent);
-  filter: drop-shadow(0 0 1px var(--color-accent));
-}
-
-.signal-pulse {
-  fill: var(--color-accent);
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: signal-ping 2.6s ease-out infinite;
-}
-
-@keyframes signal-ping {
-  0% { transform: scale(1); opacity: 0.5; }
-  100% { transform: scale(3); opacity: 0; }
-}
-
-/* Pre-paint anti-FOUC: when the intro will run (motion allowed, JS on), the
-   intro targets start hidden so GSAP can animate them in without a flash. The
-   class is set by an is:inline script and removed by GSAP (or a failsafe). It
-   is NEVER set under reduced motion, so reduced-motion users see final content. */
-html.hero-intro [data-hero-anim] {
+html.reveal-ready [data-reveal]:not(.is-revealed) {
   opacity: 0;
+  transform: translateY(14px);
+}
+
+[data-reveal] {
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ----------------------------------------------------------------------------
-   Reduced motion — honor the OS/browser "reduce motion" setting.
-   All motion here is decorative (cursor glow, hero grid drift, skills marquee,
-   projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
-   to their final state and looping/animated effects stop. WCAG 2.3.3 / 2.2.2.
+   Reduced motion — honor the OS/browser setting. Everything that moves on this
+   site is either decorative or a state change that also reads statically, so
+   neutralizing motion loses no information. WCAG 2.3.3 / 2.2.2.
 ---------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -316,77 +332,18 @@ html.hero-intro [data-hero-anim] {
     scroll-behavior: auto !important;
   }
 
-  /* Stop continuously looping effects outright. */
-  .marquee-track {
-    animation: none !important;
-  }
-
-  /* Remove the CRT scan-beam entirely (it only conveys ambience). */
-  .crt-beam {
-    display: none !important;
-  }
-
-  /* Freeze the Signal ping (the static dots still show). */
-  .signal-pulse {
-    animation: none !important;
-    opacity: 0 !important;
-  }
-}
-
-/* ----------------------------------------------------------------------------
-   Projects swipe carousel. The track is a native horizontal scroll-snap list
-   (touch swipe / trackpad / arrow keys), so with no JS every card is still
-   reachable by scrolling; the JS only wires the prev/next buttons + readout.
-   scroll-padding centers a card next to its peeking neighbors.
----------------------------------------------------------------------------- */
-.projects-carousel {
-  scroll-padding-inline: 1.5rem;
-}
-
-/* Utility: hide the scrollbar while keeping the element scrollable/swipeable. */
-.no-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/legacy Edge */
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none; /* WebKit */
-}
-
-/* Deck effect (mobile carousel only; the class is added by the script). The
-   centered card is in focus and its neighbours recede a little, so swiping
-   reads like dealing through a stack of cards — while every card's content
-   stays fully legible (a gentle scale + fade, no rotation, no clipping). */
-@media (max-width: 767.98px) {
-  .projects-carousel.is-carousel [data-project-panel] {
-    transition:
-      transform 0.35s ease,
-      opacity 0.35s ease;
-    transform: scale(0.9);
-    opacity: 0.55;
-  }
-
-  .projects-carousel.is-carousel [data-project-panel].is-active {
-    transform: scale(1);
+  /* Never hold content in the pre-reveal state: the reveal script does not run
+     its hidden path under reduced motion, and this is the belt to that brace. */
+  html.reveal-ready [data-reveal]:not(.is-revealed) {
     opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .projects-carousel {
-    scroll-behavior: auto;
-  }
-
-  /* Keep the focus/recede states, drop the animated transition. */
-  .projects-carousel.is-carousel [data-project-panel] {
-    transition: none;
+    transform: none;
   }
 }
 
 /* ----------------------------------------------------------------------------
    Blog post typography — a scoped reading layer for rendered Markdown bodies
    (`/blog/<slug>/`). No new tokens: it reuses the concrete ramp + accent, the
-   sans display face for headings and the mono face for code.
+   display face for headings and the mono face for code.
 ---------------------------------------------------------------------------- */
 .prose-terminal {
   color: var(--color-concrete-300);
@@ -401,10 +358,9 @@ html.hero-intro [data-hero-anim] {
 .prose-terminal h2,
 .prose-terminal h3 {
   color: var(--color-concrete-50);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   margin-top: 2.5rem;
 }
 
@@ -424,7 +380,7 @@ html.hero-intro [data-hero-anim] {
 
 .prose-terminal strong {
   color: var(--color-concrete-50);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .prose-terminal ul,

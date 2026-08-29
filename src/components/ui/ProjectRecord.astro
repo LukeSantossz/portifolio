@@ -1,0 +1,162 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+
+/**
+ * One row of the project index, and the record it opens.
+ *
+ * The row is a <details>/<summary> pair, so the disclosure works with no JS and
+ * with no motion; the script in Work.astro only layers a timeline on top and
+ * closes the other rows. Closed, the row still carries the headline metric, so
+ * the index is scannable without opening anything.
+ */
+interface Props {
+  data: CollectionEntry<'projects'>['data'];
+  /** 1-based position in the index, rendered as the row number. */
+  position: number;
+}
+
+const { data, position } = Astro.props;
+const number = String(position).padStart(2, '0');
+
+/**
+ * The six case-study moves, in reading order, with the empty ones dropped.
+ * `problem` and `approach` are required by the schema; the rest are optional.
+ */
+const moves = [
+  { label: 'Problem', body: data.problem },
+  { label: 'Constraints', body: data.constraints },
+  { label: 'Decision', body: data.approach },
+  { label: 'Rejected', body: data.alternatives },
+  { label: 'Result', body: data.result },
+  { label: 'How it was measured', body: data.evaluation },
+  { label: 'Known limits', body: data.retrospective },
+].filter((move): move is { label: string; body: string } => Boolean(move.body));
+
+const hasLinks = Boolean(data.repoUrl || data.demoUrl);
+---
+
+<li>
+  <details class="index-row" data-record open={position === 1}>
+    <summary
+      class="grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 gap-y-2 px-2 py-6 md:grid-cols-[3.5rem_minmax(0,1fr)_auto_auto] md:gap-x-8 md:py-7"
+    >
+      <span
+        class="index-number font-mono text-sm text-concrete-500 md:text-base"
+        aria-hidden="true">{number}</span
+      >
+
+      <span class="col-start-2">
+        <span
+          class="index-title block font-sans text-index font-semibold leading-[1.05] tracking-[-0.03em] text-concrete-50"
+          >{data.title}</span
+        >
+        <span class="mt-2 block max-w-[52ch] text-sm leading-relaxed text-concrete-300"
+          >{data.tagline}</span
+        >
+        <span class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 md:hidden">
+          <span class="font-mono text-sm text-concrete-50">{data.metric}</span>
+          <span class="font-mono text-label uppercase tracking-[0.2em] text-concrete-500"
+            >{data.domain}{data.kind && ` · ${data.kind}`}</span
+          >
+        </span>
+      </span>
+
+      <span class="col-start-3 hidden w-[15rem] text-right md:block lg:w-[17rem]">
+        <span class="block font-mono text-base text-concrete-50">{data.metric}</span>
+        {data.metricLabel && (
+          <span class="mt-1.5 block text-[0.8125rem] leading-snug text-concrete-300">
+            {data.metricLabel}
+          </span>
+        )}
+        <span
+          class="mt-2.5 block font-mono text-label uppercase tracking-[0.2em] text-concrete-500"
+          >{data.domain}{data.kind && ` · ${data.kind}`}</span
+        >
+      </span>
+
+      <span class="index-marker col-start-3 row-start-1 justify-self-end text-concrete-500 md:col-start-4 md:row-start-auto">
+        <Icon name="plus" size={18} />
+      </span>
+    </summary>
+
+    <div class="grid gap-10 px-2 pb-10 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-14">
+      <div class="space-y-7">
+        {
+          moves.map((move) => (
+            <div>
+              <h3 class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">
+                {move.label}
+              </h3>
+              <p class="mt-2 max-w-[64ch] text-[0.9375rem] leading-relaxed text-concrete-300">
+                {move.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="space-y-7 md:border-l md:border-concrete-700 md:pl-10">
+        {
+          data.period && (
+            <div>
+              <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">
+                Period
+              </p>
+              <p class="mt-2 font-mono text-sm text-concrete-50">{data.period}</p>
+            </div>
+          )
+        }
+
+        <div>
+          <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">Stack</p>
+          <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+            {
+              data.stack.map((tool) => (
+                <li class="font-mono text-sm text-concrete-300">{tool}</li>
+              ))
+            }
+          </ul>
+        </div>
+
+        {
+          data.roadmap && (
+            <div>
+              <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">Next</p>
+              <p class="mt-2 text-sm leading-relaxed text-concrete-300">{data.roadmap}</p>
+            </div>
+          )
+        }
+
+        {
+          hasLinks && (
+            <div class="flex flex-wrap gap-3 pt-1">
+              {data.repoUrl && (
+                <a
+                  href={data.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-ghost"
+                >
+                  <Icon name="github" size={16} />
+                  Code
+                </a>
+              )}
+              {data.demoUrl && (
+                <a
+                  href={data.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-ghost"
+                >
+                  <Icon name="external" size={16} />
+                  Demo
+                </a>
+              )}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </details>
+</li>
