@@ -3,8 +3,31 @@ title: Forecasting temperature across 211 countries
 description: A single global model beat per-country Prophet baselines by roughly 75% on average error. The interesting part was not the architecture. It was refusing to train 211 separate models.
 pubDate: 2026-05-12
 tags: ['Forecasting', 'Time Series', 'MLOps']
-draft: false
+draft: true
 ---
+
+<!--
+UNPUBLISHED 2026-08-26 — this post does not match the repository it describes.
+
+Two problems, both verified against github.com/LukeSantossz/weather-forecast:
+
+1. The architecture described here was never built. There is no per-country
+   model, no country-identity feature, and no latitude / hemisphere / climate-zone
+   inputs. The pipeline aggregates every station into ONE global daily-mean
+   series and trains on lag, rolling, calendar and cyclical features
+   (src/weather_forecast/features.py). There was never a fleet of 211 Prophet
+   models to beat.
+
+2. The 0.19°C and "75% lower" figures were retracted in the repository itself
+   (commit bf34843, 2026-07-03) after two evaluation leaks were found: the test
+   set was serving as LightGBM's early-stopping validation set, and the ensemble
+   weights were derived from that same test window. The Prophet baseline was
+   never tuned and never re-run on the same split or horizon.
+
+Do not republish as-is. The honest version of this article is the one about
+finding the leak — see the weather-forecast case study.
+-->
+
 
 The brief looked deceptively simple: forecast average temperature for 211
 countries. The obvious first move, one Prophet model per country, is also the

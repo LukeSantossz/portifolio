@@ -8,7 +8,7 @@ export const site = {
   location: { lat: -22.21, lon: -49.95, label: 'Marília, BR' },
   name: 'Lucas Gonçalves',
   initials: 'LG',
-  role: 'AI / ML Engineer',
+  role: 'AI Engineer',
 
   // Hero sub-headline: a short positioning line shown under the role.
   headline: 'Applied machine learning, anchored in real-world agriculture.',
@@ -20,9 +20,9 @@ export const site = {
   // Hero proof strip: three measurable, self-explanatory anchors, each one
   // traceable to a case study below.
   heroStats: [
-    { value: '3rd of 1,300+', label: 'A soil-reading app I built placed 3rd at FETEPS 2025, a state science fair; its paper was accepted at the ICPA 2026 precision-agriculture conference.' },
-    { value: '0.19°C', label: 'Average error of a temperature-forecasting pipeline across 211 countries, about 75% lower than the standard Prophet baseline.' },
-    { value: '205 tests', label: 'Coverage around 83% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
+    { value: '3rd of 1,300+', label: 'A soil-reading app I built placed 3rd at the 16th FETEPS 2025, a state science fair; its paper was published and presented at the ICPA/ConBAP 2026 precision-agriculture conference.' },
+    { value: '+51.9%', label: 'Macro-F1 gain after a fine-tuning run came out worse than its baseline, and error analysis traced it to the wrong starting model rather than the wrong settings.' },
+    { value: '372 tests', label: 'Coverage of 89.8% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
   ],
 
   // Core-stack chips shown as a static inline strip in the hero — the headline
@@ -62,7 +62,7 @@ export const site = {
   hcaptchaSitekey: import.meta.env.PUBLIC_HCAPTCHA_SITEKEY ?? '',
 
   // --- SEO ------------------------------------------------------------------
-  seoTitle: 'Lucas Gonçalves · AI/ML Engineer',
+  seoTitle: 'Lucas Gonçalves · AI Engineer',
   seoDescription:
-    'AI/ML Engineer focused on applied intelligence for agriculture and production-grade AI systems: RAG, computer vision, and open source. Big Data student at Fatec, building toward remote/international ML roles.',
+    'AI Engineer focused on applied intelligence for agriculture and production-grade AI systems: RAG, LLM agents, agent safety and evaluation. Big Data student at Fatec, building toward remote/international AI roles.',
 } as const;
