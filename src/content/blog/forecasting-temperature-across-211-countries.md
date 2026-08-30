@@ -1,45 +1,60 @@
 ---
-title: Forecasting temperature across 211 countries
-description: A single global model beat per-country Prophet baselines by roughly 75% on average error. The interesting part was not the architecture, it was refusing to train 211 separate models.
+title: The baseline that made my forecasting result look worse
+description: One global model beat per-country Prophet baselines by 69% on average error. Then I added persistence, and the honest number turned out to be 23%.
 pubDate: 2026-05-12
 tags: ['Forecasting', 'Time Series', 'MLOps']
 draft: false
 ---
 
-The brief looked deceptively simple: forecast average temperature for 211
+The brief looked deceptively simple: forecast average daily temperature for 211
 countries. The obvious first move, one Prophet model per country, is also the
-one that quietly wastes most of the signal in the data.
-
-## Why one model per country is a trap
-
-Fitting 211 independent models feels safe because each one only has to learn one
-place. But temperature is not 211 unrelated problems. Neighboring countries share
-seasons; the northern and southern hemispheres are mirror images; coastal and
-continental climates rhyme. A per-country model throws all of that shared
-structure away and re-learns seasonality from scratch on whatever short, noisy
-history each country happens to have.
-
-It is also an operational headache: 211 models to retrain, monitor, and version.
+expensive one. It means 211 things to retrain, 211 things to monitor, and 211
+opportunities for one of them to quietly rot.
 
 ## A single global model
 
 Instead, one model saw every country at once, with the country identity and a
 few static geographic features (latitude, hemisphere, a coarse climate zone) as
-inputs. That let the model **borrow strength**, a data-rich country's clean
+inputs. That let the model **borrow strength**: a data-rich country's clean
 seasonal signal informs a data-poor neighbor's forecast.
-
-The result: average error of **0.19°C**, about **75% lower** than the tuned
-per-country Prophet baseline, from *one* artifact instead of 211.
 
 - One training run, one model to monitor.
 - New countries get a reasonable forecast on day one, before they have much
   history, because the global patterns already apply.
 - Seasonality is learned once and shared, not re-estimated 211 times.
 
-## The takeaway
+It came in at **0.24°C** average error against the tuned per-country Prophet
+baseline at 0.77°C. A 69% improvement, from one artifact instead of 211. I was
+pleased with that for about a day.
 
-Before reaching for "a model per entity," ask what the entities share. When they
-share a lot, and geography almost always does, a single model that is *told*
-which entity it is looking at will usually beat a fleet of specialists, and it is
-far less to operate. Details are in the
-[case studies](/#projects).
+## Then I added a baseline that cost nothing
+
+Prophet decomposes a series into trend and seasonality. What it does not have is
+an autoregressive term: it never looks at yesterday's value. Country-level daily
+means are smooth and heavily autocorrelated, which makes yesterday's value a
+genuinely strong forecast for today.
+
+So I added persistence. Tomorrow equals today. Four lines of code, no training.
+
+It scored **0.31°C**.
+
+That single number reframed the entire project. My 69% was mostly measuring the
+fact that lags matter on an autocorrelated series, which is not a finding, it is
+a property of the data. Against the baseline that actually deserves beating, the
+model improves by **23%**, not 69%.
+
+## Why I report the smaller number
+
+The 69% is true. It is also the more impressive-looking number, it involves a
+real and respected library, and nobody reading it would have questioned it.
+
+It is still the wrong headline, because it flatters the model instead of
+describing it. A reader who sees "69% better than Prophet" learns something
+about Prophet's lack of lags. A reader who sees "23% better than persistence"
+learns what the model is actually worth.
+
+The general rule I took from this: your baseline choice decides what your result
+means, and the weakest defensible baseline will always make you look best. Pick
+the one that is hardest to beat, then report against it. The split, the
+horizon and the per-country error distribution are in the
+[case studies](/#work).

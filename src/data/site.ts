@@ -16,11 +16,11 @@ export const site = {
 
   /** Hero positioning line. One sentence, states the work, claims nothing. */
   headline:
-    'I build retrieval systems and the evaluation that says when they are wrong. Five years in software, the last two on ML.',
+    'I build retrieval systems and the evaluation that says when they are wrong. Five years in software, the last two in ML.',
 
   /**
    * The recruiter smell test, in one line: where, which timezone, how
-   * reachable, and the work-authorisation answer they would otherwise have to
+   * reachable, and the work-authorization answer they would otherwise have to
    * email to get.
    */
   availability: 'São Paulo, Brazil (GMT-3) · Remote · Eligible to work in the EU',
@@ -39,7 +39,7 @@ export const site = {
     {
       value: '0.81',
       label:
-        'AUROC of that confidence score separating correct answers from incorrect ones, over 220 hand-checked questions.',
+        'AUROC of that confidence score separating correct answers from incorrect ones, across 220 hand-checked questions.',
     },
     {
       value: '4h to 20min',
@@ -53,7 +53,7 @@ export const site = {
   linkedin: 'https://linkedin.com/in/example',
 
   // --- Assets (placeholder) -------------------------------------------------
-  cvPath: '/alex-morgan-resume.pdf',
+  resumePath: '/alex-morgan-resume.pdf',
   ogImage: '/og-image.png',
 
   /** Browser tab label. Short; the descriptive title goes to og:title. */
@@ -78,5 +78,5 @@ export const site = {
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Alex Morgan · AI Engineer',
   seoDescription:
-    'AI Engineer working on retrieval systems, uncertainty estimation and the evaluation that decides whether either is working. Case studies with measured results, stated methodology and known limits.',
+    'AI Engineer working on retrieval systems, uncertainty estimation, and the evaluation that decides whether either is working. Case studies with measured results, stated methodology, and known limits.',
 } as const;

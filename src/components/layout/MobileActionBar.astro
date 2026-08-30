@@ -7,7 +7,7 @@ import { site } from '../../data/site.ts';
 // the Contact section). Reads the single source of truth in site.ts.
 const actions = [
   { href: `mailto:${site.email}`, label: 'Email', icon: 'mail' as const, external: false, download: false },
-  { href: site.cvPath, label: 'CV', icon: 'download' as const, external: false, download: true },
+  { href: site.resumePath, label: 'Résumé', icon: 'download' as const, external: false, download: true },
   { href: site.linkedin, label: 'LinkedIn', icon: 'linkedin' as const, external: true, download: false },
 ];
 ---

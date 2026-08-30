@@ -42,7 +42,7 @@ const captchaEnabled = site.hcaptchaSitekey.trim().length > 0;
             </p>
             <a
               href={`mailto:${site.email}`}
-              class="mt-2 inline-flex items-center gap-2 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
+              class="mt-2 inline-flex min-h-[24px] items-center gap-2 py-1 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
             >
               <Icon name="mail" size={16} />
               {site.email}
@@ -108,7 +108,7 @@ const captchaEnabled = site.hcaptchaSitekey.trim().length > 0;
       ) : (
         <div data-reveal class="border border-concrete-700 bg-concrete-900 p-6">
           <p class="text-[0.9375rem] leading-relaxed text-concrete-300">
-            The form is not configured on this build. Email is the direct path, and it reaches me
+            The form is not configured in this build. Email is the direct path, and it reaches me
             the same day.
           </p>
           <a href={`mailto:${site.email}`} class="btn btn-primary mt-6">

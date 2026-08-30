@@ -1,5 +1,5 @@
 /**
- * Section copy — labels, headings, ledes and the few UI strings that are
+ * Section copy: labels, headings, ledes and the few UI strings that are
  * really sentences. Kept here so no prose lives inside a `.astro` file
  * (the repo rule in CLAUDE.md), and so the voice can be edited in one pass.
  */

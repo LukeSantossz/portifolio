@@ -24,7 +24,7 @@ const pageTitle = `${post.data.title} · ${site.name}`;
     <article class="mx-auto max-w-3xl px-6 py-20 md:py-28">
       <a
         href="/blog/"
-        class="font-mono text-xs uppercase tracking-[0.2em] text-concrete-300 transition-colors hover:text-accent"
+        class="inline-flex min-h-[24px] items-center font-mono text-label uppercase tracking-[0.25em] text-concrete-300 transition-colors hover:text-concrete-50"
       >
         &larr; Blog
       </a>
@@ -36,7 +36,7 @@ const pageTitle = `${post.data.title} · ${site.name}`;
       </p>
 
       <h1
-        class="mt-4 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-5xl"
+        class="mt-4 font-sans text-headline font-semibold leading-[1.05] tracking-[-0.03em] text-concrete-50"
       >
         {post.data.title}
       </h1>

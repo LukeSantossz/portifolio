@@ -57,7 +57,7 @@
         scene.add(group);
 
         // Palette comes from the CSS tokens, so the field follows the theme
-        // instead of keeping a second copy of the colours.
+        // instead of keeping a second copy of the colors.
         const styles = getComputedStyle(document.documentElement);
         const vivid = new THREE.Color(styles.getPropertyValue('--color-accent-vivid').trim() || '#2f8fff');
         const pale = new THREE.Color(styles.getPropertyValue('--color-concrete-500').trim() || '#8f8b82');
@@ -85,7 +85,7 @@
         })();
 
         // Lemniscate of Gerono, thickened into a 3D band. The shape is the one
-        // recognisable thing here; the scatter keeps it from reading as a logo.
+        // recognizable thing here; the scatter keeps it from reading as a logo.
         const COUNT = 900;
         const positions = new Float32Array(COUNT * 3);
         const colors = new Float32Array(COUNT * 3);
@@ -101,12 +101,12 @@
           positions[i * 3 + 2] = Math.sin(t) * 2.6 + (Math.random() - 0.5) * 2.4;
 
           // Points near the crossing point carry the accent; the tails fade to
-          // the neutral rule colour, so the shape has a centre of gravity.
-          const nearCentre = 1 - Math.min(1, Math.abs(Math.cos(t)));
-          const colour = pale.clone().lerp(vivid, nearCentre * 0.85);
-          colors[i * 3] = colour.r;
-          colors[i * 3 + 1] = colour.g;
-          colors[i * 3 + 2] = colour.b;
+          // the neutral rule color, so the shape has a center of gravity.
+          const nearCenter = 1 - Math.min(1, Math.abs(Math.cos(t)));
+          const color = pale.clone().lerp(vivid, nearCenter * 0.85);
+          colors[i * 3] = color.r;
+          colors[i * 3 + 1] = color.g;
+          colors[i * 3 + 2] = color.b;
 
           drift[i] = Math.random() * Math.PI * 2;
         }
@@ -140,7 +140,7 @@
 
           // Push the field into the empty right-hand side on wide screens, so
           // it never sits behind the headline column. Narrow screens have no
-          // spare column, so it centres and drops in opacity instead.
+          // spare column, so it centers and drops in opacity instead.
           const wide = width >= 1024;
           baseX = wide ? 5.4 : 0;
           material.opacity = wide ? 0.5 : 0.28;

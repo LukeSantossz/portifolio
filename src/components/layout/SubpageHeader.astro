@@ -15,11 +15,11 @@ import { site } from '../../data/site.ts';
       class="font-mono text-sm font-bold tracking-tight text-concrete-50"
       aria-label={`${site.initials}, ${site.name}, home`}
     >
-      <span class="text-accent">&gt;</span> {site.initials}
+      {site.initials}
     </a>
     <a
       href="/blog/"
-      class="font-mono text-xs uppercase tracking-[0.2em] text-concrete-300 transition-colors hover:text-accent"
+      class="nav-link inline-flex min-h-[24px] items-center font-mono text-label uppercase tracking-[0.25em] text-concrete-300 transition-colors hover:text-concrete-50"
     >
       Blog
     </a>

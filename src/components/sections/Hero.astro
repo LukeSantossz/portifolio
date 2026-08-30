@@ -43,12 +43,12 @@ import Icon from '../ui/Icon.astro';
           Read the work
           <Icon name="arrow-right" size={16} />
         </a>
-        <a href={site.cvPath} download class="btn btn-ghost w-full sm:w-auto">
+        <a href={site.resumePath} download class="btn btn-ghost w-full sm:w-auto">
           <Icon name="download" size={16} />
           Résumé
         </a>
         <div class="mt-1 flex items-center gap-4 sm:ml-1 sm:mt-0">
-          <SocialLinks labelled />
+          <SocialLinks labeled />
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@ import Icon from '../ui/Icon.astro';
   <a
     href="#work"
     aria-label="Scroll to the work"
-    class="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 font-mono text-label uppercase tracking-[0.25em] text-concrete-500 transition-colors hover:text-accent md:block"
+    class="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 items-center px-2 py-1.5 font-mono text-label uppercase tracking-[0.25em] text-concrete-500 transition-colors hover:text-accent md:inline-flex"
   >
     Scroll
   </a>

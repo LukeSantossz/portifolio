@@ -11,7 +11,7 @@ export const stack: string[] = [
   'SQL',
   'Dart',
   'PyTorch',
-  'HuggingFace',
+  'Hugging Face',
   'TensorFlow Lite',
   'LightGBM',
   'scikit-learn',

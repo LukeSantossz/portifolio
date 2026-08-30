@@ -49,7 +49,7 @@ export const timeline: TimelineItem[] = [
     description:
       'Applied degree. Machine learning, statistics, databases, distributed systems.',
     highlights: [
-      'Final project on ensemble forecasting became the basis for the Isobar record above.',
+      'My final project on ensemble forecasting became the basis for the Isobar record above.',
       'Languages: Portuguese (native), English (professional working proficiency).',
     ],
   },
