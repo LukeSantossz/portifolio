@@ -1,186 +1,133 @@
 ---
+import Section from '../layout/Section.astro';
 import { site } from '../../data/site.ts';
-import { worldMap } from '../../data/world-map.ts';
+import { sections } from '../../data/sections.ts';
 import SocialLinks from '../ui/SocialLinks.astro';
 import Icon from '../ui/Icon.astro';
 
-// Brutalist Concrete Terminal field: hard concrete border, dark surface, green focus.
 const inputClass =
-  'w-full border-2 border-concrete-50 bg-concrete-900 px-4 py-3 font-sans text-sm text-concrete-50 focus:border-accent focus:outline-none';
+  'w-full border border-concrete-500 bg-concrete-900 px-4 py-3 font-sans text-sm text-concrete-50 focus:border-accent focus:outline-none';
+
+const labelClass = 'mb-2 block font-mono text-label uppercase tracking-[0.25em] text-concrete-500';
 
 // The form posts to Web3Forms with site.web3formsKey. When PUBLIC_WEB3FORMS_KEY
 // is unset that key is empty, so rather than render a form that would fail on
-// submit, fall back to an email-only CTA. Warn at build time so an unconfigured
-// deploy is noticed.
+// submit, fall back to an email-only CTA. Warn at build time so an
+// unconfigured deploy is noticed.
 const formEnabled = site.web3formsKey.trim().length > 0;
 if (!formEnabled) {
   console.warn(
-    '[contact] PUBLIC_WEB3FORMS_KEY is not set — rendering the email-only fallback instead of the contact form.',
+    '[contact] PUBLIC_WEB3FORMS_KEY is not set. Rendering the email-only fallback instead of the contact form.',
   );
 }
 
-// hCaptcha is optional: render the widget only when a sitekey is configured, so an
-// unconfigured deploy renders the exact same form as before.
+// hCaptcha is optional: render the widget only when a sitekey is configured, so
+// an unconfigured deploy renders the exact same form as before.
 const captchaEnabled = site.hcaptchaSitekey.trim().length > 0;
-
-// Easter-egg background map: my fixed point, projected with the same equirectangular
-// formula as scripts/generate-world-map.mjs (viewBox 0 0 360 180).
-const ax = (site.location.lon + 180).toFixed(2);
-const ay = (90 - site.location.lat).toFixed(2);
 ---
 
-<section
+<Section
   id="contact"
-  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 text-concrete-50"
+  label={sections.contact.label}
+  title={sections.contact.title}
+  intro={sections.contact.intro}
 >
-  <!-- Decorative analog grain (no semantics, not focusable). -->
-  <div class="bt-grain" aria-hidden="true"></div>
+  <div class="mt-14 grid gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16">
+    <div data-reveal class="space-y-8">
+      {
+        formEnabled && (
+          <div>
+            <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">
+              {sections.contact.emailFallback}
+            </p>
+            <a
+              href={`mailto:${site.email}`}
+              class="mt-2 inline-flex min-h-[24px] items-center gap-2 py-1 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
+            >
+              <Icon name="mail" size={16} />
+              {site.email}
+            </a>
+          </div>
+        )
+      }
 
-  <!-- Easter-egg world map behind the content: my point + the visitor's, unlabeled.
-       Desktop-only: hidden below md so it never crowds the mobile contact layout. -->
-  <div
-    class="pointer-events-none absolute inset-0 z-0 hidden items-center justify-center md:flex"
-    aria-hidden="true"
-  >
-    <svg viewBox={worldMap.viewBox} class="w-full text-concrete-700">
-      <path
-        class="opacity-40"
-        d={worldMap.d}
-        fill="none"
-        stroke="currentColor"
-        stroke-width="0.3"
-        stroke-linejoin="round"
-      />
-      <g transform={`translate(${ax} ${ay})`}>
-        <circle r="2.2" class="signal-pulse" />
-        <circle r="1" class="signal-point" />
-      </g>
-      <g data-visitor-point transform="translate(0 0)" style="display:none">
-        <circle r="2.2" class="signal-pulse" />
-        <circle r="1" class="signal-point" />
-      </g>
-    </svg>
-  </div>
-
-  <div class="relative z-10 mx-auto max-w-5xl px-6 py-16 md:py-28">
-    <div data-contact-anim class="mb-12 max-w-2xl">
-      <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
-        <span class="text-accent">07 / CONTACT</span>
-      </p>
-      <h2
-        class="mt-3 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-6xl"
-      >
-        Let&apos;s talk
-      </h2>
+      <div>
+        <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">Elsewhere</p>
+        <SocialLinks class="mt-3" />
+      </div>
     </div>
 
-    <div class="grid gap-12 md:grid-cols-2">
-      <div data-contact-anim>
-        <p class="max-w-md font-sans text-base leading-relaxed text-concrete-300 md:text-lg">
-          I&apos;m looking for a full-time AI/ML Engineer role on a distributed,
-          remote team building production systems at scale. If that&apos;s what
-          you&apos;re hiring for, send the form &mdash; it&apos;s the surest way to
-          reach me and I usually reply within a day.
-        </p>
-        <p class="mt-6 font-mono text-xs uppercase tracking-[0.2em] text-concrete-300">
-          <span aria-hidden="true">//</span> Prefer email?
-        </p>
-        <a
-          href={`mailto:${site.email}`}
-          class="mt-2 inline-flex items-center gap-2 font-mono text-sm text-concrete-50 transition-colors hover:text-accent"
-        >
-          <Icon name="mail" size={18} />
-          {site.email}
-        </a>
-        <SocialLinks class="mt-6" />
-      </div>
+    {
+      formEnabled ? (
+        <form id="contact-form" data-reveal class="space-y-5">
+          <input type="hidden" name="access_key" value={site.web3formsKey} />
+          <input type="hidden" name="subject" value="New message from your portfolio" />
+          {/* Honeypot spam trap (must stay empty) */}
+          <input
+            type="checkbox"
+            name="botcheck"
+            class="hidden"
+            style="display:none"
+            tabindex="-1"
+            autocomplete="off"
+          />
 
-      {formEnabled ? (
-      <form id="contact-form" data-contact-anim class="space-y-5">
-        <input type="hidden" name="access_key" value={site.web3formsKey} />
-        <input
-          type="hidden"
-          name="subject"
-          value="New message from your portfolio"
-        />
-        <!-- Honeypot spam trap (must stay empty) -->
-        <input
-          type="checkbox"
-          name="botcheck"
-          class="hidden"
-          style="display:none"
-          tabindex="-1"
-          autocomplete="off"
-        />
+          <div>
+            <label for="name" class={labelClass}>
+              Name
+            </label>
+            <input id="name" type="text" name="name" required class={inputClass} />
+          </div>
+          <div>
+            <label for="email" class={labelClass}>
+              Email
+            </label>
+            <input id="email" type="email" name="email" required class={inputClass} />
+          </div>
+          <div>
+            <label for="message" class={labelClass}>
+              Message
+            </label>
+            <textarea id="message" name="message" required rows="5" class={inputClass} />
+          </div>
 
-        <div>
-          <label
-            for="name"
-            class="mb-1.5 block font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
-          >
-            <span aria-hidden="true">//</span> Name
-          </label>
-          <input id="name" type="text" name="name" required class={inputClass} />
-        </div>
-        <div>
-          <label
-            for="email"
-            class="mb-1.5 block font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
-          >
-            <span aria-hidden="true">//</span> Email
-          </label>
-          <input id="email" type="email" name="email" required class={inputClass} />
-        </div>
-        <div>
-          <label
-            for="message"
-            class="mb-1.5 block font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
-          >
-            <span aria-hidden="true">//</span> Message
-          </label>
-          <textarea id="message" name="message" required rows="5" class={inputClass}></textarea>
-        </div>
+          {captchaEnabled && <div class="h-captcha" data-sitekey={site.hcaptchaSitekey} />}
+          {captchaEnabled && (
+            <script is:inline async defer src="https://js.hcaptcha.com/1/api.js" />
+          )}
 
-        {captchaEnabled && (
-          <div class="h-captcha" data-sitekey={site.hcaptchaSitekey}></div>
-        )}
+          <button type="submit" class="btn btn-primary w-full disabled:opacity-60 sm:w-auto">
+            Send message
+            <Icon name="arrow-right" size={16} />
+          </button>
 
-        <button
-          type="submit"
-          class="inline-flex w-full items-center justify-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-        >
-          Send message
-          <Icon name="arrow-right" size={18} />
-        </button>
+          <p class="text-sm leading-relaxed text-concrete-300">{sections.contact.formNote}</p>
 
-        <p id="form-status" class="font-mono text-sm" role="status" aria-live="polite"></p>
-      </form>
+          <p id="form-status" class="font-mono text-sm" role="status" />
+        </form>
       ) : (
-      <div data-contact-anim class="border-2 border-concrete-50 bg-concrete-900 p-6">
-        <p class="font-sans text-base leading-relaxed text-concrete-300">
-          The contact form is being set up. In the meantime the quickest way to
-          reach me is by email, and I usually reply within a day.
-        </p>
-        <a
-          href={`mailto:${site.email}`}
-          class="mt-6 inline-flex items-center justify-center gap-2 border-2 border-accent bg-accent px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider text-concrete-950 shadow-hard transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-        >
-          <Icon name="mail" size={18} />
-          Email me
-        </a>
-      </div>
-      )}
-    </div>
-
-    <!-- Peak-end close: the last thing a recruiter sees restates the honest availability. -->
-    <p
-      data-contact-anim
-      class="mt-14 border-t-2 border-concrete-700 pt-6 font-mono text-xs uppercase tracking-[0.2em] text-concrete-300"
-    >
-      <span class="text-accent">Currently</span> &mdash; {site.availability}
-    </p>
+        <div data-reveal class="border border-concrete-700 bg-concrete-900 p-6">
+          <p class="text-[0.9375rem] leading-relaxed text-concrete-300">
+            The form is not configured in this build. Email is the direct path, and it reaches me
+            the same day.
+          </p>
+          <a href={`mailto:${site.email}`} class="btn btn-primary mt-6">
+            <Icon name="mail" size={16} />
+            {site.email}
+          </a>
+        </div>
+      )
+    }
   </div>
-</section>
+
+  <!-- Peak-end close: the last line restates the real availability, no urgency. -->
+  <p
+    data-reveal
+    class="mt-16 border-t border-concrete-700 pt-6 font-mono text-label uppercase tracking-[0.25em] text-concrete-300"
+  >
+    {sections.contact.closing}
+  </p>
+</Section>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
@@ -192,7 +139,7 @@ const ay = (90 - site.location.lat).toFixed(2);
       const button = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
       const data = new FormData(form);
 
-      status.textContent = 'Sending…';
+      status.textContent = 'Sending...';
       status.className = 'font-mono text-sm text-concrete-300';
       if (button) button.disabled = true;
 
@@ -202,97 +149,37 @@ const ay = (90 - site.location.lat).toFixed(2);
           headers: { Accept: 'application/json' },
           body: data,
         });
+
+        // A 5xx often carries an HTML body, so check the status before parsing:
+        // otherwise the JSON error surfaces as a misleading "network error".
+        if (!response.ok) {
+          status.textContent = `The form service returned ${response.status}. Please email me directly.`;
+          status.className = 'font-mono text-sm text-alert';
+          return;
+        }
+
         const result = await response.json();
 
         if (result.success) {
-          status.textContent = 'Thanks! Your message has been sent.';
+          status.textContent = 'Thanks. Your message has been sent.';
           status.className = 'font-mono text-sm text-accent';
           form.reset();
         } else {
-          status.textContent =
-            result.message || 'Something went wrong. Please email me directly.';
-          status.className = 'font-mono text-sm text-red-400';
+          status.textContent = result.message || 'Something went wrong. Please email me directly.';
+          status.className = 'font-mono text-sm text-alert';
         }
       } catch {
-        status.textContent =
-          'Network error. Please email me directly instead.';
-        status.className = 'font-mono text-sm text-red-400';
+        status.textContent = 'Network error. Please email me directly instead.';
+        status.className = 'font-mono text-sm text-alert';
       } finally {
-        if (button) button.disabled = false;
+        if (button) {
+          const focusWasLost = document.activeElement === document.body;
+          button.disabled = false;
+          // Disabling a focused button drops focus to <body>, which would make a
+          // keyboard sender tab from the top of the page again.
+          if (focusWasLost) button.focus();
+        }
       }
     });
   }
 </script>
-
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const mm = gsap.matchMedia();
-
-  // Motion allowed: each entrance target animates in as it scrolls into view.
-  // immediateRender:false means the hidden (opacity:0) state is applied ONLY when
-  // the trigger fires — so if ScrollTrigger never fires (or errors), the content
-  // stays at its natural, visible state. Reduced motion / no-JS never touch it.
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    const targets = gsap.utils.toArray<Element>('#contact [data-contact-anim]');
-
-    const tweens = targets.map((el) =>
-      gsap.from(el, {
-        opacity: 0,
-        y: 24,
-        duration: 0.6,
-        ease: 'power3.out',
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          once: true,
-        },
-      }),
-    );
-
-    return () => {
-      tweens.forEach((tween) => {
-        if (tween.scrollTrigger) tween.scrollTrigger.kill();
-        tween.kill();
-      });
-      gsap.set(targets, { clearProps: 'all' });
-    };
-  });
-</script>
-
-<script>
-  // Easter egg: place the visitor's point on the background map from a coarse IP
-  // lookup (no permission prompt). Fail-safe — on any error/timeout, only my point shows.
-  const point = document.querySelector('#contact [data-visitor-point]');
-  // The map is desktop-only (hidden below md); skip the third-party IP lookup on mobile.
-  if (point && window.matchMedia('(min-width: 768px)').matches) {
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 3000);
-    fetch('https://ipwho.is/', { signal: controller.signal })
-      .then((res) => res.json())
-      .then((geo) => {
-        window.clearTimeout(timer);
-        if (
-          geo &&
-          geo.success !== false &&
-          typeof geo.latitude === 'number' &&
-          typeof geo.longitude === 'number'
-        ) {
-          const x = geo.longitude + 180; // equirectangular, matches the map viewBox
-          const y = 90 - geo.latitude;
-          point.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
-          (point as HTMLElement).style.display = '';
-        }
-      })
-      .catch(() => {
-        window.clearTimeout(timer);
-        /* graceful: leave only my point */
-      });
-  }
-</script>
-
-{captchaEnabled && <script src="https://js.hcaptcha.com/1/api.js" async defer is:inline></script>}

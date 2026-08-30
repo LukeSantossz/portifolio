@@ -1,144 +1,64 @@
 ---
-import { site } from '../../data/site.ts';
+import Section from '../layout/Section.astro';
 import { about } from '../../data/about.ts';
+import { sections } from '../../data/sections.ts';
+import { site } from '../../data/site.ts';
+import { stack } from '../../data/skills.ts';
 ---
 
-<section
-  id="about"
-  class="relative overflow-hidden border-t-2 border-concrete-50 bg-concrete-950 text-concrete-50"
->
-  <!-- Decorative analog grain (no semantics, not focusable). -->
-  <div class="bt-grain" aria-hidden="true"></div>
-
-  <div class="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-28">
-    <!-- Section label + heading -->
-    <div data-about-anim class="mb-12">
-      <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-300">
-        <span class="text-accent">02 / ABOUT</span>
-      </p>
-      <h2
-        class="mt-3 font-sans text-4xl font-black uppercase leading-[0.95] tracking-[-0.02em] text-concrete-50 md:text-6xl"
-      >
-        About me
-      </h2>
-    </div>
-
-    <div class="grid gap-10 md:grid-cols-[1.6fr_1fr] md:gap-12">
-      <!-- Bio -->
-      <div class="space-y-5">
-        {
-          about.paragraphs.map((p) => (
-            <p
-              data-about-anim
-              class="max-w-2xl font-sans text-base leading-relaxed text-concrete-300 md:text-lg"
-            >
-              {p}
-            </p>
-          ))
-        }
-      </div>
-
-      <!-- Right rail: photo + STACK -->
-      <div class="space-y-6">
-        <figure
-          data-about-anim
-          class="group relative aspect-square w-full overflow-hidden border-2 border-concrete-50 shadow-hard"
-        >
-          <picture>
-            <source srcset="/images/profile.webp" type="image/webp" />
-            <img
-              src="/images/profile.jpg"
-              alt={`${site.name}, ${site.role}`}
-              width="800"
-              height="800"
-              loading="lazy"
-              decoding="async"
-              class="h-full w-full object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-0 [@media(hover:none)]:grayscale-0"
-            />
-          </picture>
-        </figure>
-
-        <div data-about-anim class="border-2 border-concrete-50 shadow-hard">
-          <p
-            class="border-b-2 border-concrete-50 bg-concrete-900 px-4 py-2 font-mono text-label uppercase tracking-[0.2em] text-accent"
-          >
-            Stack
-          </p>
-          <ul>
-            {
-              site.heroBadges.map((badge, index) => (
-                <li class={`px-4 py-3 ${index > 0 ? 'border-t border-concrete-500' : ''}`}>
-                  <p class="font-mono text-sm font-bold text-concrete-50">{badge.title}</p>
-                  <p class="mt-0.5 font-mono text-xs text-concrete-300">{badge.sub}</p>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Facts strip: hard 2px frame + 2px dividers via the gap trick. -->
-    <dl
-      data-about-anim
-      class="mt-12 grid grid-cols-1 gap-[2px] border-2 border-concrete-50 bg-concrete-50 sm:grid-cols-2 lg:grid-cols-4"
-    >
+<Section id="about" label={sections.about.label} title={sections.about.title}>
+  <div class="mt-14 grid gap-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-16">
+    <div data-reveal class="space-y-6">
       {
-        about.facts.map((fact) => (
-          <div class="bg-concrete-950 p-4">
-            <dt class="font-mono text-label uppercase tracking-[0.2em] text-concrete-300">
-              {fact.label}
-            </dt>
-            <dd class="mt-1 break-words font-mono text-sm font-medium text-concrete-50">
-              {fact.label === 'Email' ? (
-                <a
-                  href={`mailto:${fact.value}`}
-                  class="underline-offset-2 hover:text-accent hover:underline"
-                >
-                  {fact.value}
-                </a>
-              ) : (
-                fact.value
-              )}
-            </dd>
-          </div>
+        about.paragraphs.map((paragraph) => (
+          <p class="max-w-[64ch] text-[1.0625rem] leading-relaxed text-concrete-300">{paragraph}</p>
         ))
       }
-    </dl>
+    </div>
+
+    <div class="space-y-10">
+      <!-- Portrait slot. Placeholder while the identity is fictional: a real
+           photo drops in here without changing the layout. -->
+      <div
+        data-reveal
+        aria-hidden="true"
+        class="flex aspect-[4/5] max-w-[15rem] items-end border border-concrete-700 bg-concrete-900 p-5"
+      >
+        <div>
+          <p class="font-sans text-5xl font-bold tracking-[-0.04em] text-concrete-700">
+            {site.initials}
+          </p>
+          <p class="mt-2 font-mono text-label uppercase tracking-[0.2em] text-concrete-500">
+            Portrait
+          </p>
+        </div>
+      </div>
+
+      <dl data-reveal class="space-y-4">
+        {
+          about.facts.map((fact) => (
+            <div class="border-t border-concrete-700 pt-3">
+              <dt class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">
+                {fact.label}
+              </dt>
+              <dd class="mt-1 text-sm text-concrete-50">{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div data-reveal>
+        <p class="font-mono text-label uppercase tracking-[0.25em] text-concrete-500">
+          {about.stackLabel}
+        </p>
+        <ul class="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
+          {
+            stack.map((tool) => (
+              <li class="font-mono text-[0.8125rem] text-concrete-300">{tool}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
   </div>
-</section>
-
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const mm = gsap.matchMedia();
-
-  // Motion allowed: hide the entrance targets, then reveal them in a staggered
-  // batch as they scroll into view. Reduced motion / no-JS never hide anything.
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
-    const targets = gsap.utils.toArray<Element>('#about [data-about-anim]');
-    gsap.set(targets, { opacity: 0, y: 24 });
-
-    const triggers = ScrollTrigger.batch(targets, {
-      start: 'top 85%',
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: 0.08,
-          overwrite: true,
-        }),
-    });
-
-    return () => {
-      triggers.forEach((t) => t.kill());
-      gsap.set(targets, { clearProps: 'all' });
-    };
-  });
-</script>
+</Section>

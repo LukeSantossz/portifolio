@@ -1,9 +1,11 @@
 ---
-import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
+import '@fontsource-variable/archivo/wght.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-600.css';
 import '../styles/global.css';
 import { site } from '../data/site.ts';
 import Analytics from '@vercel/analytics/astro';
+import AmbientField from '../components/layout/AmbientField.astro';
 
 interface Props {
   title?: string;
@@ -34,10 +36,10 @@ const personSchema = {
   description: site.seoDescription,
   sameAs: [site.github, site.linkedin],
   knowsAbout: [
-    'Machine Learning',
-    'LLM agents',
     'Retrieval-Augmented Generation',
-    'Computer Vision',
+    'LLM agents',
+    'Model evaluation',
+    'Machine learning',
     'MLOps',
     'Python',
   ],
@@ -55,7 +57,7 @@ const personSchema = {
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Browser UI tint follows the visitor's theme (see the light-mode block in global.css). -->
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d100e" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0e0e" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ece9e2" />
     <meta name="generator" content={Astro.generator} />
 
@@ -79,25 +81,23 @@ const personSchema = {
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <script type="application/ld+json" set:html={JSON.stringify(personSchema).replace(/</g, '\\u003c')} is:inline />
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+        if (!('IntersectionObserver' in window)) return;
+        root.classList.add('reveal-ready');
+        window.setTimeout(function () {
+          if (root.dataset.revealActive !== '1') root.classList.remove('reveal-ready');
+        }, 2000);
+      })();
+    </script>
   </head>
   <body class="min-h-screen">
-    <!-- Accent glow that trails the cursor across the whole page -->
-    <div
-      id="cursor-glow"
-      aria-hidden="true"
-      class="pointer-events-none fixed inset-0 -z-10"
-      style="background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 65%);"
-    >
-    </div>
-    <!-- Decorative global CRT overlay: faint scanlines + a slow scan-beam sweep.
-         Non-interactive (pointer-events:none) + aria-hidden; the beam is removed
-         under prefers-reduced-motion. Supersedes the old Hero-only scanline. -->
-    <div class="crt-overlay" aria-hidden="true">
-      <div class="crt-beam"></div>
-    </div>
+    <AmbientField />
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-canvas focus:font-medium"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-concrete-50 focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-concrete-950"
     >
       Skip to content
     </a>
@@ -107,46 +107,15 @@ const personSchema = {
     <Analytics />
 
     <script>
-      // Background accent glow follows the cursor with a soft trailing lerp.
-      const glow = document.getElementById('cursor-glow');
+      // One reveal implementation for the whole site (see src/scripts/reveal.ts).
+      import { initReveal } from '../scripts/reveal.ts';
 
-      if (glow) {
-        // Smoothing factor: fraction of the remaining distance the glow closes per frame.
-        const TRAIL_LERP = 0.12;
-        let targetX = window.innerWidth / 2;
-        let targetY = window.innerHeight / 2;
-        let currentX = targetX;
-        let currentY = targetY;
-        let frame = 0;
-
-        const render = () => {
-          currentX += (targetX - currentX) * TRAIL_LERP;
-          currentY += (targetY - currentY) * TRAIL_LERP;
-          glow.style.setProperty('--mx', `${currentX}px`);
-          glow.style.setProperty('--my', `${currentY}px`);
-
-          if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
-            frame = requestAnimationFrame(render);
-          } else {
-            frame = 0;
-          }
-        };
-
-        window.addEventListener(
-          'pointermove',
-          (event) => {
-            targetX = event.clientX;
-            targetY = event.clientY;
-            if (!frame) frame = requestAnimationFrame(render);
-          },
-          { passive: true },
-        );
-      }
+      initReveal();
     </script>
 
     <script>
       // Count-up for the hero proof stats. Their values are not clean numbers
-      // ("FAPESP-funded", "3rd of 1,300+", "0.19°C RMSE"), so we animate only the
+      // ("205 tests", "42x", "0.19°C"), so we animate only the
       // first embedded number, preserving the surrounding text, and skip values
       // with no number. Disabled under reduced-motion / no IntersectionObserver,
       // where the SSR'd final value already shows.

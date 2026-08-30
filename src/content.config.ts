@@ -13,6 +13,10 @@ const projects = defineCollection({
     title: z.string(),
     tagline: z.string(),
     domain: z.string().optional(),
+    // Whether this shipped at work, on my own time, or as research. A solo
+    // project and a production system are different signals, and a reader
+    // cannot tell them apart from the write-up alone.
+    kind: z.enum(['professional', 'personal', 'research']).optional(),
     // Curated headline metric for the case-study showcase (the giant hero number).
     metric: z.string(), // e.g. "0.19°C", "3rd / 1,300+"
     metricLabel: z.string().optional(), // short context under the metric
@@ -23,12 +27,15 @@ const projects = defineCollection({
     approach: z.string(), // 3. Central decision
     alternatives: z.string().optional(), // 4. Alternatives considered and rejected
     result: z.string(), // 5. Result (the always-visible punchline)
+    // How the result was measured: dataset, split, baseline. A number without
+    // its measurement conditions is not evidence, and this is the first thing
+    // an engineering reviewer looks for.
+    evaluation: z.string().optional(),
     retrospective: z.string().optional(), // 6. Retrospective: known limits / trade-offs
     // Forward-looking "what's next" line, mirrored from each repo's roadmap.
     roadmap: z.string().optional(),
-    // Banner image/logo for the card. Drop a file in public/images/projects/
-    // and reference it as "/images/projects/<file>". When empty, the card
-    // renders a generated gradient placeholder with the project monogram.
+    // Optional banner image, referenced as "/images/projects/<file>". Currently
+    // unused: the index rows are typographic and render no artwork.
     image: z.string().optional(),
     stack: z.array(z.string()),
     // Accept a valid URL or an empty string (so unused links can stay in place).

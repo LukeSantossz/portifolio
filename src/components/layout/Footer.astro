@@ -1,20 +1,19 @@
 ---
 import { site } from '../../data/site.ts';
 import SocialLinks from '../ui/SocialLinks.astro';
+import { sections } from '../../data/sections.ts';
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t-2 border-concrete-50 bg-concrete-950">
+<footer class="border-t border-concrete-700 bg-concrete-950">
   <div
-    class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 py-10 sm:flex-row"
+    class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 py-10 sm:flex-row"
   >
     <div class="text-center sm:text-left">
-      <p class="font-mono text-sm font-bold text-concrete-50">
-        <span class="text-accent">&gt;</span> {site.name}
-      </p>
-      <p class="mt-1 font-mono text-xs text-concrete-300">
-        &copy; {year} · Built with Astro &amp; Tailwind CSS
+      <p class="font-mono text-sm text-concrete-50">{site.name}</p>
+      <p class="mt-2 max-w-[46ch] font-mono text-label leading-relaxed text-concrete-500">
+        &copy; {year} · {sections.footer.colophon}
       </p>
     </div>
     <div class="flex items-center gap-6">
@@ -22,7 +21,7 @@ const year = new Date().getFullYear();
       <a
         href="#top"
         aria-label="Back to top"
-        class="font-mono text-xs uppercase tracking-[0.2em] text-concrete-300 transition-colors hover:text-accent"
+        class="inline-flex min-h-[24px] items-center font-mono text-label uppercase tracking-[0.25em] text-concrete-300 transition-colors hover:text-accent"
       >
         <span aria-hidden="true">&uarr;</span> Top
       </a>
