@@ -1,5 +1,8 @@
 /**
- * Career and education timeline. Most recent first.
+ * Career and education timeline, most recent first.
+ *
+ * Each highlight leads with its outcome or number: recruiters scan the first
+ * few words of a line and stop there.
  */
 export interface TimelineItem {
   kind: 'work' | 'education';

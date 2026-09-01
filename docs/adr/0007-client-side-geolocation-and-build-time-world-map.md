@@ -1,3 +1,5 @@
+> **Retired.** Retired in place by [ADR-0014](0014-editorial-index-restructure.md): the Contact world map and the client-side IP lookup were removed, so no visitor data reaches a third party.
+
 # Client-side IP geolocation + a build-time world map (Contact-background easter egg)
 
 A faint line world map sits behind the Contact section as an unlabeled easter egg: it marks the

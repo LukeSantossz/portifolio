@@ -1,50 +1,35 @@
 /**
- * Skill groups rendered in the Skills section.
+ * The stack line rendered in About, in reading order.
+ *
+ * This is an index, not evidence: every entry also appears inside the record of
+ * the project that used it, which is where it carries context. Ordered roughly
+ * languages, ML, retrieval, platform, so the line scans without needing labels.
  */
-export interface SkillGroup {
-  category: string;
-  items: string[];
-}
-
-export const skillGroups: SkillGroup[] = [
-  {
-    category: 'Languages',
-    items: ['Python', 'Rust', 'TypeScript', 'Dart', 'SQL'],
-  },
-  {
-    category: 'ML & Data',
-    items: [
-      'PyTorch',
-      'TensorFlow',
-      'TensorFlow Lite',
-      'LightGBM',
-      'scikit-learn',
-      'statsmodels',
-      'HuggingFace',
-      'SHAP',
-      'pandas',
-      'Polars',
-      'NumPy',
-    ],
-  },
-  {
-    category: 'LLM & RAG',
-    items: [
-      'LangGraph',
-      'Qdrant',
-      'pgvector',
-      'Ollama',
-      'RAG pipelines',
-      'Semantic-entropy verification',
-      'FastAPI',
-    ],
-  },
-  {
-    category: 'Mobile & Backend',
-    items: ['Flutter', 'Riverpod', 'Drift', 'GoRouter', 'Next.js', 'Uvicorn', 'Gradio'],
-  },
-  {
-    category: 'Cloud & Tooling',
-    items: ['GCP', 'AWS', 'Docker', 'GitHub Actions', 'Git', 'pytest', 'mypy', 'ruff', 'uv'],
-  },
+export const stack: string[] = [
+  'Python',
+  'Rust',
+  'TypeScript',
+  'Dart',
+  'SQL',
+  'PyTorch',
+  'Hugging Face',
+  'TensorFlow Lite',
+  'LightGBM',
+  'scikit-learn',
+  'statsmodels',
+  'SHAP',
+  'pandas',
+  'Polars',
+  'LangGraph',
+  'Qdrant',
+  'Ollama',
+  'FastAPI',
+  'Flutter',
+  'Next.js',
+  'Docker',
+  'GitHub Actions',
+  'pytest',
+  'mypy',
+  'ruff',
+  'uv',
 ];

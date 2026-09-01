@@ -1,36 +1,42 @@
 /**
- * Central site configuration.
+ * Central site configuration: identity, contact, SEO.
  * Edit here to change identity, contact and SEO across the whole site.
  */
 export const site = {
   // --- Identity -------------------------------------------------------------
-  // Author's approximate home location — the fixed point on the Signal map.
-  location: { lat: -22.21, lon: -49.95, label: 'Marília, BR' },
   name: 'Lucas Gonçalves',
   initials: 'LG',
   role: 'AI Engineer',
 
-  // Hero sub-headline: a short positioning line shown under the role.
+  /** Hero positioning line. One sentence, states the work, claims nothing. */
   headline: 'Applied machine learning, anchored in real-world agriculture.',
 
-  // Canonical availability line — the recruiter "smell test" (timezone + remote).
-  // Single source of truth; rendered as a chip at the top of the hero.
+  /**
+   * The recruiter smell test, in one line: where, which timezone, and how
+   * reachable, so nobody has to email to find out.
+   */
   availability: 'Marília, Brazil (GMT-3) · Remote · Open to international',
 
-  // Hero proof strip: three measurable, self-explanatory anchors, each one
-  // traceable to a case study below.
+  /**
+   * Hero proof strip. Three numbers, each defended by a record in the index or
+   * by a line in the timeline.
+   */
   heroStats: [
-    { value: '3rd of 1,300+', label: 'A soil-reading app I built placed 3rd at the 16th FETEPS 2025, a state science fair; its paper was published and presented at the ICPA/ConBAP 2026 precision-agriculture conference.' },
-    { value: '+51.9%', label: 'Macro-F1 gain after a fine-tuning run came out worse than its baseline, and error analysis traced it to the wrong starting model rather than the wrong settings.' },
-    { value: '372 tests', label: 'Coverage of 89.8% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.' },
-  ],
-
-  // Core-stack chips shown as a static inline strip in the hero — the headline
-  // of the stack, drawn from skills.ts. Kept short: a title + a few tools.
-  heroBadges: [
-    { title: 'RAG · LLM', sub: 'Qdrant · Ollama · FastAPI' },
-    { title: 'PyTorch', sub: 'TensorFlow · scikit-learn' },
-    { title: 'Python · Rust', sub: 'Polars · Docker · pytest' },
+    {
+      value: '3rd of 1,300+',
+      label:
+        'A soil-reading app I built placed 3rd at the 16th FETEPS 2025, a state science fair; its paper was published and presented at the ICPA/ConBAP 2026 precision-agriculture conference.',
+    },
+    {
+      value: '+51.9%',
+      label:
+        'Macro-F1 gain after a fine-tuning run came out worse than its baseline, and error analysis traced it to the wrong starting model rather than the wrong settings.',
+    },
+    {
+      value: '372 tests',
+      label:
+        'Coverage of 89.8% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.',
+    },
   ],
 
   // --- Contact & social -----------------------------------------------------
@@ -39,26 +45,27 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/lucas-gonçalvessz/',
 
   // --- Assets ---------------------------------------------------------------
-  cvPath: '/my_resume.pdf', // résumé served from public/my_resume.pdf
+  resumePath: '/my_resume.pdf', // résumé served from public/my_resume.pdf
   ogImage: '/og-image.png', // social share image at public/og-image.png
 
-  // Browser tab label (the <title>). Kept short and branded; the descriptive,
-  // specialty-bearing title still goes to og:title / twitter:title for sharing.
+  /** Browser tab label. Short; the descriptive title goes to og:title. */
   tabTitle: 'LukeSz Portfolio',
 
   // --- Integrations ---------------------------------------------------------
-  // Free access key from https://web3forms.com (used by the contact form). This
-  // key is public by design — it ships in the form HTML and is submitted from
-  // the browser — so it is safe to commit. Override it per environment by
-  // setting PUBLIC_WEB3FORMS_KEY; if that is ever set to an empty string the
-  // form degrades to an email-only CTA instead of posting an invalid key
-  // (see Contact.astro).
+  /**
+   * Web3Forms access key for the contact form. Public by design (it ships in
+   * the form HTML and is submitted from the browser). Set
+   * PUBLIC_WEB3FORMS_KEY per environment; an empty value degrades the form to
+   * an email-only CTA rather than posting an invalid key (see Contact.astro).
+   */
   web3formsKey:
     import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'efb07a21-8678-4d14-aa17-27262fd76ad3',
 
-  // Your hCaptcha sitekey (optional). When set, the contact form shows the hCaptcha
-  // widget; also add the matching hCaptcha secret to your Web3Forms dashboard so
-  // Web3Forms validates the token. Empty = no captcha. Public by design.
+  /**
+   * hCaptcha sitekey (optional). When set, the form renders the widget and
+   * loads the hCaptcha script; add the matching secret in the Web3Forms
+   * dashboard so the token is validated. Empty means no captcha.
+   */
   hcaptchaSitekey: import.meta.env.PUBLIC_HCAPTCHA_SITEKEY ?? '',
 
   // --- SEO ------------------------------------------------------------------
