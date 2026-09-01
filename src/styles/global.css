@@ -1,4 +1,12 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+/* Tailwind v4 auto-detects sources from the project root, which sweeps `docs/`
+   and `.superpowers/`. A class name merely quoted in a plan or spec was being
+   compiled into the shipped stylesheet (`.max-w-5xl`, `.border-dashed`, and
+   `.font-semibold` all reached `dist/` that way, used by nothing). `source(none)`
+   disables the automatic scan; the directive below restricts it to the only tree
+   that renders markup. Paths are relative to this file. */
+@source "../../src";
 
 /* ----------------------------------------------------------------------------
    Design tokens (dark tech / minimalist)
@@ -198,14 +206,9 @@ details.reveal-details[open] > dl {
 }
 
 /* ----------------------------------------------------------------------------
-   About-photo floating stack badges — looping decorative motion, neutralized
-   by the prefers-reduced-motion block below.
----------------------------------------------------------------------------- */
-
-
-/* ----------------------------------------------------------------------------
-   Concrete Terminal texture + interaction patterns (Hero scope).
-   Overlays are decorative (always aria-hidden + pointer-events:none in markup).
+   Concrete Terminal texture. The grain overlay is applied per section (seven
+   of them today). Overlays are decorative and are always aria-hidden plus
+   pointer-events:none in the markup.
 ---------------------------------------------------------------------------- */
 
 /* Cheap static film grain — one inline SVG noise tile, no animation. */
@@ -302,9 +305,10 @@ html.hero-intro [data-hero-anim] {
 
 /* ----------------------------------------------------------------------------
    Reduced motion — honor the OS/browser "reduce motion" setting.
-   All motion here is decorative (cursor glow, hero grid drift, skills marquee,
-   projects-deck transitions, scroll reveals), so we neutralize it: reveals snap
-   to their final state and looping/animated effects stop. WCAG 2.3.3 / 2.2.2.
+   All motion here is decorative (cursor glow, CRT scan-beam, skills marquee,
+   projects carousel transitions, scroll reveals, the geo-map ping), so we
+   neutralize it: reveals snap to their final state and looping effects stop.
+   WCAG 2.3.3 / 2.2.2.
 ---------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -401,7 +405,7 @@ html.hero-intro [data-hero-anim] {
 .prose-terminal h2,
 .prose-terminal h3 {
   color: var(--color-concrete-50);
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   line-height: 1.05;
@@ -483,4 +487,25 @@ html.hero-intro [data-hero-anim] {
   border: 0;
   padding: 0;
   font-size: 0.85rem;
+}
+
+/* ----------------------------------------------------------------------------
+   Shared card surface — the hard-bordered concrete panel behind both the
+   project case-study cards and the blog post cards. Extracted so the two
+   cannot drift apart: they were identical class strings maintained by hand.
+---------------------------------------------------------------------------- */
+.surface-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  border: 2px solid var(--color-concrete-50);
+  background-color: var(--color-concrete-950);
+  color: var(--color-concrete-50);
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .surface-card {
+    padding: 2rem;
+  }
 }

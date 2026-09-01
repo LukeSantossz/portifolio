@@ -55,12 +55,12 @@ const projects = entries.sort((a, b) => {
       data-projects-track
     >
       {
-        projects.map((project, i) => (
+        projects.map((project) => (
           <div
             class="w-[86vw] max-w-2xl shrink-0 snap-center md:w-full md:max-w-none"
             data-project-panel
           >
-            <ProjectCard {...project.data} index={i} />
+            <ProjectCard {...project.data} />
           </div>
         ))
       }
