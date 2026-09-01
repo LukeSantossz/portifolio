@@ -11,7 +11,9 @@
 
 ## Stack and commands
 
-- Astro 6, TypeScript, Tailwind CSS 4, GSAP, Inter Variable, and JetBrains Mono Variable.
+- Astro 6, TypeScript, Tailwind CSS 4, Archivo Variable, and IBM Plex Mono Variable. No
+  animation library: the single reveal is CSS plus one IntersectionObserver. three.js is a
+  dependency of the hero ambient field only, dynamically imported off the critical path.
 - `npm.cmd run dev -- --host 127.0.0.1 --port 4321` starts the local site on Windows.
 - `npm.cmd run check` runs Astro and TypeScript checks.
 - `npm.cmd run build` creates the production build (and regenerates the social image).
@@ -28,19 +30,25 @@
 ## Design and component rules
 
 - Follow `design.md`. Prefer tokens to arbitrary component-level values.
-- The industrial editorial language uses concrete neutrals, off-white ink, and one lime signal color. Lime indicates action, current state, or proven outcome.
+- The industrial editorial language uses concrete neutrals, off-white ink, and one blue
+  signal color. The signal marks state (focus, the current nav section, the open index row)
+  and never fills a surface: the primary button is off-white, not blue.
 - Make each component earn its visual weight. Avoid generic SaaS card grids, decorative metric inflation, and duplicated section rhythms.
 - Use existing local SVG icons via `Icon.astro`; do not mix icon libraries. Add an icon only when it disambiguates an action, and retain its text label when the action is not universally obvious.
 - Use semantic landmarks and heading order. Every interactive control needs a visible keyboard focus state and a minimum practical touch target.
-- Public copy uses plain punctuation: no em or en dashes and no `&mdash;` / `&ndash;` entities. Use a comma, a colon, parentheses, or a new sentence instead. Code comments are out of scope. Numbered section eyebrows (`01 / HELLO` through `07 / CONTACT`) are the one sanctioned numbering in public copy, per ADR-0011; no other ordinal prefix belongs there.
+- Public copy uses plain punctuation: no em or en dashes and no `&mdash;` / `&ndash;` entities. Use a comma, a colon, parentheses, or a new sentence instead. Code comments are out of scope. Section labels are words, not ordinals; the project index is the only numbering left in
+  public copy. Avoid contractions in public copy.
 
 ## Responsive and motion rules
 
 - Validate at roughly 320px, 390px, 768px, 1440px, and 1600px wide.
 - Mobile is the baseline: preserve linear reading order and never require hover to reach content.
-- Do not pin a section and hijack vertical scroll to drive horizontal movement. That is the pattern ADR-0009 rejected when it superseded ADR-0005. A self-contained horizontal scroll-snap carousel is not that pattern and is allowed where swiping is the natural gesture: the mobile Case studies carousel is exactly this, keeps every card reachable without JavaScript, and falls back to a vertical stack at `md` and up.
+- Do not pin a section and hijack vertical scroll to drive horizontal movement. That is the pattern ADR-0009 rejected when it superseded ADR-0005. The editorial index removed the last place it could have applied: the Work section is numbered `<details>` rows at every width.
 - Content motion (the hero entrance, in-view section reveals) must orient, confirm, or reveal hierarchy.
-- Ambient motion is a separate, sanctioned category, not a violation to clean up. The CRT overlay and scan-beam (ADR-0006), the global cursor glow, and the Skills marquee loop continuously by design; ADR-0013 tempered their intensity and explicitly rejected removing them. Removing one reverses an accepted ADR and needs its own ADR. See the Motion policy in `design.md`.
+- Ambient motion is now a single sanctioned item: the WebGL field behind the hero
+  (ADR-0015), which is decoration and is recorded as such. The CRT overlay and scan-beam
+  (ADR-0006), the cursor glow and the Skills marquee were removed by ADR-0014 along with
+  the sections that carried them. See the Motion policy in `design.md`.
 - Respect `prefers-reduced-motion`; content must remain fully visible and operable without JavaScript.
 
 ## Verification and completion

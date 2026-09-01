@@ -2,276 +2,175 @@
 
 ## Intent
 
-An **industrial editorial** portfolio for applied AI/ML work: precise, evidence-led, and readable under recruiter time pressure. The interface should feel like a concise field report, not a generic SaaS template or a decorative terminal simulation.
+An **industrial editorial** portfolio for applied AI/ML work: precise, evidence-led, and
+readable under recruiter time pressure. The interface should read as a concise field
+report, not a generic SaaS template and not a decorative terminal simulation.
+
+The structure carries most of that intent. Five asymmetric blocks (Hero, Work, Experience,
+About, Contact) replace the seven symmetric sections the site used to have, because
+symmetry and a cloned section scaffold are the structural tells an engineering audience
+discounts. See [ADR-0014](docs/adr/0014-editorial-index-restructure.md).
 
 ## Principles
 
-1. Put the claim, evidence, and next action in that order.
-2. Let typography and measured whitespace create distinction; reserve effects for genuine orientation.
-3. Use lime as a signal, not decoration: primary action, active location, or a substantiated outcome.
-4. A project is a case file with context, decision, constraint, and result, not a portfolio thumbnail.
-5. Preserve a linear, readable page with JavaScript disabled or reduced motion enabled.
+- **Evidence over decoration.** A number appears with the conditions that produced it, or
+  it does not appear.
+- **One signal color, and it never fills a surface.** The accent marks state: focus, the
+  current nav section, the open index row. Buttons and surfaces stay monochrome.
+- **One of each thing.** One section scaffold, one reveal implementation, two button
+  patterns, one structural ornament. A second variant needs a reason.
+- **The static page is the real page.** Disclosure is native `<details>`; motion is
+  additive. A script that never loads must not be able to hide content.
 
 ## Tokens
 
-Every token below is declared in `src/styles/global.css` under Tailwind v4 `@theme`,
-so each one compiles to a utility (`--color-accent` becomes `bg-accent`,
-`--shadow-hard` becomes `shadow-hard`). Values shown are the dark-theme defaults;
-see Light theme for the light-mode remapping.
+All tokens live in the `@theme` block of `src/styles/global.css`. Tailwind v4 compiles each
+one to a utility (`--color-accent` becomes `bg-accent`, `text-accent`, `border-accent`), so
+prefer the token utility to an arbitrary value.
 
-| Category | Token | Value / use |
+| Role | Token | Dark (default) | Notes |
+| --- | --- | --- | --- |
+| Page background | `--color-concrete-950` | `#0e0e0e` | |
+| Raised surface | `--color-concrete-900` | `#161616` | open index row, code blocks, inputs |
+| Hard rule | `--color-concrete-700` | `#3a3a3a` | section top border, column rule, index row borders |
+| Mono label text | `--color-concrete-500` | `#8f8b82` | 5.7:1 on the page |
+| Secondary text | `--color-concrete-300` | `#b8b5ad` | body copy default |
+| Primary ink | `--color-concrete-50` | `#ece9e2` | headings, primary button fill |
+| Signal | `--color-accent` | `#5aa9ff` | state only, 7.9:1 on the page |
+| Point cloud | `--color-accent-vivid` | `#2f8fff` | WebGL graphics only, not held to a text ratio |
+| Alert | `--color-alert` | `#ff8a75` | form error text, 7.4:1 |
+
+The accent is blue rather than green: the cool signal reads as instrumentation instead of
+agriculture, and the site is about retrieval and evaluation as much as about the field. The
+change is recorded in [ADR-0015](docs/adr/0015-blue-accent-and-ambient-field.md), which
+amends ADR-0002.
+
+Other tokens:
+
+| Role | Token | Value |
 | --- | --- | --- |
-| Page canvas | `--color-canvas` | `#0d100e`, the `body` background |
-| Body ink | `--color-ink` | `#e9ece3`, the `body` text color and `::selection` |
-| Signal | `--color-accent` | `#46c06a`, action, status, and evidence |
-| Base surface | `--color-concrete-950` | `#0e0e0e`, section backgrounds and the card fill |
-| Raised surface | `--color-concrete-900` | `#161616`, code blocks and raised panels |
-| Rules | `--color-concrete-700` | `#3a3a3a`, hard rules, dividers, and quiet borders |
-| Hairline | `--color-concrete-500` | `#6b675f`, mid-weight hairline rule |
-| Secondary ink | `--color-concrete-300` | `#b8b5ad`, supporting copy and labels |
-| Primary ink | `--color-concrete-50` | `#ece9e2`, headings, key controls, and 2px borders |
-| Signature shadow | `--shadow-hard` | `6px 6px 0 0 var(--color-concrete-50)`, hard offset with no blur |
-| Display | `--text-display` | `clamp(3rem, 11vw, 8.5rem)`, the extreme display scale |
-| Label | `--text-label` | `0.75rem`, mono labels paired with tracking and uppercase |
-| Sans face | `--font-sans` | Inter Variable, then the system sans stack |
-| Mono face | `--font-mono` | JetBrains Mono Variable, then the system mono stack |
+| Hard shadow | `--shadow-hard` | `5px 5px 0 0 var(--color-concrete-50)`, no blur |
+| Sans face | `--font-sans` | Archivo Variable, then the system sans stack |
+| Mono face | `--font-mono` | IBM Plex Mono, then the system mono stack |
 
-`--color-canvas` and `--color-ink` are named that way on purpose: a color token named
-`base` would hijack the `text-base` font-size utility.
+## Type scale
 
-There is no border-width, container-width, or motion-duration token. Border weight is
-expressed with the Tailwind utility (`border-2` on a section boundary or an action,
-hairline elsewhere), width with the rails below, and duration inline at the call site.
+The scale is fluid: one `clamp()` per role rather than per-breakpoint sizes, so every step
+is continuous between 375px and 1440px and no size is defined twice.
 
-## Width rails
+| Token | Clamp | Used for |
+| --- | --- | --- |
+| `--text-display` | `clamp(2.75rem, 9vw, 7rem)` | the name, once per page |
+| `--text-headline` | `clamp(1.75rem, 4.5vw, 3rem)` | section headings |
+| `--text-index` | `clamp(1.375rem, 3.2vw, 2.25rem)` | project index rows |
+| `--text-lede` | `clamp(1.0625rem, 0.98rem + 0.4vw, 1.25rem)` | opening paragraph of a section |
+| `--text-label` | `0.6875rem` | mono label, always with uppercase + wide tracking |
 
-Two container rails exist, and no third one. Anything wider or narrower in `src/` is an
-inner measure cap, not a rail.
-
-- `max-w-6xl` is the wide rail. It carries all chrome (`Nav`, `SubpageHeader`, `Footer`)
-  and all wide content: every landing section, the blog index, and the 404 page.
-- `max-w-3xl` is the reading rail. It carries the rendered post body in
-  `src/pages/blog/[...slug].astro`, where the reading measure is the point, and it is the
-  `'reading'` arm of the `railClass` ternary in `SubpageHeader.astro` so that page's header
-  spans the same rail. Those two are its only occurrences in `src/`.
-
-`SubpageHeader.astro` takes a `rail` prop (`'wide' | 'reading'`, default `'wide'`) so the
-header always spans the same rail as the content beneath it. A post page passes
-`rail="reading"`; everything else takes the default.
-
-Smaller `max-w-*` values still appear inside sections. They cap a paragraph measure, a stat
-grid, or a carousel card within a rail and are never the page container. Do not introduce a
-new rail value; pick one of the two.
-
-Confirm the rails and their inner caps with
-`grep -rno "max-w-[a-z0-9]*" src/ | awk -F: '{print $3}' | sort | uniq -c` rather than
-trusting a list in prose, which goes stale on the next edit.
+Archivo carries display and body copy; `font-semibold` is the heaviest weight in use, with
+`tracking-[-0.03em]` on headings. IBM Plex Mono carries labels, periods, metrics, stack
+lists, buttons and form labels. A mono label is always uppercase with tracking between
+`0.2em` and `0.3em`; that pairing is what makes it read as an instrument label rather than
+as small body text.
 
 ## Light theme
 
-The site ships both themes from one palette. They are selected automatically from
-`prefers-color-scheme`; there is no in-page toggle, no `localStorage`, and no anti-FOUC
-script. Dark is the default and is what a visitor with no preference gets. This is
-ADR-0012.
-
-The light theme is a single `@media (prefers-color-scheme: light)` block in
-`global.css` that redefines the same custom properties on `:root`:
+Automatic, following the visitor's OS or browser preference
+([ADR-0012](docs/adr/0012-automatic-light-dark-theme.md)). The same six ramp names are
+re-mapped so `bg-concrete-950` still means "page" and `text-concrete-50` still means "ink";
+no markup changes between themes.
 
 | Token | Dark | Light |
 | --- | --- | --- |
-| `--color-canvas` | `#0d100e` | `#ece9e2` |
-| `--color-ink` | `#e9ece3` | `#1c1a17` |
-| `--color-accent` | `#46c06a` | `#176b33` |
 | `--color-concrete-950` | `#0e0e0e` | `#ece9e2` |
 | `--color-concrete-900` | `#161616` | `#dedad1` |
 | `--color-concrete-700` | `#3a3a3a` | `#c3beb2` |
-| `--color-concrete-500` | `#6b675f` | `#8a857b` |
+| `--color-concrete-500` | `#8f8b82` | `#605c55` |
 | `--color-concrete-300` | `#b8b5ad` | `#57534b` |
 | `--color-concrete-50` | `#ece9e2` | `#1c1a17` |
+| `--color-accent` | `#5aa9ff` | `#0b5cad` |
+| `--color-alert` | `#ff8a75` | `#a3231a` |
 
-The concrete ramp inverts: `950` becomes the lightest surface and `50` the darkest ink,
-so each step keeps its semantic role. `bg-concrete-950` is still the page surface and
-`text-concrete-50` is still primary ink. That inversion is the whole mechanism: because
-every utility compiles to `var(--color-…)`, redefining nine variables flips the entire
-site with no per-component edit and no duplicated component.
+The accent and the alert are the two tokens that do not simply invert: both are re-derived
+so small text clears WCAG AA on the light surface (5.5:1 and 5.9:1 respectively).
 
-The accent is the one token that does not simply invert. It deepens to `#176b33` in light
-so small mono labels clear WCAG AA on the light surface, while dark keeps the brighter
-`#46c06a`.
+## Layout
 
-The practical consequence for future work: **a new color must be added to both blocks.**
-A token declared only in `@theme` will keep its dark value in light mode and will very
-likely fail contrast there. Add it to `@theme` and to the light media query in the same
-change.
-
-## Typography and layout
-
-- **Inter Variable** (`--font-sans`) carries display and body copy. `font-black` is the
-  display weight. Eleven of its twelve occurrences in `src/` sit on an `h1`, `h2`, or `h3`,
-  and `.prose-terminal h2, h3` sets `font-weight: 900` in CSS for the same effect inside a
-  rendered post. The twelfth is `ProjectCard.astro`, on a display-scale `<p>` carrying the
-  card's outcome figure. That one is deliberate: it is a headline in role, so it takes the
-  headline weight. Body copy never takes it.
-- **JetBrains Mono** (`--font-mono`) carries eyebrows, dates, stack chips, buttons, and form
-  labels. Both faces are set uppercase, so uppercase alone does not tell them apart. The
-  reliable tell is the sign of the tracking: headings are `font-sans` with negative tracking
-  (`tracking-[-0.02em]`, `-0.03em` in the hero) to tighten a heavy display line, while mono
-  labels take positive tracking (`tracking-[0.2em]`, `[0.25em]` on eyebrows). Positive
-  letter-spacing means mono.
-- **Page padding is flat.** Every page container in `src/` uses `px-6` (1.5rem) at every
-  width. There is no responsive padding ramp: `grep -rn "max-w-6xl\|max-w-3xl" src/` shows
-  `px-6` and no `sm:px-*` or `md:px-*` beside it. If a future change wants wider desktop
-  gutters, that is a new decision, not an existing one.
-- **Vertical rhythm is uniform, not varied.** Landing sections use `py-16 md:py-28`;
-  the subpages (`/blog`, an article, `/404`) use `py-20 md:py-28`. `Projects.astro` is the
-  single exception, `pt-16 md:pt-28`, because its carousel track supplies its own bottom
-  space. Distinction comes from type scale and borders, not from spacing variation.
-- **Measure is capped inside a rail, never by it.** Body copy in `ProjectCard.astro` and
-  `PostCard.astro` uses `max-w-prose` (Tailwind's 65ch). Section intros mostly use
-  `max-w-2xl`. The hero stat grid uses `max-w-4xl`.
+- **One page container.** `mx-auto max-w-6xl px-6`, applied by `Section.astro` and by the
+  hero. There is no second width rail; a block that needs to feel narrower does it with a
+  `max-w-[Nch]` measure on the text, not with a different container.
+- **Measure caps.** Headings cap at `max-w-[18ch]`, ledes at `max-w-[62ch]`, body at
+  `max-w-[64ch]`.
+- **Section rhythm.** `py-20 md:py-28`, with a `border-t border-concrete-700` at the top of
+  every block. No section defines its own vertical rhythm.
+- **The column rule** (`.column-rule`) is the one structural ornament: a single hairline
+  down the left edge of the content column at `lg` and up, with the index numbers hanging
+  off it so it reads as an alignment guide. Hidden below `lg`, where the column is the
+  viewport.
 
 ## Components
 
-- **Primary CTA:** `border-2 border-accent bg-accent text-concrete-950`, plus `shadow-hard`
-  and the paired hover lift, with one clear verb. Describe it as accent fill with inverted
-  ink, not as "lime fill, dark text": `--color-concrete-950` inverts with the ramp, so the
-  same classes render dark ink on lime in the dark theme and light ink on deep green in the
-  light theme. Both directions are intentional. It ships in `Hero.astro`, `Contact.astro`
-  (submit and the follow-up action), and `404.astro`.
-- **Secondary CTA:** the same geometry, weight, and `shadow-hard`, but outlined:
-  `border-2 border-concrete-50 bg-transparent text-concrete-50`. It reads as an alternative
-  rather than a quieter one; only the fill separates it from the primary action.
-- **Case study:** a bordered editorial panel (`.surface-card`) with a single outcome,
-  concise context, stack as metadata, and visible source and demo links.
-- **Navigation:** compact mono text links; no decorative interaction competes with content.
-- **Form:** persistent labels above each field, a `role="status"` `aria-live="polite"`
-  region for submission state, and the site-wide focus ring.
-
-## Surface and interaction rules
-
-- **Hover lift always carries the shadow.** `hover:-translate-x-0.5 hover:-translate-y-0.5`
-  never appears alone. Every occurrence in `src/` sits on an element that also has
-  `shadow-hard`, so the lift reads as the element moving off its own hard shadow. Adding
-  the translate without the shadow produces a drift with nothing behind it.
-- **`.surface-card` is the single card surface.** The hard-bordered concrete panel behind
-  both `ProjectCard.astro` and `PostCard.astro` lives in `global.css` as `.surface-card`
-  (flex column, full height, `border-2` in primary ink, `--color-concrete-950` fill,
-  1.5rem padding rising to 2rem from 768px). Use the class. Do not re-inline its class
-  string on a new card; a third copy is how the first two drifted apart.
-- **`text-label` and `text-xs` do not currently split by role.** Both resolve to 0.75rem,
-  so the difference is invisible on screen and the codebase has drifted. `text-label` has
-  sixteen uses in `src/` beyond its declaration, and they are coherent: thirteen are section
-  or page eyebrows, and three are the card and article meta lines in `ProjectCard.astro`,
-  `PostCard.astro`, and `blog/[...slug].astro`. `text-xs` covers genuine interactive chrome
-  (footer links, the nav CTA, form labels, the carousel controls) but also a large amount of
-  non-interactive annotation: the metric label, the `Result` marker, the stack chips, and
-  the decision-list terms in `ProjectCard.astro`, the tag chips in `PostCard.astro` and
-  `blog/[...slug].astro`, and the role and period meta line in `Experience.astro`, which is
-  the same kind of meta line the two blog surfaces render at `text-label`.
-
-  This is unresolved drift, the same status as the `tracking-wide` outliers below, not a
-  sanctioned convention. It was left in place deliberately because both tokens resolve to
-  the same 0.75rem and renaming them would be a large no-op diff; that decision stands, but
-  it does not make a rule exist. Do not cite this document as authority for choosing one
-  over the other. When adding a label, match the nearest sibling in the same component and
-  do not widen the split. Get the current shape with `grep -rn "text-label" src/` and
-  `grep -rn "text-xs" src/` rather than trusting a description in prose.
-- **Eyebrow tracking is the wider one.** Section and page eyebrows use
-  `font-mono text-label uppercase tracking-[0.25em] text-concrete-300`. Most other mono
-  labels use `tracking-[0.2em]`; both values are deliberate and current, do not normalize
-  one into the other. Buttons and CTAs use the Tailwind `tracking-wider` step, and the
-  mobile action bar uses `tracking-[0.15em]` at its own smaller size. In-card labels and
-  headings are not yet consistent with this: seven of them, inside `ProjectCard.astro`,
-  `Services.astro`, and `Skills.astro`, use the much tighter Tailwind `tracking-wide` step
-  instead. That is unresolved drift, not a fifth sanctioned category; do not copy it into
-  new labels. Get the current count with `grep -rn "tracking-wide\b" src/` rather than
-  trusting this sentence, since a list of positions in prose goes stale on the next edit.
-- **Numbered section eyebrows are the sanctioned numbering.** The landing runs
-  `01 / HELLO` through `07 / CONTACT`, kept by ADR-0011. No other ordinal prefix belongs
-  in public copy.
+- **Section scaffold.** `src/components/layout/Section.astro` is the only one. It owns the
+  top rule, the grain layer, the container, and the label + heading + optional lede header.
+  The heading is a real `<h2>` and the section is `aria-labelledby` it, so the outline is
+  correct with no extra ARIA. Labels are words (`Work`, `Experience`), not ordinals: the
+  numbered eyebrows are gone, and the only numbering left on the page is the project index.
+- **Buttons.** Two patterns and no more. `.btn-primary` is a solid off-white block with
+  inverted ink; `.btn-ghost` is a hairline outline that fills on hover. Both carry
+  `--shadow-hard` and a two-pixel nudge on hover. The accent never fills either, so the
+  primary button is off-white, not blue.
+- **Project index.** `Work.astro` renders numbered rows; `ProjectRecord.astro` renders the
+  record each row opens. Built on `<details>`/`<summary>`, so keyboard, touch, no-JS and
+  reduced-motion all get the native path. Open state is marked three ways that survive
+  reduced motion: the row background raises, the number turns accent, and the title
+  tracking widens.
+- **Portrait.** Grayscale by default so it sits inside the monochrome ramp, color on hover,
+  and always color where hover does not exist.
+- **Icons.** Local SVG through `Icon.astro`. Do not mix icon libraries, and keep the text
+  label on any action that is not universally obvious.
 
 ## Interaction and accessibility
 
-- Hover may change color, underline, or apply the paired translate-and-shadow lift above.
-  No element in `src/` uses `hover:scale-*`; do not introduce one, because a scale on a
-  hard-shadowed panel breaks the offset the shadow depends on.
-- Focus is one site-wide rule in `global.css`, not a per-component class: `a`, `button`,
-  `input`, `textarea`, and `[tabindex]` take `outline: 3px solid var(--color-accent)` at
-  `outline-offset: 3px`. The outline follows the accent token, so it deepens in the light
-  theme along with everything else. Do not override it locally.
-- Do not rely on color alone for state; pair the signal with text, position, or structure.
-- Minimum contrast target: WCAG AA for text and controls. This is what drove the accent to
-  a deeper green in the light theme.
-- Reduced motion is handled globally; see Motion policy.
-
-## Responsive behavior
-
-`md` (768px) is the one breakpoint that carries structure. It is where the layout changes
-character, and almost every responsive class in `src/` is an `md:` class.
-
-- **Below 768px:** one column, content first, no hidden critical text. The nav collapses to
-  a toggle-driven `#mobile-menu`, the Case studies section becomes the horizontal swipe
-  carousel of ADR-0009, and the mobile action bar renders on the landing page and both blog
-  routes. Section padding is `py-16`, subpage padding `py-20`.
-- **From 768px:** the desktop nav link list appears (`hidden ... md:flex`) and the mobile
-  menu and its toggle are hidden; the Case studies carousel falls back to the plain vertical
-  stack; the About section goes two-column (`md:grid-cols-[1.6fr_1fr]`); section padding
-  opens to `md:py-28` and headings step up a size.
-- **From 1024px:** exactly one thing changes. `lg:` appears once in all of `src/`, on the
-  About contact-facts grid going to four columns. Navigation does not get denser at 1024px;
-  it already switched at 768px. Verify with `grep -rn "lg:" src/`.
-
-Horizontal gutters do not change at any breakpoint; see Typography and layout.
+- **Focus.** Every `a`, `button`, `summary`, `input`, `textarea` and `[tabindex]` takes
+  `outline: 3px solid var(--color-accent)` at `outline-offset: 3px`, site-wide. The ring
+  follows the accent token, so it deepens in the light theme with everything else.
+- **Contrast.** WCAG AA for text and controls is the floor, and it is what drove the light
+  accent to `#0b5cad`. Nothing outside the token system sets a text color.
+- **Semantics.** Landmarks and heading order are load-bearing, not decorative. The nav menu
+  closes on Escape and on an outside click.
+- **Touch targets.** A minimum practical target on every control; the mobile action bar
+  reserves its own bottom clearance so it never overlaps the footer.
 
 ## Motion policy
 
-Motion here splits into two kinds, and the rules differ.
+There is exactly one reveal implementation on the site: a CSS transition plus one
+`IntersectionObserver` in `src/scripts/reveal.ts`, driven by `[data-reveal]`. GSAP and
+ScrollTrigger are gone, and with them the six duplicated per-section motion blocks
+(supersedes ADR-0003 and ADR-0004).
 
-**Content motion** is the hero entrance and the discreet in-view reveals on major section
-introductions. These are GSAP, one per section, each with an explicit cleanup path, and each
-written so the content is visible if the trigger never fires. Use CSS transitions for simple
-hover and focus feedback; reach for GSAP only for the hero entrance and content-revealing
-scroll interactions. Do not add a second reveal to a section that already has one.
+The hidden state is one rule behind one class on `<html>`. An inline script in
+`Layout.astro` arms the class before first paint and disarms it on a timer unless the
+module has taken over, so a module that never loads cannot strand content at
+`opacity: 0`. That is the specific failure the old `gsap.set` inline-style pattern could
+not rule out.
 
-**Ambient motion is sanctioned, deliberate, and load-bearing to the identity.** Three
-continuous ambient layers ship on every route today, and they are protected by accepted
-ADRs. Do not remove them as cleanup:
+Beyond the reveal, motion is limited to:
 
-- **The CRT overlay and scan-beam.** `.crt-overlay` and `.crt-beam` are rendered from
-  `Layout.astro`, so the faint scanline field and its 10s `crt-sweep` pass over the page
-  background on every route. This is ADR-0006, which chose the global above-content overlay
-  precisely so the terminal ambience would not reset per section, and it is `aria-hidden`
-  with `pointer-events: none`.
-- **The cursor glow.** `#cursor-glow` in `Layout.astro` is a fixed, full-viewport radial
-  gradient at `-z-10` that trails the pointer through a `requestAnimationFrame` lerp.
-  Global is the intended scope. ADR-0013 tuned its radius and alpha down rather than
-  scoping or removing it.
-- **The Skills marquee.** `.marquee-track` runs `marquee-scroll` on a `linear infinite`
-  loop, so the skills text loops continuously by design.
+- The index row state changes described above.
+- The nav scroll-progress bar and the active-link underline. Both are state, not decoration.
+- The WebGL ambient field behind the hero (`AmbientField.astro`). This one is decoration and
+  [ADR-0015](docs/adr/0015-blue-accent-and-ambient-field.md) says so plainly. It is confined
+  to the first screen, dynamically imported after `load` inside `requestIdleCallback`, paused
+  when the tab is hidden or the hero scrolls away, and reduced to a single static frame under
+  reduced motion. No WebGL, or a failed import, leaves the plain background.
 
-ADR-0013 tempered the grain opacity and the glow radius and alpha after research on
-first-impression visual complexity, and it explicitly **rejected** removing the CRT overlay
-and grain as an over-correction, on the grounds that the evidence supports low complexity
-rather than zero. It tempers ADR-0002 and ADR-0006; it does not revoke them. SPEC-0004 puts
-all ambient effects under "Does NOT include" for the same reason. A future change that
-deletes looping text, the animated page background, or the global glow is reversing two
-accepted ADRs and needs its own ADR, not a tidy-up commit.
+The CRT overlay and scan beam, the cursor glow, the skills marquee and the swipe carousel
+are all removed. `prefers-reduced-motion: reduce` neutralizes every animation and
+transition, and explicitly restores any element still holding the pre-reveal state.
 
-**Every self-animating ambient layer is reduced-motion-gated**, which is what makes the
-above acceptable. The `@media (prefers-reduced-motion: reduce)` block in `global.css` clamps
-all animation and transition durations to 0.001ms and iteration counts to 1, then
-neutralizes the looping effects outright: `.marquee-track` gets `animation: none`,
-`.crt-beam` gets `display: none`, and `.signal-pulse` gets both `animation: none` and
-`opacity: 0` so the static geo-map dots remain. A second block drops the carousel to
-`scroll-behavior: auto` and its panel transition to `none`.
+## Responsive behavior
 
-The cursor glow is the one exception. It has no `prefers-reduced-motion` branch in either
-the CSS block or the `Layout.astro` script, so under reduced motion it still trails the
-pointer. It is pointer-driven rather than self-animating, so it produces no motion for a
-visitor who is not moving a pointer, which is presumably why it was never added to the
-block; no ADR records that reasoning, so treat it as observed behavior rather than a
-decision. Do not describe it as gated. Adding it to the block would be a defensible change
-and needs no ADR, but make it a deliberate one.
-
-Anything continuous you add must be neutralized in that same block, and the page must stay
-complete and readable once it is.
+- Validate at roughly 320px, 390px, 768px, 1440px and 1600px.
+- Mobile is the baseline: linear reading order, and no content that requires hover to reach.
+- Do not pin a section and hijack vertical scroll to drive horizontal movement. That is the
+  pattern [ADR-0009](docs/adr/0009-projects-swipe-carousel.md) rejected when it superseded
+  ADR-0005, and the editorial index removed the last place it could have applied.

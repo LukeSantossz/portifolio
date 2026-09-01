@@ -189,7 +189,7 @@ body {
 }
 
 /* The number turns accent while the row is open or being pointed at: the one
-   place the green does real work, marking which record is current. */
+   place the accent does real work, marking which record is current. */
 .index-row:hover .index-number,
 .index-row[open] .index-number {
   color: var(--color-accent);
