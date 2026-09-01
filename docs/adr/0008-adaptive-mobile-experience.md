@@ -1,3 +1,9 @@
+> **Partly superseded** by [ADR-0014](0014-editorial-index-restructure.md). The mobile
+> action bar this record introduced still ships. The breakpoint-divergent treatments it
+> described do not: the Skills marquee, the Skills section, the Contact world map and the
+> Projects carousel were all removed, and the Work index renders the same numbered rows at
+> every width, which retires the "second information architecture" cost noted below.
+
 # Adaptive mobile experience (mobile-only chrome + divergent feature treatments)
 
 Below the `md` breakpoint (768px) the landing page is adapted for a recruiter on a phone — who
