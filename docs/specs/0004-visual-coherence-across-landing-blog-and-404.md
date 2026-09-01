@@ -1,3 +1,10 @@
+> **Superseded.** Retired in place by [SPEC-0001](0001-ai-engineer-editorial-restructure.md), which restructured the landing
+> page into five editorial blocks. Two of this spec's decisions survive in spirit and are
+> now enforced elsewhere: one container rail (`Section.astro` owns it) and one numbering
+> system (the project index is the only numbering left in public copy). The rest -- the
+> two-rail ramp, the numbered `01 / HELLO` eyebrows, the green accent, and the ambient
+> layers ADR-0013 calibrated -- went out with the sections that carried them.
+
 # SPEC: refactor(ui): unify the visual system across the landing, blog, and 404
 
 ## Problem
