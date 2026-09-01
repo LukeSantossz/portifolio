@@ -7,7 +7,7 @@ draft: true
 ---
 
 <!--
-UNPUBLISHED 2026-08-26 — this post does not match the repository it describes.
+UNPUBLISHED 2026-08-26: this post does not match the repository it describes.
 
 Two problems, both verified against github.com/LukeSantossz/weather-forecast:
 
@@ -25,7 +25,7 @@ Two problems, both verified against github.com/LukeSantossz/weather-forecast:
    never tuned and never re-run on the same split or horizon.
 
 Do not republish as-is. The honest version of this article is the one about
-finding the leak — see the weather-forecast case study.
+finding the leak, see the weather-forecast case study.
 -->
 
 
