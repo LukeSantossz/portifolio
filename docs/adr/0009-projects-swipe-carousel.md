@@ -1,3 +1,5 @@
+> **Retired.** Retired in place by [ADR-0014](0014-editorial-index-restructure.md): the card carousel was replaced by the numbered project index, which is one readable column at every width.
+
 # A swipe carousel for Case studies, replacing the pinned-scroll showcase
 
 The Case studies section previously pinned on scroll and scrubbed horizontally through the case

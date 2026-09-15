@@ -1,50 +1,47 @@
 /**
- * Skill groups rendered in the Skills section.
+ * The stack rendered in About, grouped into five thematic blocks.
+ *
+ * Grouped rather than flat on the argument in the positioning method: a
+ * labeled set shows curation, a flat list of everything shows its absence.
+ * The blocks and their contents mirror the SKILLS section of the audited CV,
+ * so a recruiter reading both finds the same claim twice rather than two
+ * different ones. Twenty-five entries, which is the ceiling.
+ *
+ * This is still an index, not evidence: every entry also appears inside the
+ * record of the project that used it, which is where it carries context.
  */
 export interface SkillGroup {
-  category: string;
+  label: string;
   items: string[];
 }
 
 export const skillGroups: SkillGroup[] = [
   {
-    category: 'Languages',
-    items: ['Python', 'Rust', 'TypeScript', 'Dart', 'SQL'],
+    label: 'Languages',
+    items: ['Python', 'SQL', 'TypeScript', 'Rust', 'Dart'],
   },
   {
-    category: 'ML & Data',
+    label: 'LLM, RAG & agents',
     items: [
-      'PyTorch',
-      'TensorFlow',
-      'TensorFlow Lite',
-      'LightGBM',
-      'scikit-learn',
-      'statsmodels',
-      'HuggingFace',
-      'SHAP',
-      'pandas',
-      'Polars',
-      'NumPy',
-    ],
-  },
-  {
-    category: 'LLM & RAG',
-    items: [
+      'RAG',
       'LangGraph',
-      'Qdrant',
-      'pgvector',
-      'Ollama',
-      'RAG pipelines',
-      'Semantic-entropy verification',
-      'FastAPI',
+      'LangChain',
+      'Agent orchestration',
+      'LLM-as-judge evaluation',
+      'Semantic entropy',
+      'Embeddings',
     ],
   },
   {
-    category: 'Mobile & Backend',
-    items: ['Flutter', 'Riverpod', 'Drift', 'GoRouter', 'Next.js', 'Uvicorn', 'Gradio'],
+    label: 'ML',
+    items: ['PyTorch', 'HuggingFace Transformers', 'scikit-learn', 'TensorFlow Lite'],
   },
   {
-    category: 'Cloud & Tooling',
-    items: ['GCP', 'AWS', 'Docker', 'GitHub Actions', 'Git', 'pytest', 'mypy', 'ruff', 'uv'],
+    label: 'Backend & data',
+    items: ['FastAPI', 'PostgreSQL', 'pgvector', 'Qdrant', 'Polars'],
+  },
+  {
+    label: 'Cloud & practices',
+    items: ['Docker', 'GitHub Actions', 'pytest', 'Test-driven development'],
   },
 ];

@@ -1,3 +1,5 @@
+> **Retired.** Retired in place by [ADR-0014](0014-editorial-index-restructure.md): GSAP was removed from the project. The reveal is now CSS plus one IntersectionObserver, and no external script ships.
+
 # Use GSAP as the motion library for the Hero intro
 
 The Hero needs a controlled, staggered load-time intro. We add GSAP (core only) and

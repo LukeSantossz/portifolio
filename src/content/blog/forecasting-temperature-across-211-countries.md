@@ -65,4 +65,4 @@ Before reaching for "a model per entity," ask what the entities share. When they
 share a lot, and geography almost always does, a single model that is *told*
 which entity it is looking at will usually beat a fleet of specialists, and it is
 far less to operate. Details are in the
-[case studies](/#projects).
+[case studies](/#work).

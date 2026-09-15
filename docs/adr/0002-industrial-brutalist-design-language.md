@@ -1,3 +1,5 @@
+> **Amended.** The single chromatic signal moved from green to blue in [ADR-0015](0015-blue-accent-and-ambient-field.md). The rest of this record (the monochrome concrete ramp, the mono-forward type, the hard edges) still holds.
+
 # Adopt the "Concrete Terminal" industrial-brutalist design language
 
 The portfolio read as a soft "agribusiness-green minimal" site that gave a technical

@@ -1,3 +1,10 @@
+> **Retired.** Retired in place by [ADR-0014](0014-editorial-index-restructure.md). This
+> record tempered a decorative stack that no longer exists: the CRT overlay and beam
+> (ADR-0006) and the cursor-follow glow were removed outright, and ADR-0002 was retired
+> with them. Its finding still holds and is now served by the restructure itself, which
+> cut the decorative systems from ten to two: the static grain tile and the hero ambient
+> field of [ADR-0015](0015-blue-accent-and-ambient-field.md).
+
 # Temper above-the-fold visual complexity for the first-impression halo
 
 A deep-research pass on evidence-based engagement (recruiter audience) found that the strongest,

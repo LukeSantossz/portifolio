@@ -1,0 +1,58 @@
+---
+/**
+ * The one section scaffold. Every block below the hero renders through it, so
+ * the shared chrome (top rule, grain, column width, label + heading) is defined
+ * once instead of being cloned per section.
+ *
+ * The heading is a real <h2> and the section is labeled by it, so the page
+ * outline is correct with no extra aria wiring.
+ */
+interface Props {
+  /** Anchor target, also used to build the heading id. */
+  id: string;
+  /** Short mono label above the heading. No numbering: this is not an index. */
+  label: string;
+  /** The section heading. */
+  title: string;
+  /** Optional single lede paragraph under the heading. */
+  intro?: string;
+}
+
+const { id, label, title, intro } = Astro.props;
+const headingId = `${id}-heading`;
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class="relative overflow-hidden border-t border-concrete-700 bg-concrete-950"
+>
+  <div class="bt-grain" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-6 py-20 md:py-28">
+    <header class="column-rule lg:pl-8">
+      <p
+        data-reveal
+        class="font-mono text-label uppercase tracking-[0.3em] text-concrete-300"
+      >
+        {label}
+      </p>
+      <h2
+        id={headingId}
+        data-reveal
+        class="mt-4 max-w-[18ch] font-sans text-headline font-semibold leading-[1.05] tracking-[-0.03em] text-concrete-50"
+      >
+        {title}
+      </h2>
+      {
+        intro && (
+          <p data-reveal class="mt-5 max-w-[62ch] text-lede leading-relaxed text-concrete-300">
+            {intro}
+          </p>
+        )
+      }
+    </header>
+
+    <slot />
+  </div>
+</section>
