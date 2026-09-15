@@ -39,6 +39,17 @@ not as an outstanding task list.
 | `about.ts` | "work at Jacto", present tense | Unipac, present tense | Jacto ended June 2026 |
 | `about.ts` | "B.Tech in Big Data for Agribusiness" | "Technology degree (CST)" | The Brazilian qualification is a CST, a short cycle applied technology degree. Rendering it as B.Tech overstates it to a reader who checks |
 
+**Second pass, same day.** Five more items, each of which was left open above rather than
+missed.
+
+| Where | Was | Now | Why |
+|---|---|---|---|
+| `experience.ts` Unipac | No volume figure on the pipeline, no test count on the release gate | "generated 20+ applications end to end"; "locked by 32 contract tests" | Both are in the audited CV that this site serves at `/my_resume.pdf`. Carried across on your decision of 15 September 2026, against the recommendation to leave the first one out |
+| `about.ts` facts | "Fatec (2026)" | "Fatec Shunji Nishimura (2026)" | Open item 2 is a disagreement between three sources about which institution this is. The site should name it in full so the comparison can be made |
+| `skills.ts` | Flat array of 26 | Five labelled blocks, 25 entries | Section six below, resolved as Option B on 15 September 2026 |
+| `src/content/projects/` | Four records | Five, AutoMQ added | Section five below, resolved on 15 September 2026 |
+| `sections.ts` | "Four systems" | "Five records" | Follows from the row above. "Record" is also the more accurate word: AutoMQ is a fix inside a system someone else owns, not a system |
+
 The project case studies in `src/content/projects/` need no correction. They already carry the
 retracted figures honestly: 28.5 times rather than 42, the 0.887 against 0.584 pairing, the
 four withdrawn weather metrics, and no soil accuracy claim. The earlier note in the career
@@ -182,12 +193,12 @@ around a pipeline of specialist agents.
 
 - Built an internal multi-agent platform that turns an approved product specification into a
   working full-stack application, orchestrating seven specialist agents through a coordinator
-  that delegates rather than writes code, and submitting every generated application to
-  thirteen deterministic verifiers.
+  that delegates rather than writes code. It has generated 20+ applications end to end, each
+  submitted to thirteen deterministic verifiers before release.
 - Took approval authority away from the language model: the security verdict derives from
   deterministic scanner receipts produced in a short-lived isolated virtual machine and tied to
-  a checksum of the delivered code, applied by a pure function the pipeline cannot bypass, so a
-  model cannot sign off on its own output.
+  a checksum of the delivered code, applied by a pure function the pipeline cannot bypass and
+  locked by 32 contract tests, so a model cannot sign off on its own output.
 - Ran every piece of generated code inside a per-job micro virtual machine with its own kernel
   rather than a normal container, on the reasoning that code written by a model is untrusted
   input. The stronger isolation also measured faster than starting a container per command.
@@ -197,11 +208,18 @@ around a pipeline of specialist agents.
 - Closed a path that was shipping prompts, specifications and error traces containing
   authorization headers to a third-party service in clear text.
 
-> Note for the person applying this: the published version says "principal author of a
-> 103,000-line Python service held to 3,397 automated tests". Both parts come out. Authorship
-> labels are out of the public material, and the suite size read against a declared tenure that
-> begins in September 2026 invites an arithmetic question with an uncomfortable answer. The
-> numbers are Confirmed in the audit and return when the declared date supports them.
+> Note: "principal author of a 103,000-line Python service held to 3,397 automated tests" is
+> out, both parts. Authorship labels are out of the public material, and the suite size read
+> against a declared tenure that begins in September 2026 invites an arithmetic question with
+> an uncomfortable answer. The numbers are Confirmed in the audit and return when the declared
+> date supports them.
+>
+> The 20+ generated applications and the 32 contract tests went in on 15 September 2026 at your
+> direction. The recommendation here was to leave the 20+ out, since it meets the same tenure
+> arithmetic that removed the other two. The counter-argument, which is yours, is that the CV
+> this site serves already publishes it, and a site quieter than its own résumé is the stranger
+> artefact. The 32 contract tests measure the gate rather than the elapsed time and carry none
+> of that problem.
 
 ### AI Engineer · PM Accelerator · Jun 2026 to Aug 2026
 
@@ -287,8 +305,8 @@ architecture, and statistics.
 
 ## Section five: Projects
 
-**Consumed by `src/content/projects/`.** The four published case studies are accurate and need
-no edit. Listed here for completeness, with the headline number each one defends.
+**Consumed by `src/content/projects/`.** The published case studies are accurate and need no
+edit. Listed here for completeness, with the headline number each one defends.
 
 | Project | Metric | Domain |
 |---|---|---|
@@ -296,8 +314,11 @@ no edit. Listed here for completeness, with the headline number each one defends
 | VisioSoil | 3rd of 1,300+ | Computer vision |
 | tweet-sentiment-analysis | +51.9% macro F1, 28.5 times faster preprocessing | NLP and LLMs |
 | weather-forecast | 1e-6 browser parity, four metrics self-retracted | Data engineering and MLOps |
+| AutoMQ | PR #3261 merged, 157 lines of tests for a 6-line fix | Distributed systems and open source |
 
-**Two candidates not currently published**, either of which would strengthen the set:
+**Two candidates, one now published.** AutoMQ shipped as a record on 15 September 2026.
+my-framework was held back: a full case study is a writing job rather than a synchronisation
+pass, and it can be decided on its own.
 
 **my-framework** (`github.com/LukeSantossz/my-framework`, MIT). An engineering standards
 framework that activates written standards inside AI coding agents: spec-gated design, tiered
@@ -312,57 +333,62 @@ Kafka-compatible streaming platform: response-size validation in the router's re
 so a request and response count mismatch completes pending requests with a server error instead
 of raising an index exception. 157 lines of unit tests alongside a six-line fix.
 
-The AutoMQ contribution already appears in the About copy. Whether either earns a full case
-study record is a product decision, not something this file should settle. The argument for
-adding them: both are Java and Bash respectively, and every published record is Python or Dart,
-so the set currently reads narrower than the work actually is.
+The argument that carried AutoMQ: every other published record is Python or Dart, so the set
+read narrower than the work, and nothing on the site showed a change landing in a codebase
+someone else owns and reviews. The record states plainly that it is a small fix and what it
+does not demonstrate, and it makes no frequency claim about the mismatch, because none was
+measured. my-framework would bring Bash on the same argument and is still unpublished.
 
 ---
 
 ## Section six: Skills
 
-**Consumed by `src/data/skills.ts`.**
+**Consumed by `src/data/skills.ts`.** **Resolved on 15 September 2026 as Option B.**
 
-The file ships a flat array of 26 entries and documents itself as "an index, not evidence".
-That is a defensible design and the method disagrees with it: `method.md` section six asks for
-five thematic blocks totalling 20 to 25 skills, on the argument that grouping demonstrates
-curation and a flat pile demonstrates its absence.
+The file used to ship a flat array of 26 entries and documented itself as "an index, not
+evidence". That was accurate and it was still the wrong shape: `method.md` section six asks
+for five thematic blocks totalling 20 to 25, on the argument that grouping shows curation and
+a flat pile shows its absence.
 
-**This is a product and design decision, so it is proposed here rather than asserted, and it
-was deliberately left untouched in the 15 September 2026 pass.** Two options:
-
-**Option A, keep the flat index.** No change. The current list is accurate and the ordering
-(languages, ML, retrieval, platform) already scans. Cost: it reads as a pile to a recruiter
-skimming, which is the exact failure the method names.
-
-**Option B, five blocks of 25.** Changes the shape of `skills.ts` and the About markup that
-renders it.
+It now ships five blocks and 25 entries, mirroring the SKILLS section of the audited CV, so a
+recruiter reading the site and the résumé finds the same claim twice rather than two different
+ones.
 
 ```
 Languages
-  Python, TypeScript, Rust, Dart, SQL, Bash
+  Python, SQL, TypeScript, Rust, Dart
 
-AI, machine learning and computer vision
-  RAG, LangGraph, agent orchestration, semantic entropy, LLM evaluation,
-  PyTorch, Hugging Face, TensorFlow Lite, scikit-learn, LightGBM
+LLM, RAG & agents
+  RAG, LangGraph, LangChain, agent orchestration, LLM-as-judge evaluation,
+  semantic entropy, embeddings
 
-Backend, APIs and data
-  FastAPI, PostgreSQL, pgvector, Qdrant, pandas, Polars
+ML
+  PyTorch, HuggingFace Transformers, scikit-learn, TensorFlow Lite
 
-Platform, DevOps and security
-  Docker, GitHub Actions, Kata Containers, SAST (Semgrep, Trivy)
+Backend & data
+  FastAPI, PostgreSQL, pgvector, Qdrant, Polars
 
-Engineering practices
-  Test-driven development, architecture decision records, pytest, mypy, ruff
+Cloud & practices
+  Docker, GitHub Actions, pytest, test-driven development
 ```
 
-That is 6 + 10 + 6 + 4 + 5, which is 31 and over the ceiling. Bringing it to 25 means dropping
-six, and the honest candidates are the ones that appear in exactly one project record and
-nowhere else: statsmodels, SHAP, uv, Next.js, Flutter and LightGBM. Flutter is the awkward one,
-since it carries VisioSoil, so the sixth cut is a judgement call worth making deliberately
-rather than by arithmetic.
+**What went in:** LangChain, PostgreSQL, pgvector, embeddings, agent orchestration,
+LLM-as-judge evaluation, semantic entropy and test-driven development. All eight are in the
+CV and none of them were on the site.
 
----
+**What came out:** statsmodels, SHAP, uv, Next.js, LightGBM, pandas, Ollama, Flutter,
+mypy and ruff. Each appears in exactly one project record and nowhere else, and the records
+still list them, which is where they carry context.
+
+**The one deliberate departure from the CV is Dart**, which the CV's Languages block does not
+carry. VisioSoil is the one published record written in it, and an index that omits the
+language of a published case study reads narrower than the work. That is also the sixth cut
+this file previously called a judgement call worth making deliberately rather than by
+arithmetic, and it is made here: Flutter went, Dart stayed, and TensorFlow Lite carries the
+on-device side in the ML block.
+
+The About markup reuses the label-and-value rhythm of the facts list directly above it, so the
+two read as one spec sheet rather than two unrelated blocks.
 
 ## Section seven: Education
 
