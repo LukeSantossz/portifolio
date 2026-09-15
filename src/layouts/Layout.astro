@@ -115,10 +115,11 @@ const personSchema = {
 
     <script>
       // Count-up for the hero proof stats. Their values are not clean numbers
-      // ("205 tests", "42x", "0.19°C"), so we animate only the
-      // first embedded number, preserving the surrounding text, and skip values
-      // with no number. Disabled under reduced-motion / no IntersectionObserver,
-      // where the SSR'd final value already shows.
+      // ("372 tests", "+51.9%", "3rd of 1,300+"), so we animate only the first
+      // embedded number, preserving the surrounding text, and skip values with
+      // no number and values whose number is an ordinal rank. Disabled under
+      // reduced-motion / no IntersectionObserver, where the SSR'd final value
+      // already shows.
       const countEls = document.querySelectorAll('[data-countup]');
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -129,15 +130,21 @@ const personSchema = {
           if (!match) return;
 
           const raw = match[0];
+          const index = match.index ?? 0;
+          const before = full.slice(0, index);
+          const after = full.slice(index + raw.length);
+
+          // An ordinal rank ("3rd of 1,300+") is a position, not a quantity.
+          // Counting up to it means nothing, and every frame before the last
+          // one reads as broken text ("0rd of 1,300+"), so leave it alone.
+          if (/^(st|nd|rd|th)\b/.test(after)) return;
+
           const hasComma = raw.includes(',');
           const target = parseFloat(raw.replace(/,/g, ''));
           if (!isFinite(target)) return;
 
           const dot = raw.indexOf('.');
           const decimals = dot === -1 ? 0 : raw.length - dot - 1;
-          const index = match.index ?? 0;
-          const before = full.slice(0, index);
-          const after = full.slice(index + raw.length);
 
           const format = (value: number) => {
             const fixed = value.toFixed(decimals);
