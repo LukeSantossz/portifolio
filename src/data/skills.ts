@@ -1,35 +1,47 @@
 /**
- * The stack line rendered in About, in reading order.
+ * The stack rendered in About, grouped into five thematic blocks.
  *
- * This is an index, not evidence: every entry also appears inside the record of
- * the project that used it, which is where it carries context. Ordered roughly
- * languages, ML, retrieval, platform, so the line scans without needing labels.
+ * Grouped rather than flat on the argument in the positioning method: a
+ * labelled set shows curation, a flat list of everything shows its absence.
+ * The blocks and their contents mirror the SKILLS section of the audited CV,
+ * so a recruiter reading both finds the same claim twice rather than two
+ * different ones. Twenty-five entries, which is the ceiling.
+ *
+ * This is still an index, not evidence: every entry also appears inside the
+ * record of the project that used it, which is where it carries context.
  */
-export const stack: string[] = [
-  'Python',
-  'Rust',
-  'TypeScript',
-  'Dart',
-  'SQL',
-  'PyTorch',
-  'Hugging Face',
-  'TensorFlow Lite',
-  'LightGBM',
-  'scikit-learn',
-  'statsmodels',
-  'SHAP',
-  'pandas',
-  'Polars',
-  'LangGraph',
-  'Qdrant',
-  'Ollama',
-  'FastAPI',
-  'Flutter',
-  'Next.js',
-  'Docker',
-  'GitHub Actions',
-  'pytest',
-  'mypy',
-  'ruff',
-  'uv',
+export interface SkillGroup {
+  label: string;
+  items: string[];
+}
+
+export const skillGroups: SkillGroup[] = [
+  {
+    label: 'Languages',
+    items: ['Python', 'SQL', 'TypeScript', 'Rust', 'Dart'],
+  },
+  {
+    label: 'LLM, RAG & agents',
+    items: [
+      'RAG',
+      'LangGraph',
+      'LangChain',
+      'Agent orchestration',
+      'LLM-as-judge evaluation',
+      'Semantic entropy',
+      'Embeddings',
+    ],
+  },
+  {
+    label: 'ML',
+    items: ['PyTorch', 'HuggingFace Transformers', 'scikit-learn', 'TensorFlow Lite'],
+  },
+  {
+    label: 'Backend & data',
+    items: ['FastAPI', 'PostgreSQL', 'pgvector', 'Qdrant', 'Polars'],
+  },
+  {
+    label: 'Cloud & practices',
+    items: ['Docker', 'GitHub Actions', 'pytest', 'Test-driven development'],
+  },
 ];
