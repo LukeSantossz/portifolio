@@ -32,7 +32,7 @@ export const timeline: TimelineItem[] = [
       'Built an internal multi-agent platform that turns an approved product specification into a working full-stack application, orchestrating seven specialist agents through a coordinator that delegates rather than writes code. It has generated 20+ applications end to end, each submitted to thirteen deterministic verifiers before release.',
       'Took approval authority away from the language model: the security verdict is derived from deterministic scanner receipts run in a short-lived isolated virtual machine and tied to a checksum of the delivered code, applied by a pure function the pipeline cannot bypass and locked by 32 contract tests, so a model cannot sign off on its own output.',
       'Ran every piece of generated code inside a per-job micro virtual machine with its own kernel rather than a normal container, on the reasoning that code written by a model is untrusted input. The stronger isolation also measured faster than starting a container per command.',
-      'Designed a seven-layer containment stack for runaway agent behaviour, each layer added in response to a real incident, including one tool called 72 times in a loop and a job stalled for 30 minutes because each re-delegation reset its own budget.',
+      'Designed a seven-layer containment stack for runaway agent behavior, each layer added in response to a real incident, including one tool called 72 times in a loop and a job stalled for 30 minutes because each re-delegation reset its own budget.',
       'Closed a path that was shipping prompts, specifications and error traces containing authorization headers to a third-party service in clear text.',
     ],
   },

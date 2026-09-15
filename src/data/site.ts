@@ -15,7 +15,7 @@ export const site = {
    * The recruiter smell test, in one line: where, which timezone, and how
    * reachable, so nobody has to email to find out.
    */
-  availability: 'Marília, Brazil (GMT-3) · Remote · Open to international',
+  availability: 'Marília, Brazil (GMT-3) · Remote · Open to international roles',
 
   /**
    * Hero proof strip. Three numbers, each defended by a record in the index or
@@ -30,7 +30,7 @@ export const site = {
     {
       value: '+51.9%',
       label:
-        'Macro-F1 gain after a fine-tuning run came out worse than its baseline, and error analysis traced it to the wrong starting model rather than the wrong settings.',
+        'Macro-F1 gain after a fine-tuning run that came out worse than its baseline, once error analysis traced the failure to the wrong starting model rather than the wrong settings.',
     },
     {
       value: '372 tests',
@@ -45,7 +45,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/lucas-gonçalvessz/',
 
   // --- Assets ---------------------------------------------------------------
-  resumePath: '/my_resume.pdf', // résumé served from public/my_resume.pdf
+  resumePath: '/my_resume.pdf', // resume served from public/my_resume.pdf
   ogImage: '/og-image.png', // social share image at public/og-image.png
 
   /** Browser tab label. Short; the descriptive title goes to og:title. */

@@ -52,4 +52,4 @@ number for tuning the retriever.
 The lesson generalizes past RAG. Any system that produces answers should also
 produce a defensible estimate of how much to trust them, and be allowed to
 withhold. Read more about the wider project in the
-[case studies](/#projects) section.
+[case studies](/#work) section.

@@ -2,7 +2,7 @@
  * The stack rendered in About, grouped into five thematic blocks.
  *
  * Grouped rather than flat on the argument in the positioning method: a
- * labelled set shows curation, a flat list of everything shows its absence.
+ * labeled set shows curation, a flat list of everything shows its absence.
  * The blocks and their contents mirror the SKILLS section of the audited CV,
  * so a recruiter reading both finds the same claim twice rather than two
  * different ones. Twenty-five entries, which is the ceiling.
