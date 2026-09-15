@@ -439,5 +439,15 @@ minimal, which the current implementation already does.
    About copy and in a case study. Re-running notebook 06 and committing the evidence closes
    the only headline number on this site that cannot be re-opened by a reader.
 
-5. **FAPESP grant 2024/00985-1 is To validate.** It does not appear anywhere in the
+6. **The Unipac block claims more than its declared period supports.** The role reads
+   "Sep 2026 to Present" and the highlights carry 20+ applications generated end to end,
+   seven agents, thirteen verifiers, 32 contract tests and a seven-layer containment stack
+   whose layers were "each added in response to a real incident", including one tool called
+   72 times in a loop. Read against a tenure of weeks, that is the same arithmetic problem
+   this file already solved once for the 103,000 lines and 3,397 tests. Reviewed on
+   15 September 2026 and **left in place by your decision**; the three ways out (extend the
+   declared period to cover the earlier work, cut the claims the date does not support, or
+   split the role into two entries) stay available and none was applied.
+
+7. **FAPESP grant 2024/00985-1 is To validate.** It does not appear anywhere in the
    repositories and it is published in three places. Have the confirmation to hand.
