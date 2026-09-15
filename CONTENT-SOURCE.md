@@ -56,6 +56,13 @@ missed.
 |---|---|---|---|
 | `src/content/projects/` | `kind` and `evaluation` unset on all five records | Both set on all five | SPEC-0001 added the two fields after its review pass, on the finding that every reviewer asked how a result was measured and whether the work was professional, personal or research. No record ever set them, so the "How it was measured" move rendered nowhere and the acceptance criterion `measurement_is_stated` was never met. The new text states measurement conditions only: it adds no figure that the records did not already publish. Four records carry `research` or `personal`; none carries `professional`, because the professional work lives in the timeline and not in the index |
 
+**Fourth pass, same day.** Two items, both requested by you after reading the site.
+
+| Where | Was | Now | Why |
+|---|---|---|---|
+| `src/content/projects/` | Five records | Four, AutoMQ withdrawn | Reversed by your decision of 15 September 2026, hours after it was published in the second pass above. Section five's argument for it (language range, an accepted contribution in someone else's codebase) still stands and is left in place, so the record can be restored from Git at commit `b390ee5` without rebuilding the case for it. `sections.ts`, the meta description and the About copy follow |
+| `about.ts` | Seven paragraphs, three of them recapping a project | Seven paragraphs, none recapping a project | The section read as a walk through project features rather than a statement of what the author works on. The Work index sits directly above it and the stack renders directly beside it, so both recaps were duplication. Order is now field, where the field was learned, how the work is done. No fact was added; the Jacto tenure is stated as a year and a half, which is what the audited dates (Nov 2024 to Jun 2026) support, rather than as two years |
+
 The project case studies in `src/content/projects/` need no correction. They already carry the
 retracted figures honestly: 28.5 times rather than 42, the 0.887 against 0.584 pairing, the
 four withdrawn weather metrics, and no soil accuracy claim. The earlier note in the career
