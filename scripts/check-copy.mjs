@@ -159,6 +159,29 @@ for (const file of walk('src/content', ['.md'])) {
   });
 }
 
+/**
+ * Required frontmatter on every project record.
+ *
+ * SPEC-0001 added `kind` and `evaluation` after the review pass, on the finding
+ * that every reviewer asked how a result was measured and whether the work was
+ * professional, personal or research. Neither question is answerable from the
+ * six existing moves, and an optional field that no record sets renders nothing
+ * at all: the "How it was measured" move was dead until this check existed.
+ */
+const REQUIRED_FRONTMATTER = {
+  kind: 'professional, personal or research: a solo project and a production system are different signals',
+  evaluation: 'the dataset, the split and the baseline the headline number is measured against',
+};
+
+for (const file of walk('src/content/projects', ['.md'])) {
+  const source = readFileSync(join(ROOT, file), 'utf8');
+  for (const [field, why] of Object.entries(REQUIRED_FRONTMATTER)) {
+    if (!new RegExp(`^${field}:`, 'm').test(source)) {
+      failures.push(`${file}:1  [missing-frontmatter] "${field}" is not set, and it is ${why}`);
+    }
+  }
+}
+
 if (failures.length > 0) {
   console.error(`check-copy: ${failures.length} problem(s) in ${files.length} files\n`);
   for (const failure of failures) console.error(`  ${failure}`);

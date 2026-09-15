@@ -50,6 +50,12 @@ missed.
 | `src/content/projects/` | Four records | Five, AutoMQ added | Section five below, resolved on 15 September 2026 |
 | `sections.ts` | "Four systems" | "Five records" | Follows from the row above. "Record" is also the more accurate word: AutoMQ is a fix inside a system someone else owns, not a system |
 
+**Third pass, same day.** One item, structural rather than factual.
+
+| Where | Was | Now | Why |
+|---|---|---|---|
+| `src/content/projects/` | `kind` and `evaluation` unset on all five records | Both set on all five | SPEC-0001 added the two fields after its review pass, on the finding that every reviewer asked how a result was measured and whether the work was professional, personal or research. No record ever set them, so the "How it was measured" move rendered nowhere and the acceptance criterion `measurement_is_stated` was never met. The new text states measurement conditions only: it adds no figure that the records did not already publish. Four records carry `research` or `personal`; none carries `professional`, because the professional work lives in the timeline and not in the index |
+
 The project case studies in `src/content/projects/` need no correction. They already carry the
 retracted figures honestly: 28.5 times rather than 42, the 0.887 against 0.584 pairing, the
 four withdrawn weather metrics, and no soil accuracy claim. The earlier note in the career
