@@ -180,6 +180,23 @@ portifolio/
 
   GitHub reports a higher count than `npm audit` because it counts one alert per advisory
   per manifest, including the lockfile.
+
+  The upgrade to `astro@7.3.2` and `sharp@0.35.4` was attempted on 15 September 2026 and
+  reverted. It clears all three remaining advisories (`npm audit` then reports 0) and
+  `astro check` still passes with 0 errors, but `astro build` fails:
+
+  ```
+  [postcss] ENOENT: no such file or directory, open '<repo>/tailwindcss'
+  ```
+
+  Astro 7 ships a Vite whose `postcss-import` resolves the bare `@import "tailwindcss"`
+  in `src/styles/global.css` as a file path instead of a package. The fix is to move
+  Tailwind back onto `@tailwindcss/vite`, which this repository deliberately avoided
+  because that plugin threw `Missing field tsconfigPaths` on Astro 6 (see the decision
+  table above). That trade-off has inverted, so the migration is real work: it changes
+  `astro.config.mjs`, deletes `postcss.config.mjs`, and can change the emitted stylesheet
+  across every page. It belongs in its own change, with a stylesheet diff and a viewport
+  check, not folded into a content pass.
 - **Disclosure**: see [`/.well-known/security.txt`](public/.well-known/security.txt).
 
 See [ADR-0010](docs/adr/0010-security-hardening.md) for the rationale.
