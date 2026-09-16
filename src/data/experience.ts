@@ -16,6 +16,9 @@ export interface TimelineItem {
   role: string;
   org: string;
   period: string;
+  /** City and country of the role. The method puts location on line 1,
+      next to the period, because an international reader calibrates on it. */
+  location?: string;
   description: string;
   highlights?: string[];
 }
@@ -26,6 +29,7 @@ export const timeline: TimelineItem[] = [
     role: 'Software Engineer, AI and Data',
     org: 'Unipac',
     period: 'Sep 2026 to Present',
+    location: 'Pompeia, Brazil',
     description:
       'Unipac is a packaging and polymer processing manufacturer. The work is an internal AI platform that turns an approved product specification into a working full-stack application, built around a pipeline of 7 specialist agents.',
     highlights: [
@@ -41,6 +45,7 @@ export const timeline: TimelineItem[] = [
     role: 'AI Engineer',
     org: 'PM Accelerator',
     period: 'Jun 2026 to Aug 2026',
+    location: 'Miami, United States (remote)',
     description:
       'A US-based ed-tech startup building an AI-powered college-advising platform. I worked on the retrieval and grounding core, owning the retrieval, prompt, conversation and routing services.',
     highlights: [
@@ -56,6 +61,7 @@ export const timeline: TimelineItem[] = [
     role: 'After-Sales, Data and Automation',
     org: 'Jacto',
     period: 'Nov 2024 to Jun 2026',
+    location: 'Pompeia, Brazil',
     description:
       'Jacto is a Brazilian manufacturer of agricultural machinery that sells in more than 100 countries and employs over 3,000 people, with after-sales operations at industrial scale. I worked where the business side meets engineering.',
     highlights: [
@@ -71,6 +77,7 @@ export const timeline: TimelineItem[] = [
     role: 'Software Engineer, Synapse Program',
     org: 'CIAg',
     period: 'Feb 2024 to Oct 2024',
+    location: 'Pompeia, Brazil',
     description:
       'A regional innovation program. The work was an internal natural-language assistant over a domain-specific knowledge base, and it is the earliest language-model work in this timeline.',
     highlights: [
@@ -83,6 +90,7 @@ export const timeline: TimelineItem[] = [
     role: 'Technology degree (CST) in Big Data for Agribusiness',
     org: 'Fatec Shunji Nishimura, Pompeia, São Paulo',
     period: '2024 to Nov 2026',
+    location: 'Pompeia, Brazil',
     description:
       'A public applied-technology degree. Coursework covers machine learning, artificial intelligence, data structures, databases (SQL and NoSQL), APIs and microservices, cloud architecture, and statistics.',
     highlights: [
