@@ -63,6 +63,20 @@ missed.
 | `src/content/projects/` | Five records | Four, AutoMQ withdrawn | Reversed by your decision of 15 September 2026, hours after it was published in the second pass above. Section five's argument for it (language range, an accepted contribution in someone else's codebase) still stands and is left in place, so the record can be restored from Git at commit `b390ee5` without rebuilding the case for it. `sections.ts`, the meta description and the About copy follow |
 | `about.ts` | Seven paragraphs, three of them recapping a project | Seven paragraphs, none recapping a project | The section read as a walk through project features rather than a statement of what the author works on. The Work index sits directly above it and the stack renders directly beside it, so both recaps were duplication. Order is now field, where the field was learned, how the work is done. No fact was added; the Jacto tenure is stated as a year and a half, which is what the audited dates (Nov 2024 to Jun 2026) support, rather than as two years |
 
+**Fifth pass, 4 October 2026.** Synced with the career repository after the Unipac review.
+
+| Where | Was | Now | Why |
+|---|---|---|---|
+| `experience.ts` Unipac, description | "a packaging and polymer processing manufacturer" | "... within the Jacto Group" | The method asks the context line for relevance as well as sector. The group is the relevance, and the line still names no stack |
+| `experience.ts` Unipac, first highlight | No hosting named | "served from Google Cloud Run" | Declared by you on 4 October 2026, recorded as To validate. Written as served, never as production: the audit records the deploy pointing at the staging branch |
+| `about.ts` paragraph three | Platform only | Data and AI team: data pipelines on Google Cloud with BigQuery and Dataflow, plus the platform | Current work, declared by you on 4 October 2026, To validate. It goes in as scope, never as a result: no number exists for it yet |
+| `about.ts` Focus | RAG · LLM agents · ... | LLM agents · RAG · data pipelines on GCP · ... | Mirrors the LinkedIn headline fixed the same day |
+| `skills.ts` | Polars in Backend & data | Polars out, "Google Cloud (Cloud Run, BigQuery, Dataflow)" in Cloud & practices | Keeps the ceiling of 25. Polars still renders inside the tweet-sentiment record, where it carries context, and the served CV does not list it |
+| `site.ts` seoDescription | No data work | "data pipelines on Google Cloud" | Same source as the About change |
+| `public/my_resume.pdf` | CV of 15 September 2026 | CV regenerated on 4 October 2026 | Carries GCP in Skills, Cloud Run in the Unipac stack and the Jacto Group context line |
+
+The hero `headline` is unchanged: it mirrors the qualifier of the served CV, which did not change.
+
 The project case studies in `src/content/projects/` need no correction. They already carry the
 retracted figures honestly: 28.5 times rather than 42, the 0.887 against 0.584 pairing, the
 four withdrawn weather metrics, and no soil accuracy claim. The earlier note in the career

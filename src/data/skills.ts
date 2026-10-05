@@ -38,10 +38,16 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: 'Backend & data',
-    items: ['FastAPI', 'PostgreSQL', 'pgvector', 'Qdrant', 'Polars'],
+    items: ['FastAPI', 'PostgreSQL', 'pgvector', 'Qdrant'],
   },
   {
     label: 'Cloud & practices',
-    items: ['Docker', 'GitHub Actions', 'pytest', 'Test-driven development'],
+    items: [
+      'Docker',
+      'Google Cloud (Cloud Run, BigQuery, Dataflow)',
+      'GitHub Actions',
+      'pytest',
+      'Test-driven development',
+    ],
   },
 ];

@@ -31,9 +31,9 @@ export const timeline: TimelineItem[] = [
     period: 'Sep 2026 to Present',
     location: 'Pompeia, Brazil',
     description:
-      'Unipac is a packaging and polymer processing manufacturer. The work is an internal AI platform that turns an approved product specification into a working full-stack application, built around a pipeline of 7 specialist agents.',
+      'Unipac is a packaging and polymer processing manufacturer within the Jacto Group. The work is an internal AI platform that turns an approved product specification into a working full-stack application, built around a pipeline of 7 specialist agents.',
     highlights: [
-      'Built an internal multi-agent platform that turns an approved product specification into a working full-stack application, orchestrating 7 specialist agents through a coordinator that delegates rather than writes code. It has generated 20+ applications end to end, each submitted to 13 deterministic verifiers before release.',
+      'Built an internal multi-agent platform, served from Google Cloud Run, that turns an approved product specification into a working full-stack application, orchestrating 7 specialist agents through a coordinator that delegates rather than writes code. It has generated 20+ applications end to end, each submitted to 13 deterministic verifiers before release.',
       'Engineered the release gate so the language model cannot approve its own output: the security verdict is derived from deterministic scanner receipts run in a short-lived isolated virtual machine and tied to a checksum of the delivered code, applied by a pure function the pipeline cannot bypass and locked by 32 contract tests, so a model cannot sign off on its own output.',
       'Executed every piece of generated code inside a per-job micro virtual machine with its own kernel rather than a normal container, on the reasoning that code written by a model is untrusted input. The stronger isolation also measured faster than starting a container per command.',
       'Designed a 7-layer containment stack for runaway agent behavior, each layer added in response to a real incident, including one tool called 72 times in a loop and a job stalled for 30 minutes because each re-delegation reset its own budget.',
