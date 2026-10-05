@@ -9,14 +9,14 @@ export const site = {
   role: 'AI Engineer',
 
   /**
-   * Hero positioning line. It mirrors the qualifier on the served resume
-   * ("AI Engineer | RAG & LLM Systems, Agent Orchestration, Evaluation") so a
-   * recruiter reading the page and the PDF finds the same claim twice rather
-   * than two different people. It names no sector: agriculture is where the
-   * work happened, which the timeline and the records already say, and it is
-   * not what the work is.
+   * Hero positioning line. It mirrors the qualifier on the served resume, the
+   * LinkedIn title and the GitHub profile ("AI Engineer | LLM Agents, RAG,
+   * Data Pipelines on GCP") so a recruiter reading any of them finds the same
+   * claim rather than two different people. It names no sector: agriculture is
+   * where the work happened, which the timeline and the records already say,
+   * and it is not what the work is.
    */
-  headline: 'RAG and LLM systems, agent orchestration, and evaluation.',
+  headline: 'LLM agents, RAG systems, and data pipelines on GCP.',
 
   /**
    * The recruiter smell test, in one line: where, which timezone, and how

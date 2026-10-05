@@ -74,8 +74,9 @@ missed.
 | `skills.ts` | Polars in Backend & data | Polars out, "Google Cloud (Cloud Run, BigQuery, Dataflow)" in Cloud & practices | Keeps the ceiling of 25. Polars still renders inside the tweet-sentiment record, where it carries context, and the served CV does not list it |
 | `site.ts` seoDescription | No data work | "data pipelines on Google Cloud" | Same source as the About change |
 | `public/my_resume.pdf` | CV of 15 September 2026 | CV regenerated on 4 October 2026 | Carries GCP in Skills, Cloud Run in the Unipac stack and the Jacto Group context line |
+| `site.ts` hero `headline` | "RAG and LLM systems, agent orchestration, and evaluation." | "LLM agents, RAG systems, and data pipelines on GCP." | The CV qualifier moved to the LinkedIn title the same day ("AI Engineer \| LLM Agents · RAG · Data Pipelines on GCP"), so the hero follows it. Before, the hero said evaluation while the Focus line and the SEO description on the same page said data pipelines on GCP |
 
-The hero `headline` is unchanged: it mirrors the qualifier of the served CV, which did not change.
+The served CV was regenerated again with the new qualifier, so the hero and the PDF still say the same thing.
 
 The project case studies in `src/content/projects/` need no correction. They already carry the
 retracted figures honestly: 28.5 times rather than 42, the 0.887 against 0.584 pairing, the
