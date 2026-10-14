@@ -23,7 +23,7 @@ const esc = (s) =>
 // import the TypeScript config, so keep it in sync with src/data/site.ts by hand.
 const name = esc('Lucas Gonçalves');
 const role = esc('AI Engineer'); // mirrors `role` in src/data/site.ts
-const tagline = esc('LLM agents & RAG · Computer Vision · Production ML pipelines');
+const tagline = esc('LLM Agents · RAG · Data Pipelines on GCP');
 const url = esc('lukesz-portifolio.vercel.app');
 
 // Single quotes inside the family list so they don't collide with the
@@ -51,9 +51,9 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
   <rect width="1200" height="630" fill="url(#glow)"/>
 
   <text x="1140" y="600" text-anchor="end" font-family="${mono}" font-size="300"
-        font-weight="700" fill="${C.ink}" fill-opacity="0.05">AM</text>
+        font-weight="700" fill="${C.ink}" fill-opacity="0.05">LG</text>
 
-  <text x="80" y="150" font-family="${mono}" font-size="30" font-weight="700" fill="${C.accent}">AM</text>
+  <text x="80" y="150" font-family="${mono}" font-size="30" font-weight="700" fill="${C.accent}">LG</text>
 
   <text x="78" y="320" font-family="${font}" font-size="92" font-weight="700" fill="${C.ink}">${name}</text>
 

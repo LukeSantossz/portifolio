@@ -31,13 +31,14 @@ export const timeline: TimelineItem[] = [
     period: 'Sep 2026 to Present',
     location: 'Pompeia, Brazil',
     description:
-      'Unipac is a packaging and polymer processing manufacturer within the Jacto Group. The work is an internal AI platform that turns an approved product specification into a working full-stack application, built around a pipeline of 7 specialist agents.',
+      'Unipac is a packaging and polymer processing manufacturer within the Jacto Group. The work is UNIPAC AI Studio, an internal AI platform that turns an approved specification into a full-stack application.',
     highlights: [
-      'Built an internal multi-agent platform, served from Google Cloud Run, that turns an approved product specification into a working full-stack application, orchestrating 7 specialist agents through a coordinator that delegates rather than writes code. It has generated 20+ applications end to end, each submitted to 13 deterministic verifiers before release.',
-      'Engineered the release gate so the language model cannot approve its own output: the security verdict is derived from deterministic scanner receipts run in a short-lived isolated virtual machine and tied to a checksum of the delivered code, applied by a pure function the pipeline cannot bypass and locked by 32 contract tests, so a model cannot sign off on its own output.',
-      'Executed every piece of generated code inside a per-job micro virtual machine with its own kernel rather than a normal container, on the reasoning that code written by a model is untrusted input. The stronger isolation also measured faster than starting a container per command.',
-      'Designed a 7-layer containment stack for runaway agent behavior, each layer added in response to a real incident, including one tool called 72 times in a loop and a job stalled for 30 minutes because each re-delegation reset its own budget.',
-      'Eliminated a path that was shipping prompts, specifications and error traces containing authorization headers to a third-party service in clear text.',
+      'Re-architected a multi-agent code-generation platform by replacing its language-model orchestrator with a deterministic scheduler: up to 12 specialist agent phases in 4 waves, with parallel waves, phases declared by the architect agent and contracts and DevOps files generated from templates. Deployed to Cloud Run in a development environment.',
+      'Piloted the platform on 22 projects submitted to InovaSkill 2026: it blocked 21 of 21 severe findings before delivery, and 12 of 14 end-to-end runs passed.',
+      'Replaced the model\'s self-reported security verdict with a deterministic gate: Semgrep (20 custom rules) and Trivy run in a read-only sandbox without network access, and a pure policy function that blocks critical and high findings judges the resulting receipt, covered by 154 tests.',
+      'Built a 9-layer guardrail stack for runaway agents (session, tool-batch and delegation caps, idempotent loop breaker, crash guard, retry, fallback, empty-reply guard, circuit breaker) after one model response emitted 2,179 identical tool calls.',
+      'Designed evidence-driven auto-remediation that routes each blocking finding to the specialist agent that owns the file and re-invokes it with the failing tool output, capped at 3 rounds per gate and 6 per run. It cleared 14 of 21 gate failures across 13 runs without human intervention.',
+      'Built a verification layer that records 33 verdicts per generated app, 13 of them blocking completion, and prevented personal data and credentials from reaching a third-party tracing service by masking them before export.',
     ],
   },
   {
@@ -47,13 +48,14 @@ export const timeline: TimelineItem[] = [
     period: 'Jun 2026 to Aug 2026',
     location: 'Miami, United States (remote)',
     description:
-      'A US-based ed-tech startup building an AI-powered college-advising platform. I worked on the retrieval and grounding core, owning the retrieval, prompt, conversation and routing services.',
+      'PM Accelerator hosts Collegiary, an ed-tech startup. The work is an AI college-advising platform, and I drove its retrieval and grounding core.',
     highlights: [
-      'Architected the hybrid retrieval engine from scratch with no RAG framework over a corpus of roughly 1,800 US institutions, ranking exact institution-name matches above vector similarity on purpose, because someone who types a school name wants that school and blending the two scores buries it.',
-      'Mitigated hallucination structurally rather than through prompt wording: the system refuses before spending an API call when nothing was retrieved, and a verifier re-reads each answer for figures no source record supports, including one institution\'s statistic quoted under another institution\'s name.',
-      'Enforced per-student data isolation with an explicit predicate on every query after finding that database-level row security was bypassed by the service connection, and guaranteed coverage with a test that reads the source code itself and fails the build if any student-scoped query lacks an isolation case.',
-      'Scaled the backend suite to 1,149 automated tests at a test-to-code ratio above 1.75 to 1, and cut the continuous-integration install from roughly 800MB to 90MB by serving the same embedding model through a lighter runtime.',
-      'Delivered 19 of 29 tracked workstream items on a weekly cadence inside a globally distributed team spanning multiple time zones, coordinating asynchronously through written specifications and alignment checkpoints.',
+      'Built from scratch, with no RAG framework, a hybrid retrieval engine over roughly 1,800 US institutions: exact name and alias matches rank above vector similarity on purpose, because someone who types a school name wants that school and blending the two scores buries it.',
+      'Eliminated a class of hallucination structurally rather than through prompt wording: the system refuses before spending an API call when nothing was retrieved, and a verifier flags figures no source record supports, including one institution\'s statistic quoted under another institution\'s name. The gate and verifier are covered by 191 automated tests.',
+      'Rewrote the two-tier model router, which had sent 0 of 6 live questions to the cheap tier, around deterministic rules with a token-capped cheap-model tiebreak, covered by 27 routing tests.',
+      'Established per-student data isolation with an explicit predicate on every query after finding that row-level security was bypassed by the service connection, and guaranteed coverage with a test that reads the source code and fails the build if any student-scoped read lacks an isolation case (55 reads, 174 cases).',
+      'Scaled the backend suite to 1,149 automated tests at a test-to-code ratio of 1.75 to 1, and cut the CI install from roughly 800MB to 90MB by serving the same embedding model through ONNX.',
+      'Delivered 19 of 29 tracked board items on a weekly cadence against written specifications, and was recommended in writing by the company\'s founder.',
     ],
   },
   {
@@ -63,13 +65,13 @@ export const timeline: TimelineItem[] = [
     period: 'Nov 2024 to Jun 2026',
     location: 'Pompeia, Brazil',
     description:
-      'Jacto is a Brazilian manufacturer of agricultural machinery that sells in more than 100 countries and employs over 3,000 people, with after-sales operations at industrial scale. I worked where the business side meets engineering.',
+      'Jacto is a global manufacturer of agricultural machinery with more than 5,000 employees, operating in more than 100 countries. I worked in after-sales data and automation, where the business side meets engineering.',
     highlights: [
-      'Cut the rate of incorrectly returned field parts from around 20% in 2025 to under 5% in 2026, closing June 2026 at 0% against a 6% Six Sigma target, which removed recurring freight costs from returns that should never have shipped.',
-      'Automated a previously manual data migration: extracted hundreds of dealership address records from a foreign government address-classification system, transliterated and cleaned them by region, and produced load-ready files for Salesforce, removing up to 5 hours a day of manual collection and spreadsheet formatting.',
-      'Designed a computer-vision system (now in internal review) that audits discarded parts end to end: it checks each photo meets the standard, reads the printed slip and cross-checks it against the system record, and recognizes the part, paired with an in-app camera that locks file names and stamps time and location so the evidence holds up.',
-      'Identified 10+ usability problems as the business-to-developer bridge on an internal parts-return tool, validating rule changes across testing rounds, moving the workflow from manual entry to mostly review.',
-      'Audited 150+ main dealerships at home and abroad, reconciling the field-parts return flow and tracking millions of reais in parts movement, and processed write-offs through audits done both on site and remotely.',
+      'Co-led a two-person effort that cut the incorrect field-parts return rate from about 20% in 2025 to under 5% in 2026, closing June 2026 at 0% against a 6% Six Sigma target. The process was standardized into an approved manual adopted across a network of more than 150 dealerships, avoiding an estimated R$100 to 135K in freight in the first half of 2026.',
+      'Automated fiscal-address collection from a foreign government registry in Python (Selenium, pandas): one run walks all 99 regional pages, translates the hierarchy from Russian to English and exports a load-ready workbook for Salesforce, removing up to 5 hours a day of manual work.',
+      'Audited the field-parts return flow across more than 150 master dealerships through on-site and remote audits, in a flow of more than 13,000 parts and about R$6.5M per semester, and codified the findings in a rules manual that corrected more than half of the process divergences.',
+      'Tracked and validated more than 20 improvements with the development team on the internal parts-return system, starting from 10+ mapped usability defects, including a four-system data sync and a redesign that cut record loading from 5 to 10 minutes to under 1 minute.',
+      'Proposed a computer-vision disposal audit, specified end to end and submitted for internal approval: OCR cross-checks a photographed receipt against the system record, the part is identified automatically, and an in-app camera locks file name, timestamp and location so the evidence can be verified.',
     ],
   },
   {
@@ -79,10 +81,10 @@ export const timeline: TimelineItem[] = [
     period: 'Feb 2024 to Oct 2024',
     location: 'Pompeia, Brazil',
     description:
-      'A regional innovation program. The work was an internal natural-language assistant over a domain-specific knowledge base, and it is the earliest language-model work in this timeline.',
+      'CIAg is an agribusiness innovation center within the Jacto Group. The Synapse program built an LLM assistant for students and faculty, and it is the earliest language-model work in this timeline.',
     highlights: [
-      'Led development of a natural-language assistant built on a language model (Python, FastAPI, OpenAI API) with contextual retrieval, keeping answers grounded in a region-specific knowledge base.',
-      'Implemented the REST API layer connecting the application to the language model, covering request handling and integration with the retrieval step.',
+      'Led a team of 2 to 3 developers building an LLM assistant for students and faculty (Python, FastAPI, OpenAI API) that answers from a base of agronomic technical documents through contextual RAG. The assistant has since been discontinued.',
+      'Designed the REST API layer between the application and the language model, covering request handling and the integration with the retrieval step.',
     ],
   },
   {
