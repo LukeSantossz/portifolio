@@ -75,8 +75,10 @@ other, and there is no setting that makes the tension go away.
 The response was architectural rather than clever: the confidence check sits
 behind a clean boundary, so it can be split off and scaled on its own when the
 traffic justifies it, or swapped for a cheaper estimator without touching
-retrieval or answering. For the current load that is enough. For heavy traffic
-it would need a real rethink, and I would rather say so than pretend otherwise.
+retrieval or answering. The layer ships disabled by default and is switched on
+explicitly, so it is calibrated rather than carrying live traffic. For heavy
+traffic it would need a real rethink, and I would rather say so than pretend
+otherwise.
 
 ## Why abstention is a feature
 
@@ -89,9 +91,11 @@ not behind it.
 
 ## What is not measured yet
 
-Honesty about uncertainty has to apply to the write-up too. The system is held to
-a production bar: 372 automated tests at 89.8 percent branch coverage of the core
-packages. But that number measures the test suite, not the answers. The
+Honesty about uncertainty has to apply to the write-up too. The system carries
+372 automated tests at 89.8 percent branch coverage of the core packages, with
+the CI gate itself at 23 percent and the evaluation, UI and database packages
+outside that measured scope. But that number measures the test suite, not the
+answers. The
 evaluation harness for answer quality is built and has not been run end to end,
 so there is no published accuracy figure, and I have not claimed one. The scoring
 step also defaults to a hosted verifier today, which means a fully local run

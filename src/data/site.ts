@@ -22,7 +22,7 @@ export const site = {
    * The recruiter smell test, in one line: where, which timezone, and how
    * reachable, so nobody has to email to find out.
    */
-  availability: 'Marília, Brazil (GMT-3) · Remote · Open to international roles',
+  availability: 'Brazil (GMT-3) · Remote-ready, any time zone · Open to relocation',
 
   /**
    * Hero proof strip. Three numbers, each defended by a record in the index or
@@ -32,7 +32,7 @@ export const site = {
     {
       value: '3rd of 1,300+',
       label:
-        'A soil-reading app I built placed 3rd at the 16th FETEPS 2025, a state science fair; its paper was published and presented at the ICPA/ConBAP 2026 precision-agriculture conference.',
+        'A soil-reading app I built placed 3rd at the 16th FETEPS 2025, a state science fair; its paper was accepted and presented as a poster at the ICPA/ConBAP 2026 precision-agriculture conference.',
     },
     {
       value: '+51.9%',
@@ -42,14 +42,14 @@ export const site = {
     {
       value: '372 tests',
       label:
-        'Coverage of 89.8% on a FAPESP-funded question-answering agent that scores its own confidence in every answer.',
+        'Branch coverage of 89.8% across the core packages of a FAPESP-funded question-answering agent that scores its own confidence in every answer.',
     },
   ],
 
   // --- Contact & social -----------------------------------------------------
   email: 'lucassg2015@gmail.com',
   github: 'https://github.com/LukeSantossz',
-  linkedin: 'https://www.linkedin.com/in/lucas-gonçalvessz/',
+  linkedin: 'https://www.linkedin.com/in/lucas-goncalvessz/',
 
   // --- Assets ---------------------------------------------------------------
   resumePath: '/my_resume.pdf', // resume served from public/my_resume.pdf
@@ -78,5 +78,5 @@ export const site = {
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Lucas Gonçalves · AI Engineer',
   seoDescription:
-    'AI Engineer working on retrieval-augmented and agentic LLM systems, data pipelines on Google Cloud, applied machine learning and on-device computer vision. Published precision-agriculture research, and case studies that state how each result was measured and publish their own retractions. Open to remote and international roles.',
+    'AI Engineer working on retrieval-augmented and agentic LLM systems, data pipelines on Google Cloud, applied machine learning and on-device computer vision. Precision-agriculture research presented at an international conference, and case studies that state how each result was measured and publish their own retractions. Open to remote and international roles.',
 } as const;
