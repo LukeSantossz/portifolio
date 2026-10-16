@@ -18,23 +18,29 @@ export interface SkillGroup {
 export const skillGroups: SkillGroup[] = [
   {
     label: 'Languages',
-    items: ['Python', 'SQL', 'TypeScript', 'Rust', 'Dart'],
+    items: ['Python', 'SQL', 'TypeScript', 'Rust'],
   },
   {
     label: 'LLM, RAG & agents',
     items: [
       'RAG',
       'LangGraph',
-      'LangChain',
       'Agent orchestration',
       'LLM-as-judge evaluation',
       'Semantic entropy',
-      'Embeddings',
+      'Anthropic API',
+      'OpenAI API',
     ],
   },
   {
     label: 'ML',
-    items: ['PyTorch', 'HuggingFace Transformers', 'scikit-learn', 'TensorFlow Lite'],
+    items: [
+      'PyTorch',
+      'HuggingFace Transformers',
+      'scikit-learn',
+      'Fine-tuning',
+      'TensorFlow Lite',
+    ],
   },
   {
     label: 'Backend & data',
