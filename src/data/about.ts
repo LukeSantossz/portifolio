@@ -12,13 +12,11 @@ import { site } from './site.ts';
 
 export const about = {
   paragraphs: [
-    'I am an AI Engineer. I build retrieval-augmented and agentic language-model systems in Python, and applied computer vision that runs on the device rather than in a data center. The common thread is not the model. It is everything placed around the model so that someone can act on what it says.',
-    'I learned the engineering in industry rather than in a lab. Nineteen months at Jacto, a global manufacturer of agricultural machinery, put me next to after-sales operations at industrial scale and taught me to read a problem from the people who have it before reaching for a model. That is a habit rather than a sector, and it travels to any domain where a wrong answer is paid for by someone outside the room. I finish a technology degree in Big Data for Agribusiness at Fatec Shunji Nishimura in November 2026.',
-    'I work at Unipac, part of the Jacto Group, as a Data & AI Assistant. The work is an internal multi-agent platform that turns an approved product specification into a working application through up to 12 specialist agent phases in four deterministic waves, with 13 blocking verdicts out of 33 recorded per application. Most of my time on that platform goes to the part after the model works: containment, verification, and the boundaries that decide what generated code is allowed to reach.',
-    'The same holds in the research and the personal work. A confidence score is only useful if a non-expert can read it at a glance. A safety threshold is worth what the sweep behind it is worth, not what it feels like it should be. A number is worth what its dataset, its split and its baseline make it worth, which is why every record on this page states all three.',
-    'That includes retracting my own results. When an evaluation of mine turned out to be scoring itself, the figures came down and the explanation stayed up. The records here carry the withdrawals next to the results, because a reader who checks should find the same answer I did.',
-    'I am looking for remote and international AI Engineer roles where domain understanding and production engineering are both part of the job.',
-    'Away from the keyboard: technical deep-dives (O\'Reilly, Manning), Formula 1, and learning out loud in developer communities.',
+    "I came to AI through agriculture. In 2024, at CIAg, the Jacto Group's agro-innovation center, I led a small team building an LLM assistant that answered faculty and students from agronomic documents. It worked well enough to be convincing, and that bothered me: when it was wrong, it sounded exactly as sure as when it was right.",
+    "I learned what that kind of mistake costs when I moved to after-sales at Jacto. For about twenty months I worked on wrong-part returns, where every wrong answer came back as a returned part and a freight bill. I wrote the returns manual the dealer network adopted, and together with the team we brought the rate down to zero by mid-2026.",
+    "When I went back to building with models, that experience decided where I spent my time. At PM Accelerator, I made an AI advisor refuse a question before calling the model whenever it had no data to answer it. As a volunteer researcher on a FAPESP-funded project, from March to June 2026, I set a soil-fertility agent's topic filter from 120 labeled questions. Today at Unipac I work on an internal platform where AI agents generate whole applications, and I wrote the security gate each one has to pass before a developer approves it.",
+    "That gate is also where my curiosity widened. After an agent fired 2,179 identical tool calls in a single response, I added layers of guardrails and started reading about AI security engineering as a field of its own, which led me to a cybersecurity course this year. AR and digital twins pull me the other way, back to machines and fields. I want to know what checking an answer looks like when the model reasons about a physical system. I haven't built anything there yet.",
+    "That's the work I want to keep doing: building AI systems people can actually rely on.",
   ],
 
   facts: [
@@ -28,11 +26,15 @@ export const about = {
     },
     {
       label: 'Education',
-      value: 'Technology degree (CST) in Big Data for Agribusiness, Fatec Shunji Nishimura (2026)',
+      value: 'Technology degree (CST) in Big Data for Agribusiness, Fatec Shunji Nishimura (expected Nov 2026)',
     },
     {
       label: 'Focus',
-      value: 'LLM agents · RAG · AI guardrails & evaluation · applied ML · computer vision',
+      value: 'LLM agents · RAG · AI guardrails & evaluation',
+    },
+    {
+      label: 'Languages',
+      value: 'Portuguese (native) · English (professional working proficiency)',
     },
     { label: 'Email', value: site.email },
   ],
