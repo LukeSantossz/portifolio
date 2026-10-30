@@ -15,6 +15,7 @@ export interface TimelineItem {
   kind: 'work' | 'education';
   role: string;
   org: string;
+  logo?: string;
   period: string;
   /** City and country of the role. The method puts location on line 1,
       next to the period, because an international reader calibrates on it. */
@@ -28,6 +29,7 @@ export const timeline: TimelineItem[] = [
     kind: 'work',
     role: 'Data & AI Assistant',
     org: 'Unipac (Grupo Jacto)',
+    logo: '/logos/unipac.svg',
     period: 'Sep 2026 to Present',
     location: 'Pompeia, Brazil',
     description:
@@ -45,6 +47,7 @@ export const timeline: TimelineItem[] = [
     kind: 'work',
     role: 'AI Engineer',
     org: 'PM Accelerator',
+    logo: '/logos/pm-accelerator.webp',
     period: 'Jun 2026 to Aug 2026',
     location: 'Miami, United States (remote)',
     description:
@@ -62,6 +65,7 @@ export const timeline: TimelineItem[] = [
     kind: 'work',
     role: 'After-Sales – Data & Automation',
     org: 'Jacto',
+    logo: '/logos/jacto.svg',
     period: 'Nov 2024 to Jun 2026',
     location: 'Pompeia, Brazil',
     description:
