@@ -47,7 +47,7 @@ export const timeline: TimelineItem[] = [
     kind: 'work',
     role: 'AI Engineer',
     org: 'PM Accelerator',
-    logo: '/logos/pm-accelerator.webp',
+    logo: '/logos/pm-accelerator-mask.png',
     period: 'Jun 2026 to Aug 2026',
     location: 'Miami, United States (remote)',
     description:
