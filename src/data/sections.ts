@@ -6,9 +6,9 @@
 export const sections = {
   work: {
     label: 'Work',
-    title: 'Four records, and what each one cost to get right',
+    title: 'The records, and what each one cost to get right',
     intro:
-      'The first record is open below. Each one carries the problem, what constrained it, the decision I made, what I rejected, the measured result with its methodology, and where it still falls short.',
+      'Open any record below for the details. Each one carries the problem, what constrained it, the decision I made, what I rejected, the measured result with its methodology, and where it still falls short.',
   },
 
   experience: {
