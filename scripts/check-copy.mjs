@@ -65,6 +65,12 @@ const BRITISH = {
   whilst: 'while',
 };
 
+// These are official CV job titles.
+const DASH_ALLOWED_TITLES = [
+  "'After-Sales – Data & Automation'",
+  "'Software Engineer – Synapse Program'",
+];
+
 /**
  * Line-level rules. `test` returns the offending text or null.
  * A word is only a hit when it stands alone: `aria-labelledby` is markup, not copy.
@@ -99,6 +105,7 @@ const RULES = [
       // AGENTS.md scopes the punctuation rule to public copy: a code comment
       // may use whatever reads best, so skip the line when it is one.
       if (/^\s*(\/\/|\*|\/\*|<!--|-->)/.test(line)) return null;
+      for (const title of DASH_ALLOWED_TITLES) line = line.replaceAll(title, '');
       const hit = line.match(/[\u2013\u2014]|&mdash;|&ndash;/);
       return hit
         ? `"${hit[0]}" is an em or en dash, use a comma, a colon, parentheses or a new sentence`

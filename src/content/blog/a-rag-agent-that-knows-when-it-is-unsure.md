@@ -91,8 +91,10 @@ not behind it.
 
 ## What is not measured yet
 
+<!-- Source: LukeSantossz/sb100_agents README.md @ 92fc9a1 (2026-08-29): 370 passing tests, 90 percent line coverage. -->
+
 Honesty about uncertainty has to apply to the write-up too. The system carries
-372 automated tests at 89.8 percent branch coverage of the core packages, with
+370 automated tests at 90 percent line coverage of the measured modules, with
 the CI gate itself at 23 percent and the evaluation, UI and database packages
 outside that measured scope. But that number measures the test suite, not the
 answers. The

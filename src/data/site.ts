@@ -10,13 +10,13 @@ export const site = {
 
   /**
    * Hero positioning line. It mirrors the qualifier on the served resume, the
-   * LinkedIn title and the GitHub profile ("AI Engineer | LLM Agents, RAG,
-   * Data Pipelines on GCP") so a recruiter reading any of them finds the same
+   * LinkedIn title and the GitHub profile ("AI Engineer | LLM Agents · RAG ·
+   * AI Guardrails & Evaluation") so a recruiter reading any of them finds the same
    * claim rather than two different people. It names no sector: agriculture is
    * where the work happened, which the timeline and the records already say,
    * and it is not what the work is.
    */
-  headline: 'LLM agents, RAG systems, and data pipelines on GCP.',
+  headline: 'AI Engineer | LLM Agents · RAG · AI Guardrails & Evaluation',
 
   /**
    * The recruiter smell test, in one line: where, which timezone, and how
@@ -40,9 +40,12 @@ export const site = {
         'Macro-F1 gain after a fine-tuning run that came out worse than its baseline, once error analysis traced the failure to the wrong starting model rather than the wrong settings.',
     },
     {
-      value: '372 tests',
+      // Source: LukeSantossz/sb100_agents README.md (commit 92fc9a1, 2026-08-29):
+      // "370 passing tests and 90 percent line coverage over the modules listed
+      // under [tool.coverage.run]". Line coverage, not branch; CI floor is 23%.
+      value: '370 tests',
       label:
-        'Branch coverage of 89.8% across the core packages of a FAPESP-funded question-answering agent that scores its own confidence in every answer.',
+        'Line coverage of 90% across the measured modules of a FAPESP-funded question-answering agent that scores its own confidence in every answer.',
     },
   ],
 
