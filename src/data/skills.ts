@@ -39,7 +39,6 @@ export const skillGroups: SkillGroup[] = [
       'HuggingFace Transformers',
       'scikit-learn',
       'Fine-tuning',
-      'TensorFlow Lite',
     ],
   },
   {

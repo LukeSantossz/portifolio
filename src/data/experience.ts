@@ -48,9 +48,9 @@ export const timeline: TimelineItem[] = [
     period: 'Jun 2026 to Aug 2026',
     location: 'Miami, United States (remote)',
     description:
-      'U.S. AI product accelerator. Selected for Cohort 9 of its AI Engineer Internship Program, building an AI college-admissions advisor (Collegiary) in an 8-contributor international team.',
+      'U.S. AI product accelerator. Selected for Cohort 9 of its AI Engineer Internship Program, building an AI college-admissions advisor in an 8-contributor international team.',
     highlights: [
-      'Led the launch of Collegiary as the backend AI engineer, owning the advisor\'s answer pipeline end to end: retrieval, prompt assembly, token-budgeted memory, two-tier model routing, a 90s turn ceiling and persistence (Python, FastAPI, PostgreSQL).',
+      'Led the launch of the advisor as the backend AI engineer, owning the advisor\'s answer pipeline end to end: retrieval, prompt assembly, token-budgeted memory, two-tier model routing, a 90s turn ceiling and persistence (Python, FastAPI, PostgreSQL).',
       'Designed hybrid retrieval that ranks exact name/alias matches ahead of pgvector HNSW similarity over ~1,800 U.S. institutions, returning an explicit "not enough data" signal instead of a nearest-neighbor guess.',
       'Enforced factual grounding in code with a refuse-before-call gate (no model call or quota spent on unanswerable questions) and a post-generation verifier that flags unsupported rates, costs and GPAs.',
       'Secured per-student data isolation with explicit owner predicates on every query and a CLI harness that exits non-zero on any cross-student leak.',
@@ -100,7 +100,7 @@ export const timeline: TimelineItem[] = [
       'Co-authored a paper accepted and presented as a poster at the 17th International Conference on Precision Agriculture and the 11th ConBAP, Porto Alegre, July 2026 (abstract #14064).',
       'Volunteer researcher on a FAPESP-funded research project (grant 2024/00985-1), the state research foundation of São Paulo.',
       'Placed 3rd out of more than 1,300 entries at the 16th FETEPS 2025, a large state science and technology fair.',
-      'Languages: Portuguese (native) · English (B2, upper-intermediate).',
+      'Languages: Portuguese (native) · English (professional working proficiency).',
     ],
   },
 ];

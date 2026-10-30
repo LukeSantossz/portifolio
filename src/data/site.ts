@@ -81,5 +81,5 @@ export const site = {
   // --- SEO ------------------------------------------------------------------
   seoTitle: 'Lucas Gonçalves · AI Engineer',
   seoDescription:
-    'AI Engineer working on retrieval-augmented and agentic LLM systems, data pipelines on Google Cloud, applied machine learning and on-device computer vision. Precision-agriculture research presented at an international conference, and case studies that state how each result was measured and publish their own retractions. Open to remote and international roles.',
+    'AI Engineer | LLM Agents · RAG · AI Guardrails & Evaluation. Building LLM agents, RAG systems and AI guardrails & evaluation.',
 } as const;
