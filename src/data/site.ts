@@ -22,7 +22,7 @@ export const site = {
    * The recruiter smell test, in one line: where, which timezone, and how
    * reachable, so nobody has to email to find out.
    */
-  availability: 'Brazil (GMT-3) · Remote-ready, any time zone · Open to relocation',
+  availability: 'Brazil (GMT-3) · Remote-ready, any time zone · Open to remote roles',
 
   /**
    * Hero proof strip. Three numbers, each defended by a record in the index or

@@ -176,7 +176,7 @@ objective, in dense text with no filler.
 
 | Label | Value |
 |---|---|
-| Based in | Marília, São Paulo, Brazil (GMT-3) · remote-ready, open to relocation |
+| Based in | Marília, São Paulo, Brazil (GMT-3) · remote-ready, open to remote roles |
 | Education | Technology degree (CST) in Big Data for Agribusiness, Fatec Shunji Nishimura (2026) |
 | Focus | RAG · LLM agents · agent safety and evaluation · applied ML · computer vision |
 | Email | lucassg2015@gmail.com |

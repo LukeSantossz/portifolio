@@ -22,7 +22,7 @@ export const about = {
   facts: [
     {
       label: 'Based in',
-      value: 'Brazil (GMT-3) · remote-ready, any time zone · open to relocation',
+      value: 'Brazil (GMT-3) · remote-ready, any time zone · open to remote roles',
     },
     {
       label: 'Education',
